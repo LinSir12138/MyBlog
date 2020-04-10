@@ -47,6 +47,11 @@
         select * from javaweb_myblog.blog where btitle = #{btitle}
     </select>
 
+    <!--    根据 typeid 查询博客-->
+    <select id="queryByTypeId" resultType="com.linkai.myblog.entity.Blog">
+        select * from javaweb_myblog.blog where blogtypeid = #{typeid}
+    </select>
+
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="bid" useGeneratedKeys="true">

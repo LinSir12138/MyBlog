@@ -63,6 +63,16 @@ public interface BlogDao {
 
 
     /**
+    * @Description: 根据 typeid 查询博客记录，删除分类时调用，查看分类是否被占用
+    * @Param: [typeid]
+    * @return: com.linkai.myblog.entity.Blog
+    * @Author: 林凯
+    * @Date: 2020/4/11
+    */
+    List<Blog> queryByTypeId(Long typeid);
+
+
+    /**
     * @Description: 根据 title 查询博客，处理博客和标签之间的关系时调用
     * @Param: [btitle]
     * @return: com.linkai.myblog.entity.Blog

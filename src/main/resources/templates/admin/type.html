@@ -85,8 +85,11 @@
                         <div class="change-btn">修改</div>
                         <!--    利用 a 标签发送请求，结合 RestFul 风格-->
                         <div class="delete-btn">
-                            <!--    使用 RestFul 风格拼接字符串，需要使用 + 号，虽然会报红，但是可以运行-->
-                            <a th:href="@{/admin/deleteType/} + ${type.getIdToString()}">删除</a>
+                            删除
+                            <form class="delete-form-type" th:action="@{/admin/deleteType}" style="display: none" method="post">
+                                <input class="delte-typeid" type="text" name="id" th:value="${type.getTypeid()}">
+                            </form>
+
                         </div>
 
                         <!--    点击修改按钮需要弹出的组件   -->
@@ -125,6 +128,27 @@
 <script>
 
     $(function () {
+
+        // 删除分类
+        $('.delete-btn').click(function () {
+            // 由于表格中的每一行是遍历出来的，所有有很多类名相同的标签，需要通过兄弟选择器区分
+            console.log("tagId = " + $(this).children('form').children('input').val());
+            $(this).children('form').addClass("need-commit");       // 同时标记该标签去，方便在 success 函数中获得
+            $.ajax("/admin/CheckType", {
+                type: 'post',
+                dataType: 'text',       // 返回纯文本字符串
+                data: {"id": $(this).children('form').children('input').val()},
+                success: function (data, status) {
+                    if (data === "YES") {
+                        alert("删除成功！");
+                        $('.need-commit').submit();
+                    } else {
+                        alert("删除失败！分类被占用！")
+                    }
+                }
+            })
+        });
+
 
         //  添加分类的点击事件
         $('#addBlog').click(function () {

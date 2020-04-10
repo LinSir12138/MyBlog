@@ -20,6 +20,15 @@ public interface BlogService {
     Blog queryById(Long bid);
 
     /**
+     * @Description: 根据 typeid 查询博客记录，删除分类时调用，查看分类是否被占用
+     * @Param: [typeid]
+     * @return: com.linkai.myblog.entity.Blog
+     * @Author: 林凯
+     * @Date: 2020/4/11
+     */
+    List<Blog> queryByTypeId(Long typeid);
+
+    /**
      * 查询多条数据
      *
      * @param offset 查询起始位置

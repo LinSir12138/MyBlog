@@ -1,7 +1,11 @@
 package com.linkai.myblog.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.linkai.myblog.entity.Blog;
+import com.linkai.myblog.entity.Blogtag;
 import com.linkai.myblog.entity.Type;
+import com.linkai.myblog.service.BlogService;
+import com.linkai.myblog.service.BlogtagService;
 import com.linkai.myblog.service.impl.TypeServiceImpl;
 import com.linkai.myblog.util.MyConstant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,8 @@ public class TypeController {
     // Controller 层调用 service 层
     @Autowired
     private TypeServiceImpl typeService;
+    @Autowired
+    private BlogService blogService;
 
 
     /**
@@ -63,14 +69,35 @@ public class TypeController {
 
 
     /**
+    * @Description: 删除分类之前，检查该分类是否被占用
+    * @Param: [id]
+    * @return: java.lang.String
+    * @Author: 林凯
+    * @Date: 2020/4/11
+    */
+    @RequestMapping("/CheckType")
+    @ResponseBody
+    public String checkTag(@RequestParam("id") String id) {
+        System.out.println("TagId = " + id);
+        List<Blog> blog = blogService.queryByTypeId(Long.valueOf(id));
+        // 判断 List 为空不能用 null，应该用 size() == 0
+        if (blog.size() == 0) {
+            return "YES";
+        } else {
+            return "NO";
+        }
+    }
+
+    /**
     * @Description: 根据 id 删除分类，使用 RestFul 风格（a标签发送的请求）
     * @Param: [id]
     * @return: java.lang.String
     * @Author: 林凯
     * @Date: 2020/4/5
     */
-    @RequestMapping("/deleteType/{id}")
-    public String deleteType(@PathVariable("id") String id) {
+    @RequestMapping("/deleteType")
+    public String deleteType(@RequestParam("id") String id) {
+        // 删除之前还需要判断该分类是否被占用，没有被占用才能删除，（交由前端发送 Ajax 请求到 CheckType 来完成）
         typeService.deleteById(Long.parseLong(id));
         return "redirect:/admin/Type";      // 重定向，请求上面的那个Controller
     }

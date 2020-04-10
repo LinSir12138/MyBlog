@@ -31,6 +31,11 @@ public class BlogServiceImpl implements BlogService {
         return this.blogDao.queryById(bid);
     }
 
+    @Override
+    public List<Blog> queryByTypeId(Long typeid) {
+        return blogDao.queryByTypeId(typeid);
+    }
+
     /**
      * 查询多条数据
      *
