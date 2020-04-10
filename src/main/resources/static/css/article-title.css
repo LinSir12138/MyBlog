@@ -1,0 +1,102 @@
+
+/*
+            关于标题栏：
+            高度：70px
+            中间总长度： 1135px
+            左边logo： 70 * 70
+            右边ul： 800px   margin-left :335px
+        */
+.title {
+    width: 100%;
+    height: 70px;
+    /*background-color: aqua;*/
+    position: fixed;
+    top: 0px;
+    opacity: 80%;
+    box-shadow: 3px 3px 3px;
+    /*  利用背景平铺属性或者彩色效果  */
+    background-image: url("../image/titlebc.png");
+    background-repeat: repeat-y;
+    z-index: 10;
+}
+
+.title-left {
+    width: 70px;
+    height: 70px;
+    float: left;
+}
+
+.title-left img {
+    width: 80px;
+    height: 80px;
+}
+
+.title-center {
+    height: 100%;
+    width: 1135px;
+    margin: 0 auto;
+    /*background-color: greenyellow;*/
+    box-sizing: border-box;
+}
+
+.title-log {
+    height: 100%;
+    float: left;
+}
+
+.title-log img {
+    height: 100%;
+}
+
+.title-center ul {
+    /*float: right;*/
+    height: 70px;
+    width: 990px;       /*  1035 - 70*/
+    /*background-color: red;*/
+    margin-left: 145px;
+}
+
+/*  共有 9 个 li 标签*/
+.title-center ul li {
+    width: 110px;
+    list-style: none;
+    float: left;
+    line-height: 70px;      /*  垂直居中*/
+    text-align: center;     /*  文字水平居中  */
+    /*background-color: goldenrod;*/
+    font-size: 18px;
+    color: whitesmoke;
+    text-decoration: none;
+    font-weight: bolder;
+    overflow: hidden;
+}
+
+.title-center ul li img {
+    width: 15px;
+    margin-right: 2px;
+}
+
+.title-center ul li a {
+    height: 70px;
+    width: 100px;
+    display: inline-block;      /*  使 a 标签和 li 标签大小一样，并且设置 inline-block ,可以调节大小*/
+    text-decoration: none;
+    color: white;
+    /*  过渡动画，配合 a 标签伪类使用    */
+    transition-property: font-size;
+    transition-duration: 1s;
+}
+
+.title-center ul li a .icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+}
+
+.title-center ul li a:hover {
+    color: red;
+    background-color: #cccccc;
+    font-size: 21px;
+}

@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<!--    使用 Thymeleaf 模版引擎   -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>addBlog</title>
+
+    <!--    引入样式文件 -》 富文本编辑器 -->
+    <link rel="stylesheet" th:href="@{/editor.md-master/css/editormd.css}">
+    <link rel="stylesheet" th:href="@{/editor.md-master/css/editormd.preview.css}">
+    <!--    引入css 样式文件 -》 标签选择 -->
+    <link rel="stylesheet" type="text/css" href="http://apps.bdimg.com/libs/bootstrap/2.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+    <link rel="stylesheet" th:href="@{/css/choosetag/selectpage.css}">
+    <link rel="stylesheet" th:href="@{/css/choosetag/demo.css}">
+    <!--    引入 css 样式文件 -》 开关按钮-->
+    <link rel="stylesheet" th:href="@{/css/choosebtn/choosebtn.css}">
+
+    <!--    不需要 ${pageContext.request.contextPath}  -->
+    <!--    引入 js 文件 -》 富文本编辑器   -->
+    <script th:src="@{/js/jquery-3.4.1.js}"></script>
+    <script th:src="@{/editor.md-master/lib/marked.min.js}"></script>
+    <script th:src="@{/editor.md-master/lib/prettify.min.js}"></script>
+    <script th:src="@{/editor.md-master/lib/raphael.min.js}"></script>
+    <script th:src="@{/editor.md-master/lib/underscore.min.js}"></script>
+    <script th:src="@{/editor.md-master/lib/sequence-diagram.min.js}"></script>
+    <script th:src="@{/editor.md-master/lib/flowchart.min.js}"></script>
+    <script th:src="@{/editor.md-master/lib/jquery.flowchart.min.js}"></script>
+    <script th:src="@{/editor.md-master/editormd.min.js}"></script>
+
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: #f3f3f3;
+        }
+
+        #title-first {
+            text-align: center;
+            margin-top: 8px;
+        }
+
+        #title-first #span-title {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        #title-first #article-title {
+            width: 800px;
+            height: 45px;
+            border-radius: 5px;
+            border: 1px solid #cccccc;
+            line-height: 45px;
+            font-size: 24px;
+        }
+
+        #title-first #span-save {
+            font-size: 18px;
+        }
+
+
+        #title-first #save {
+            height: 35px;
+            width: 90px;
+            background: #ca0c15;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+            border-radius: 4px;
+        }
+
+        #title-first #showHTML img {
+            height: 170px;
+        }
+
+        #title-second {
+            text-align: center;
+            margin-top: 8px;
+            margin-bottom: 8px;
+        }
+
+        #title-second .customize {
+            display: inline-block;
+            width: 110px;
+            height: 35px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        #my-editormd {
+            margin-top: 5px;
+        }
+
+        #temp-save {
+            display: inline-block;
+            width: 90px;
+            height: 40px;
+            border: 1px solid #CCCCCC;
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
+        }
+
+        #push-article {
+            display: inline-block;
+            width: 90px;
+            height: 40px;
+            border: 1px solid #CCCCCC;
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
+
+        }
+
+        /*  是否原创，是否开启评论*/
+        .my_option {
+            width: 800px;
+            margin: 15px auto;
+        }
+
+        .my_comment {
+            height: 36px;
+            display: inline-block;
+
+        }
+
+        .my_original {
+            height: 36px;
+            display: inline-block;
+
+        }
+
+
+        #span-comment {
+            float: left;
+        }
+
+        #span-comment {
+            float: left;
+        }
+
+
+
+    </style>
+
+</head>
+<body>
+
+
+<form th:action="@{/admin/addBlog}" method="post" id="my-form">
+
+    <!--    文章标题-->
+    <div id="title-first">
+        <span id="span-title">文章标题：</span>
+        <input id="article-title" type="text" name="title">
+        <div id="temp-save">保存为草稿</div>
+        <div id="push-article">发布文章</div>
+    </div>
+    <!--    是否开启评论  -->
+    <div class="my_option">
+        <span id="span-comment">是否开启评论：</span>
+        <div class="button r mybtn my_comment">
+        <input type="checkbox" class="my_checkbox">
+        <div class="knobs"><span></span></div>
+        <div class="layer"></div>
+    </div>
+    </div>
+    <!--    是否原创-->
+    <div class="my_option">
+        <span>是否原创：</span>
+        <div class="button r mybtn my_original">
+            <input type="checkbox" class="my_checkbox">
+            <div class="knobs"><span></span></div>
+            <div class="layer"></div>
+        </div>
+    </div>
+    <!--    分类  -->
+    <div class="my_option">
+        请选择分类：
+        <select id="my-type">
+            <option value="分类" style="display:none">请选择分类</option>
+            <option th:value="${type.getTypename()}" th:each="type,typeState:${types}" th:text="${type.getTypename()}"></option>
+        </select>
+    </div>
+
+    <!--    标签  -->
+    <div class="row-fluid my_option">
+        <h4 class="heading">请选择博客的标签<small></small></h4>
+        <input type="text" id="selectPage4" class="input-block-level" placeholder="请输入查询关键字">
+
+    </div>
+
+    <!--    Markdown操作按钮-->
+    <div id="title-second">
+        <button type="button" id="watch-btn" class="customize">显示在线预览</button>
+        <button type="button" id="unwatch-btn" class="customize">隐藏在线预览</button>
+        <button type="button" id="preview-btn" class="customize">预览HTML</button>
+        <button type="button" id="show-toolbar-btn" class="customize">显示工具栏</button>
+        <button type="button" id="close-toolbar-btn" class="customize">隐藏工具栏</button>
+    </div>
+
+    <!--     Markdown 编辑器展示区    -->
+    <!--  id 对应着 editormd 里面的id  -->
+    <div id="my-editormd">
+        <textarea name="my-editormd-markdown-doc" id="my-editormd-markdown-doc" style="display: none"></textarea>
+        <!--   注意 name 属性的值，，应该跟着div的IDmy-editormd值来定，即$-html-code（刚开始，后端死活获取不到值，翻看了源码才知道）-->
+        <textarea name="my-editormd-html-code" id="my-editormd-html-code"></textarea>
+    </div>
+
+</form>
+<br>
+<br>
+<br>
+<br>
+
+<!--    注意，这里引入的 JQuery 版本是 1.10.2  -->
+<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<!--    引入 js 文件(注意引入的顺序) -》 标签选择-->
+<script th:src="@{/js/choosetag/selectpage.js}"></script>
+<script th:src="@{/js/choosetag/b.selectpage.js}"></script>
+
+
+<script>
+    var editor;     // 表示富文本编辑器的变量
+
+    $(function () {
+
+
+
+        // 开关按钮
+        var ifComment = 1;       // 是否开启评论，默认开启
+        $('.my_comment').click(function () {
+            if (ifComment) {
+                ifComment = 0;
+            } else {
+                ifComment = 1;
+            }
+        });
+
+        var original = 1;        // 是否原创，默认是
+        $('.my_original').click(function () {
+            if (original) {
+                original = 0;
+                console.log('change');
+            } else {
+                original = 1;
+            }
+        });
+
+
+          // 标签选择
+        var resultData;
+        // 首先发送一个 Ajax 请求，获取所有标签，为标签选择做准备（返回的是一个JSON数组）
+        $.ajax("/admin/Blog/GetTags", {
+            type: 'POST',
+            dataType: 'JSON',
+            async: false,     // 设置为同步
+            success: function (data) {
+                resultData = data;
+            }
+        });
+        $('#selectPage4').bSelectPage({
+            showField: 'tagname',
+            keyField: 'tagid',
+            data: resultData,
+            multiple: true,
+            callback: function (data) {
+                // 原理：每次点击之后，就会生成一个 ul>li 标签，类名为 selected_tag
+                var tags = $('.selected_tag');
+                console.log(tags);
+                for (var i = 0; i < tags.length; i++) {
+                    tags[0].childNodes[0].nodeValue;
+                }
+            }
+        });
+
+        /*  Markdown 编辑器初始化开始   */
+        // 注意：这里就是下面的 div 属性里面的 id 的值
+        editor = editormd("my-editormd", {
+            width: "80%",            //宽度，不填为100%
+            height: "600",           //高度，不填为100%
+            path: "../editor.md-master/lib/",   //editor.md插件的lib目录地址
+            theme: "dark",             //工具栏使用dark主题,不写用默认主题：白色
+            // previewTheme : "dark",			//预览区使用dark主题,默认白色
+            // editorTheme : "pastel-on-dark", //编辑预览区使用dark主题,默认白色
+            // markdown : $('#dateDemo').html(),				//这个参数是请求后台返回的数据,为了方便演示就写死吧,不从后台取了
+            // codeFold : true,
+            //syncScrolling : false,
+            saveHTMLToTextarea: true, // 保存 HTML 到 Textarea  方便 post 提交
+            toolbarAutoFixed: true,      //工具栏自动固定定位的开启与禁用
+            imageUpload: true,
+            imageFormats: ["jpg", "jpeg", "gif", "png", "bmp", "webp"],
+            // 对应上传到服务器的地址（上传图片太大可能会上传失败）
+            // imageUploadURL: "http://localhost:8080/myblog_war_exploded/upload"
+            imageUploadURL: "/upload"
+
+        });
+        /*  Markdown 编辑器初始化结束   */
+
+
+        $('#temp-save').click(function () {
+            var myForm = $('#my-form');
+            var tags = $('.selected_tag');
+            for (var i = 0; i < tags.length; i++) {
+                console.log('选中的标签为：', tags[i].childNodes[0].nodeValue);
+                myForm.append('<input type="text" name="tag" value="' + tags[i].childNodes[0].nodeValue + '">');
+
+            }
+
+            myForm.append('<input type="text" name="type" value="' + $('#my-type').val() + '">');
+            myForm.append('<input type="text" name="original" value="' + original + '">');
+            myForm.append('<input type="text" name="ifComment" value="' + ifComment + '">');
+            myForm.append('<input type="text" name="published" value="0">');
+
+            myForm.submit();
+        });
+
+
+
+
+        /*  将 md  转换为 html 开始   */
+        $('#btn').click(function () {
+            console.log(666);
+            // 获得需要展示的 Markdown 格式文件内容
+            var content = editor.getValue();
+            console.log("content = " + content);
+            // 首先要将 Markdown 格式文本放入 textarea 标签中，然后在进行转换
+            $('#appendText').val(content);
+
+            // 转换开始,主要 showHTML 是需要输出 HTML 的标签的 id
+            editormd.markdownToHTML("showHTML", {
+                htmlDecode: "style,script,iframe", //可以过滤标签解码
+                emoji: true,
+                taskList: true,
+                tex: true,               // 默认不解析
+                flowChart: true,         // 默认不解析
+                sequenceDiagram: true,  // 默认不解析
+            })
+
+        });
+        /*  将 md  转换为 html 结束  */
+
+
+        /*  自定义功能区  */
+        //显示在线预览
+        $("#watch-btn").click(function () {
+            editor.watch();
+        });
+
+        //隐藏在线预览
+        $("#unwatch-btn").click(function () {
+            editor.unwatch();
+        });
+
+        //预览HTML（按Shift + ESC取消）
+        $("#preview-btn").bind('click', function () {
+            editor.previewing();
+        });
+
+        //显示工具栏
+        $("#show-toolbar-btn").bind('click', function () {
+            editor.showToolbar();
+        });
+
+        //隐藏工具栏
+        $("#close-toolbar-btn").bind('click', function () {
+            editor.hideToolbar();
+        });
+
+
+    });
+</script>
+
+
+</body>
+</html>

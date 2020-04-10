@@ -1,0 +1,51 @@
+{
+  "id": "1697913",
+  "name": "JavaWeb",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "2794558",
+      "name": "爱心",
+      "font_class": "heart-copy",
+      "unicode": "e60f",
+      "unicode_decimal": 58895
+    },
+    {
+      "icon_id": "2470690",
+      "name": "文件夹",
+      "font_class": "wenjianjia",
+      "unicode": "e642",
+      "unicode_decimal": 58946
+    },
+    {
+      "icon_id": "4292638",
+      "name": "家",
+      "font_class": "jia",
+      "unicode": "e75c",
+      "unicode_decimal": 59228
+    },
+    {
+      "icon_id": "5085205",
+      "name": "咖啡",
+      "font_class": "kafei",
+      "unicode": "e60a",
+      "unicode_decimal": 58890
+    },
+    {
+      "icon_id": "5093349",
+      "name": "搜索",
+      "font_class": "sousuo",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "8348106",
+      "name": "标签",
+      "font_class": "biaoqian",
+      "unicode": "e718",
+      "unicode_decimal": 59160
+    }
+  ]
+}

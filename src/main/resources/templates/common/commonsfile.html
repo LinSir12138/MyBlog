@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<!--    使用 Thymeleaf 模版引擎   -->
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" th:href="@{/css/animate.css}">
+
+</head>
+<body>
+
+<!--    文章页面：头部导航栏-->
+<div class="title" th:fragment="article-topbar">
+    <div class="title-left" title="fork me on github!!！">
+        <a href="https://github.com/LinSir12138" target="_blank">
+            <img src="https://github.blog/wp-content/uploads/2008/12/forkme_left_white_ffffff.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" data-recalc-dims="1">
+        </a>
+    </div>
+    <div class="title-center">
+        <div class="title-log">
+            <a href="main.html" title="jacklin.it@qq.com">
+                <img th:src="@{/image/logo.png}" alt="">
+            </a>
+        </div>
+
+        <ul>
+            <li>
+                <a th:href="@{/main}">
+                    <!--    使用字体图标  -->
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-jia"></use>
+                    </svg>
+                    <span>首页</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/Type}">
+                    <!--    使用字体图标  -->
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-wenjianjia"></use>
+                    </svg>
+                    <span>分类</span>
+                </a>
+            </li>
+            <li>
+                <a th:href="@{/Tag}">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-biaoqian"></use>
+                    </svg>
+                    <span>标签</span>
+                </a>
+            </li>
+            <li>
+                <a href="main.html">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-kafei"></use>
+                    </svg>
+                    <span>生活</span>
+                </a>
+            </li>
+            <li>
+                <a href="main.html">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-shijianzhou"></use>
+                    </svg>
+                    <span>时间轴</span>
+                </a>
+            </li>
+            <li>
+                <a href="main.html">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-guanyuwo"></use>
+                    </svg>
+                    <span>关于我</span>
+                </a>
+            </li>
+            <li>
+                <a href="main.html">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-heart-copy"></use>
+                    </svg>
+                    <span>友链</span>
+                </a>
+            </li>
+            <li>
+                <a href="javascript:;" id="search-article">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-sousuo"></use>
+                    </svg>
+                    <span>搜索</span>
+                </a>
+            </li>
+            <li>
+                <!--    位于 Templates 下的文件必须利用 Controller 进行跳转-->
+                <a th:href="@{/user/login}">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-houtai"></use>
+                    </svg>
+                    <span>管理员</span>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+</div>
+
+<!--    文章界面：右侧关于博客介绍，文章标签，分类等-->
+<div class="content-right" th:fragment="article-rightbar">
+    <div class="content-myinfo">
+        <img th:src="@{/image/logo.png}" alt="">
+        <!--                <p>哔哩哔哩干杯~(￣▽￣)~*</p>-->
+        <p class="p1 animated rubberBand">我的博客</p>
+        <p class="p2">Talk is cheap, show me the code!</p>
+        <!--    <p>Code is cheap, show me the <span>girlfriend</span>!!!</p>    -->
+        <p class="p3">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-xinfeng"></use>
+            </svg>
+            jacklin.it@qq.com
+        </p>
+        <p class="p4">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-dingwei"></use>
+            </svg>
+            NanChang
+        </p>
+        <div class="follow">
+            <a href="http://github.com/LinSir12138" title="http://github.com/LinSir12138" target="_blank">Follow</a>
+        </div>
+    </div>
+</div>
+
+<!--    后台管理界面： 左侧导航栏   -->
+<div class="left" th:fragment="admin-leftbar">
+    <div class="title">后台博客管理</div>
+    <ul>
+        <li>
+            <a th:href="@{/admin/Blog}">博客管理</a>
+        </li>
+        <li>
+            <a th:href="@{/admin/Type}">分类管理</a>
+        </li>
+        <li>
+            <a th:href="@{/admin/Tag}">标签管理</a>
+        </li>
+        <li>
+            <a href="#">评论管理</a>
+        </li>
+        <li>
+            <a href="#">友链管理</a>
+        </li>
+        <li>
+            <a href="#">隐私管理</a>
+        </li>
+
+    </ul>
+</div>
+
+
+</body>
+</html>

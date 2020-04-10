@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linkai.myblog.dao.BlogtagDao">
+
+    <resultMap type="com.linkai.myblog.entity.Blogtag" id="BlogtagMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="bid" column="bid" jdbcType="INTEGER"/>
+        <result property="tagid" column="tagid" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <!--新增所有列-->
+    <insert id="insert">
+        insert into javaweb_myblog.blogtag(bid, tagid)
+        values (#{bid}, #{tagid})
+    </insert>
+
+    <!--    删除记录，根据博客的id-->
+    <delete id="deleteBlog">
+        delete from javaweb_myblog.blogtag where bid = #{bid}
+    </delete>
+
+    <!--    根据标签id查询记录  -->
+    <select id="queryByTagId" resultType="com.linkai.myblog.entity.Blogtag">
+        select * from javaweb_myblog.blogtag where tagid = #{tagid}
+    </select>
+
+
+</mapper>

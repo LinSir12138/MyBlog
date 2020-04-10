@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<!--    使用 Thymeleaf 模版引擎-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--    引入导航栏的 css 代码文件-->
+    <link rel="stylesheet" th:href="@{/css/article-title.css}">
+    <!--    引入右侧关于博客介绍，标签，分类的 css 样式文件-->
+    <link rel="stylesheet" th:href="@{/css/article-introduce.css}">
+    <!--    引入动画的 css 样式文件-->
+    <link rel="stylesheet" th:href="@{/css/animate.css}">
+
+    <!--    字体图标    -->
+    <script src="http://at.alicdn.com/t/font_1697913_qro0wpzn1zo.js"></script>
+    <!--    引入 JQuery-->
+    <script th:src="@{/js/jquery-3.4.1.js}"></script>
+    <!--    引入平滑滚动的 js-->
+    <script th:src="@{/js/jquery.scrollTo.js}"></script>
+    <!--    引入滚动监测的 js-->
+    <script th:src="@{/js/jquery.waypoints.js}"></script>
+    <!--    引入 “溢出显示省略号” 的 js-->
+    <script th:src="@{/js/jquery.dotdotdot.js}"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-image: url("/image/bc.png");
+        }
+
+        /* ##############################   Body    ################################*/
+
+        .content {
+            width: 100%;
+            padding-top: 35px;
+            height: 1650px;
+            /*background-color: papayawhip;*/
+        }
+
+
+        .content-bottom {
+            margin: 100px auto;
+            height: 1000px;
+            width: 1135px;
+            background-color: #fee7f2;
+            border-radius: 15px;
+        }
+
+        .content-bottom p {
+            color: #000000;
+            font-weight: lighter;
+            font-size: 22px;
+        }
+
+        .content-left {
+            width: 735px;
+            height: 1000px;
+            /*background-color: #1bd7db;*/
+            box-sizing: border-box;
+            margin-left: 30px;
+            margin-top: 10px;
+            float: left;
+
+        }
+
+        .content-left .icon {
+            width: 1em;
+            height: 1em;
+            vertical-align: -0.15em;
+            padding-left: 6px;
+            fill: currentColor;
+        }
+
+        .content-left ul {
+            list-style: none;
+        }
+
+        .content-left>ul {
+            width: 735px;
+            height: 1000px;
+            background-color: #fcb4fe;
+        }
+
+        .content-left>ul>li {
+            width: 735px;
+            height: 300px;
+            background-color: #8bff8f;
+            box-sizing: border-box;
+            border-radius: 5px;
+            margin-top: 10px;
+            box-shadow: 3px 3px 3px #cccccc;
+            position: relative;
+        }
+
+        .content-left>ul>li .article-title {
+            height: 60px;
+            width: 700px;
+            line-height: 60px;
+            font-size: 36px;
+            font-weight: bolder;
+        }
+
+        .content-left>ul>li ul{
+            height: 45px;
+            width: 600px;
+            background-color: peru;
+        }
+
+        .content-left>ul>li ul li {
+            height: 45px;
+            width: 130px;
+            margin-left: 20px;
+            float: left;
+            background-color: #0e8dc7;
+            text-align: center;
+            line-height: 45px;
+        }
+
+        .content-left>ul>li .article-content {
+            width: 702px;
+            height: 135px;
+            margin-top: 5px;
+            margin-left: 15px;
+            background-color: orange;
+            font-size: 20px;
+        }
+
+        .content-left>ul>li .readmore {
+            width: 90px;
+            height: 40px;
+            position: absolute;
+            bottom: 5px;
+            left: 310px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: 1px solid #cccccc;
+        }
+
+        .content-left>ul>li .readmore a {
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+            display: block;
+            line-height: 40px;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .content-left>ul>li span {
+            display: inline-block;
+        }
+
+        /*  #####################   搜索框     ################33*/
+        .search {
+            width: 645px;
+            height: 545px;
+            position: fixed;
+            top: 80px;
+            right: 100px;
+            background-color: palegreen;
+            border-radius: 10px;
+            box-shadow: 3px 3px 3px 3px #cccccc;
+            display: none;
+        }
+
+        .search-title {
+            width: 100%;
+            height: 45px;
+        }
+
+        .search-title span {
+            cursor: pointer;
+        }
+
+        .search-title .icon {
+            width: 1em;
+            height: 1em;
+            vertical-align: -0.15em;
+            padding-left: 6px;
+            fill: currentColor;
+            overflow: hidden;
+        }
+
+        .search-title #search-input {
+            width: 600px;
+            height: 43px;
+            border-radius: 5px;
+            border: 1px solid #000000;
+            font-weight: bold;
+            line-height: 43px;
+            font-size: 24px;
+
+        }
+
+        /*  设置 PlaceHolder 的颜色 Chrome 浏览器*/
+        input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+            /* WebKit browsers */
+            color: #cccccc;
+        }
+
+        .search .search-list {
+            width: 100%;
+            height: 500px;
+            overflow-y:auto;
+            border-radius: 10px;
+            padding-top: 4px;
+
+        }
+
+        .search .search-list div {
+            width: 100%;
+            height: 150px;
+            background-color: pink;
+            /*border: 1px solid #000;*/
+            display: inline-block;
+            box-shadow: 1px 1px 1px;
+            border-radius: 5px;
+        }
+
+        /*  ###########################         底部      ###############################*/
+        .footer {
+            width: 100%;
+            height: 200px;
+            background-color: #1a1a19;
+        }
+
+        #btn-up {
+            position: fixed;
+            right: 20px;
+            bottom: 80px;
+            display: none;
+        }
+
+
+    </style>
+
+</head>
+<body>
+
+<!--    文章页面：头部导航栏-->
+<div th:replace="~{common/commonsfile::article-topbar}"></div>
+
+
+<div class="content">
+
+
+    <div class="content-bottom" id="text">
+
+        <div id="content-left" class="content-left">
+            <ul>
+                <li th:each="blog:${blogs}">
+                    <p class="article-title" th:text="${blog.getBtitle()}"></p>
+                    <ul>
+
+                        <li class="article-time" >
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-rili"></use>
+                            </svg>
+                            <span th:text="${#dates.format(blog.getCreatetime(), 'yyyy-MM-dd')}"></span>
+                        </li>
+
+                        <li class="article-views" >
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-yanjing"></use>
+                            </svg>
+                            <span th:text="${blog.getViews()}"></span>
+                        </li>
+
+                        <li class="article-starts" >
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-wenjianjia"></use>
+                            </svg>
+                            <span th:text="${blog.getType().getTypename()}"></span>
+                        </li>
+                    </ul>
+                    <div class="article-content box after" id="dot5" th:text="${blog.getBcontent()}"></div>
+                    <div class="readmore">
+                        <a th:href="@{/article/} + ${blog.getBidToString()}" id="readmore">阅读更多</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!--    将右侧关于介绍博客，文章分类，标签的部分抽取出来，这里直接使用-->
+        <div th:replace="~{common/commonsfile::article-rightbar}"></div>
+
+    </div>
+
+</div>
+
+<!--    底部-->
+<footer class="footer">
+
+</footer>
+
+<div class="btn-message">
+    <a href="#">留言</a>
+    <div id="btn-up">向上</div>
+</div>
+
+<!--    注意：所有放在搜索框中的标签，类名都必须要带 search  ，方面搜索框的显示与隐藏-->
+<div class="search" id="my-search-box">
+    <div class="search-title">
+        <input id="search-input" class="search-input" type="text" placeholder="Searching...">
+        <span class="search-ico">
+            <svg class="icon" aria-hidden="true">
+             <use xlink:href="#icon-sousuo"></use>
+            </svg>
+        </span>
+    </div>
+    <div class="search-list">
+        <div id="list-1" class="search-list-1"></div>
+        <div id="list-2" class="search-list-1"></div>
+        <div id="list-3" class="search-list-1"></div>
+        <div id="list-4" class="search-list-1"></div>
+        <div id="list-5" class="search-list-1"></div>
+        <div id="list-6" class="search-list-1"></div>
+        <div id="list-7" class="search-list-1"></div>
+    </div>
+
+</div>
+
+<div id="to-baidu" title="百度一下"></div>
+<div id="copy-text" title="复制到剪切板"></div>
+<textarea id="hide-text" style="display: none"></textarea>
+
+<script>
+    window.addEventListener('load', function (event) {
+
+        /*  增加了 百度一下 图标显示并跳转到百度搜索的功能，以及复制到剪切板图标 */
+        var selectedText = '';
+        var text = document.getElementById('text');
+        var ico = document.getElementById('to-baidu');
+        var copy = document.getElementById("copy-text");
+        var hideText = document.getElementById("hide-text");
+        text.addEventListener('mouseup', function (event) {
+            selectedText = window.getSelection().toString();
+            if (selectedText.length !== 0) {
+
+                ico.style.display = 'block';
+                ico.style.left = event.pageX + 'px';
+                ico.style.top = event.pageY + 'px';
+
+                copy.style.display = 'block';
+                copy.style.left = (event.pageX + 52) + 'px';
+                copy.style.top = event.pageY + 'px';
+                // 同时将p 标签里面的内容复制到隐藏 textarea 中
+                hideText.innerText = selectedText;
+                console.log("复制的文本值为：" + hideText.innerText);
+                hideText.select();
+                document.execCommand("copy");
+
+                console.log(ico);
+                console.log(copy)
+            }
+        });
+        document.addEventListener('mousedown', function (event) {
+            var clickId = event.target.id;
+            if (clickId === 'to-baidu') {
+                window.open('https://baidu.com/s?wd=' + selectedText, 'target', '');
+            } else if (clickId === 'copy-text') {
+                alert("复制成功！");
+            } else {
+                ico.style.display = 'none';
+                copy.style.display = 'none';
+            }
+
+        });
+
+
+        /*  实现点击搜索按钮弹出搜索框的功能    */
+        var searchBtn = document.getElementById('search-article');
+        var searchBox = document.getElementsByClassName('search')[0];
+        searchBtn.addEventListener('click', function () {
+            searchBox.style.display = 'block';
+        });
+        document.addEventListener('mousedown', function (event) {
+            var targetName = event.target.className;
+            var inputDiv = document.getElementById('search-input');
+
+            // 类名中不包含 search，或者为 undefined, 说明点击了其他地方
+            if (targetName === undefined) {
+                searchBox.style.display = 'none';
+                inputDiv.value = '';
+
+            } else {
+                if (targetName.indexOf('search') === -1) {  // 不包含 search，返回 -1
+                    searchBox.style.display = 'none';
+                    inputDiv.value = '';
+                    // 这里不清空
+                }
+            }
+
+
+        });
+
+
+        //  溢出显示省略号的 js 代码
+        var $dot5 = $('#dot5');
+        $dot5.append( ' <a class="toggle" href="#"><span class="open">[ + ]</span></a>' );
+        function createDots()
+        {
+            $dot5.dotdotdot({
+                after: 'a.toggle'
+            });
+        }
+        function destroyDots() {
+            $dot5.trigger( 'destroy' );
+        }
+        createDots();
+        $dot5.on(
+            'click',
+            'a.toggle',
+            function() {
+                $dot5.toggleClass( 'opened' );
+
+                if ( $dot5.hasClass( 'opened' ) ) {
+                    destroyDots();
+                } else {
+                    createDots();
+                }
+                return false;
+            }
+        );
+
+        // 滚到顶部按钮
+        $("#btn-up").click(function () {
+            $(window).scrollTo(0, 700);
+        });
+
+        // 滚动监测
+        var waypoint = new Waypoint({
+            element: document.getElementById('content-left'),
+            handler: function(direction) {
+                if (direction === 'down') {
+                    console.log('down');
+                    $("#btn-up").show(400);
+                } else if (direction === 'up') {
+                    console.log('up');
+                    $("#btn-up").hide(400);
+                }
+            }
+        })
+
+    })
+</script>
+
+
+<canvas class="fireworks" style="position:fixed;left:0;top:0;z-index:99999999;pointer-events:none;"></canvas>
+<script type="text/javascript" src="js/click.js"></script>
+
+</body>
+</html>

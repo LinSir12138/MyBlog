@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linkai.myblog.dao.BlogDao">
+
+    <resultMap type="com.linkai.myblog.entity.Blog" id="BlogMap">
+        <result property="bid" column="bid" jdbcType="INTEGER"/>
+        <result property="btitle" column="btitle" jdbcType="VARCHAR"/>
+        <result property="bcontent" column="bcontent" jdbcType="VARCHAR"/>
+        <result property="views" column="views" jdbcType="INTEGER"/>
+        <result property="commentabled" column="commentabled" jdbcType="INTEGER"/>
+        <result property="original" column="original" jdbcType="INTEGER"/>
+        <result property="published" column="published" jdbcType="INTEGER"/>
+        <result property="createtime" column="createtime" jdbcType="TIMESTAMP"/>
+        <result property="updatetime" column="updatetime" jdbcType="TIMESTAMP"/>
+        <result property="blogtypeid" column="blogtypeid" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="BlogMap">
+        select
+          bid, btitle, bcontent, views, commentabled, original, published, createtime, updatetime, blogtypeid
+        from javaweb_myblog.blog
+        where bid = #{bid}
+    </select>
+
+    <!--查询指定行数据,同时根据 bid 降序排列。这里设计失误，type表名和 MyBatis中的表名冲突，所以前面要限定一下数据库的名称-->
+    <select id="queryAllByLimit" resultMap="BlogMap">
+        select
+            bid, btitle, bcontent, views, commentabled, original, published, createtime, updatetime, t.typename, blogtypeid
+        from javaweb_myblog.blog b, javaweb_myblog.type t where t.typeid = b.blogtypeid order by bid desc
+        limit #{offset}, #{limit}
+    </select>
+
+
+    <!--    查询所有的博客信息-->
+    <select id="queryAll" resultType="com.linkai.myblog.entity.Blog">
+        select * from javaweb_myblog.blog
+    </select>
+
+    <!--    查询总共有多少条博客记录-->
+    <select id="queryAllNumber" resultType="java.lang.Integer">
+        select count(*) from javaweb_myblog.blog
+    </select>
+
+    <!--    根据标题查询博客    -->
+    <select id="queryByTitle" resultType="com.linkai.myblog.entity.Blog">
+        select * from javaweb_myblog.blog where btitle = #{btitle}
+    </select>
+
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="bid" useGeneratedKeys="true">
+        insert into javaweb_myblog.blog(btitle, bcontent, views, commentabled, original, published, createtime, updatetime, blogtypeid)
+        values (#{btitle}, #{bcontent}, #{views}, #{commentabled}, #{original}, #{published}, #{createtime}, #{updatetime}, #{blogtypeid})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update javaweb_myblog.blog
+        <set>
+            <if test="btitle != null and btitle != ''">
+                btitle = #{btitle},
+            </if>
+            <if test="bcontent != null and bcontent != ''">
+                bcontent = #{bcontent},
+            </if>
+            <if test="views != null">
+                views = #{views},
+            </if>
+            <if test="commentabled != null">
+                commentabled = #{commentabled},
+            </if>
+            <if test="original != null">
+                original = #{original},
+            </if>
+            <if test="published != null">
+                published = #{published},
+            </if>
+            <if test="createtime != null">
+                createtime = #{createtime},
+            </if>
+            <if test="updatetime != null">
+                updatetime = #{updatetime},
+            </if>
+            <if test="blogtypeid != null">
+                blogtypeid = #{blogtypeid},
+            </if>
+        </set>
+        where bid = #{bid}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from javaweb_myblog.blog where bid = #{bid}
+    </delete>
+
+</mapper>

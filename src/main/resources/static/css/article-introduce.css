@@ -1,0 +1,70 @@
+
+/*  文章界面右侧关于博客的介绍，博客标签，分类等等 */
+.content-right {
+    width: 315px;
+    height: 900px;
+    background-color: palegreen;
+    float: right;
+    box-sizing: border-box;
+    margin-right: 20px;
+    margin-top: 10px;
+}
+
+.content-right .content-myinfo {
+    width: 100%;
+    height: 345px;
+    background-color: #d8ffdc;
+    box-sizing: border-box;
+}
+
+.content-right .content-myinfo .icon {
+    width: 1em;
+    height: 1em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+}
+
+.content-right .content-myinfo img {
+    width: 80px;
+    height: 80px;
+    display: block;
+    margin: 0 auto;
+    padding-top: 20px;
+}
+
+.content-right .content-myinfo p {
+    font-size: 18px;
+    line-height: 18px;
+    margin-top: 20px;
+    text-align: center;
+    font-style: inherit;
+    /*text-decoration: line-through;*/
+}
+
+.content-right .content-myinfo .follow {
+    margin: 20px auto;
+    border-radius: 20px;
+    width: 130px;
+    height: 40px;
+    background-color: #38b3de;
+}
+
+.content-right .content-myinfo .follow a {
+    width: 100%;
+    height: 100%;
+    line-height: 39px;
+    text-align: center ;
+    text-decoration: none;
+    display: inline-block;
+    color: #f5f2f0;
+    font-size: 22px;
+    font-weight: bolder;
+}
+
+.content-right .content-myinfo .follow a:hover {
+    border-radius: 20px;
+    width: 130px;
+    height: 40px;
+    background-color: #49c3ee;
+}

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linkai.myblog.dao.UserDao">
+
+    <!--    结果集映射   -->
+    <resultMap type="com.linkai.myblog.entity.User" id="UserMap">
+    <result property="id" column="id" jdbcType="INTEGER"/>
+    <result property="username" column="username" jdbcType="VARCHAR"/>
+    <result property="userpassword" column="userpassword" jdbcType="VARCHAR"/>
+</resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserMap">
+       select * from javaweb_myblog.user where id = #{id}
+    </select>
+
+    <!--    根据用户名查询密码（暂时用明文）-->
+    <select id="queryPasswordByUsername" resultType="java.lang.String">
+        select userpassword from javaweb_myblog.user where username = #{username}
+    </select>
+
+
+
+
+</mapper>

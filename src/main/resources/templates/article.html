@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!--    使用 Thymeleaf 模版引擎-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Article</title>
+
+    <!--    引入导航栏的 css 代码文件-->
+    <link rel="stylesheet" th:href="@{/css/article-title.css}">
+    <!--    引入右侧关于博客介绍，标签，分类的 css 样式文件-->
+    <link rel="stylesheet" th:href="@{/css/article-introduce.css}">
+    <!--    引入 editor.md 样式文件  -->
+    <link rel="stylesheet" th:href="@{/editor.md-master/css/editormd.css}">
+    <link rel="stylesheet" th:href="@{/editor.md-master/css/editormd.preview.css}">
+    <!--    目录生成    -->
+    <link rel="stylesheet" th:href="@{/lib/menu/tocbot.css}">
+
+
+    <!--    字体图标    -->
+    <script src="http://at.alicdn.com/t/font_1697913_11exp6ymq1y.js"></script>4
+    <!--    引入 JQuery   -->
+    <script th:src="@{/js/jquery-3.4.1.js}"></script>
+    <!--    引入 editor.md  js 文件    -->
+    <script th:src="@{/js/jquery-3.4.1.js}"></script>
+    <script th:src="@{/editor.md-master/lib/marked.min.js}"></script>
+    <script th:src="@{/editor.md-master/lib/prettify.min.js}"></script>
+    <script th:src="@{/editor.md-master/lib/raphael.min.js}"></script>
+    <script th:src="@{/editor.md-master/lib/underscore.min.js}"></script>
+    <script th:src="@{/editor.md-master/lib/sequence-diagram.min.js}"></script>
+    <script th:src="@{/editor.md-master/lib/flowchart.min.js}"></script>
+    <script th:src="@{/editor.md-master/lib/jquery.flowchart.min.js}"></script>
+    <script th:src="@{/editor.md-master/editormd.min.js}"></script>
+    <!--    引入代码高亮 js 文件-->
+    <script th:src="@{/js/prism.js}"></script>
+
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            /*background-image: url("../../image/background2.jpg");*/
+        }
+
+        /* ##############################   Body    ################################*/
+
+        .content {
+            width: 100%;
+            padding-top: 35px;
+            height: 1000px;
+            background-color: papayawhip;
+        }
+
+        .content-bottom {
+            margin: 100px auto;
+            height: 1000px;
+            width: 1135px;
+            background-color: #fee7f2;
+            border-radius: 15px;
+        }
+
+        .content-bottom p {
+            color: #000000;
+            font-weight: lighter;
+            font-size: 22px;
+        }
+
+        .content-left {
+            width: 735px;
+            height: 1000px;
+            /*background-color: #1bd7db;*/
+            box-sizing: border-box;
+            margin-left: 13px;
+            margin-top: 10px;
+            float: left;
+
+        }
+
+        /*      文本显示内容      */
+        #showData p {
+            font-size: 17px;
+            font-weight: 400;
+        }
+        #showData li {
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+        .js-toc {
+            width: 300px;
+            position: fixed;
+            right: 185px;
+            top: 170px;
+            color: #4183c4;
+        }
+
+        .js-toc li {
+            margin-top: 5px;
+        }
+
+        .js-toc a {
+            text-decoration: none;
+            margin-top: 5px;
+        }
+
+        .hide-number {
+            width: 40px;
+            height: 40px;
+            background-color: white;
+            position: absolute;
+
+        }
+
+    </style>
+</head>
+
+<body>
+
+<!--    文章页面：头部导航栏-->
+<div th:replace="~{common/commonsfile::article-topbar}"></div>
+
+<div class="content">
+
+    <div class="content-bottom" id="text">
+
+        <div class="content-left">
+            <div id="showData" class="animated rubberBand language-css">
+                <textarea id="htmlText" th:text="${blog.getBcontent()}" style="display: none"></textarea>
+            </div>
+        </div>
+
+        <!--    文章目录    -->
+        <div class="js-toc">
+            <div class="hide-number"></div>
+        </div>
+
+
+
+
+
+    </div>
+
+</div>
+
+<script th:src="@{/lib/menu/tocbot.js}"></script>
+
+
+<script>
+    $(function () {
+
+
+        /*  注意这个 showData 就是需要展示文本的标签的 id*/
+        editormd.markdownToHTML("showData", {
+            htmlDecode: "style,script,iframe", //可以过滤标签解码
+            emoji: true,
+            taskList:true,
+            tex: true,               // 默认不解析
+            flowChart:true,         // 默认不解析
+            sequenceDiagram:true,  // 默认不解析
+        });
+        // 等待转换成为 HTMl 格式之后再展示出来
+        $("htmlText").css('display','block');
+
+        tocbot.init({
+            // Where to render the table of contents.
+            tocSelector: '.js-toc',
+            // Where to grab the headings to build the table of contents.
+            contentSelector: '#showData',
+            // Which headings to grab inside of the contentSelector element.
+            headingSelector: 'h1, h2, h3, h4, h5',
+            // For headings inside relative or absolute positioned containers within content.
+            hasInnerContainers: true,
+        });
+
+
+
+
+
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linkai.myblog.dao.TagDao">
+
+    <resultMap type="com.linkai.myblog.entity.Tag" id="TagMap">
+        <result property="tagid" column="tagid" jdbcType="INTEGER"/>
+        <result property="tagname" column="tagname" jdbcType="VARCHAR"/>
+        <result property="ariticlenumber" column="ariticlenumber" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <!--新增所有列-->
+    <insert id="insert">
+        insert into javaweb_myblog.tag(tagname, ariticlenumber)
+        values (#{tagname}, #{ariticlenumber})
+    </insert>
+
+    <!--    根据 id 删除数据  -->
+    <delete id="deleteById">
+        delete from javaweb_myblog.tag where tagid = #{id}
+    </delete>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update javaweb_myblog.tag
+        <set>
+            <if test="tagname != null and tagname != ''">
+                tagname = #{tagname},
+            </if>
+            <if test="ariticlenumber != null">
+                ariticlenumber = #{ariticlenumber},
+            </if>
+        </set>
+        where tagid = #{tagid}
+    </update>
+
+    <!--    根据标签名称查询    -->
+    <select id="queryByName" resultType="com.linkai.myblog.entity.Tag">
+        select * from javaweb_myblog.tag where tagname = #{tagName}
+    </select>
+
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="TagMap">
+        select
+          tagid, tagname, ariticlenumber
+        from javaweb_myblog.tag order by tagid desc
+        limit #{offset}, #{limit}
+    </select>
+
+
+   <!--     根据标签名模糊查询       -->
+    <select id="queryLike" resultType="com.linkai.myblog.entity.Tag">
+        select * from javaweb_myblog.tag where tagname like "%"#{tagName}"%"
+    </select>
+
+    <!--    查询共有多少条记录   -->
+    <select id="queryAllNumber" resultType="java.lang.Integer">
+        select count(*) from javaweb_myblog.tag
+    </select>
+
+    <!--    查询所有的标签记录-->
+    <select id="queryAll" resultType="com.linkai.myblog.entity.Tag">
+        select * from javaweb_myblog.tag
+    </select>
+
+
+</mapper>

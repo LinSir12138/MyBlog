@@ -1,0 +1,25 @@
+/*  百度一下， 复制到剪切板图标的样式   */
+
+/*  百度一下图标  */
+#to-baidu {
+    height: 32px;
+    width: 32px;
+    background-image: url("image/baidu.png");
+    background-size: cover;
+    background-size: 32px 32px;
+    background-repeat: no-repeat;
+    position: absolute;
+    display: none;
+}
+
+/*  复制到剪切板图标    */
+#copy-text {
+    height: 32px;
+    width: 32px;
+    background-image: url("image/copytext.png");
+    background-size: cover;
+    background-size: 32px 32px;
+    background-repeat: no-repeat;
+    position: absolute;
+    display: none;
+}

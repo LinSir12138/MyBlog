@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<!--    使用 Thymeleaf 模版引擎-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>博客管理</title>
+
+    <!--    引入动画css -->
+    <link rel="stylesheet" th:href="@{/css/animate.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap/bootstrap.css}">
+    <!--    分页-->
+    <link rel="stylesheet" th:href="@{/css/pagenation/myPagination.css}">
+    <!--    后台管理的 css 样式文件-->
+    <link rel="stylesheet" th:href="@{/css/admin-management.css}">
+
+    <script th:src="@{/js/jquery-3.4.1.js}"></script>
+    <script th:src="@{/js/bootstrap/bootstrap.js}"></script>
+
+</head>
+<body>
+
+<!--    将公共的部分抽取出来  -->
+<div th:replace="~{common/commonsfile::admin-leftbar}"></div>
+
+<div class="right">
+    <div class="nav">
+        <div class="to-main">
+            <a th:href="@{/main}">回到首页</a>
+        </div>
+        <div class="logout">
+            <!--    注销之后，回到登录页-->
+            <a th:href="@{/user/logout}">注销</a>
+        </div>
+    </div>
+
+    <div class="content">
+        <div class="content-top">
+            <div class="content-top-title">
+                <p>博客管理</p>
+            </div>
+            <hr class="myhr">
+
+            <!--    右侧顶部操作栏，提供一些操作按钮    -->
+            <div class="content-top-option">
+                <div id="addBlog">
+                    <!--  点击添加博客按钮，跳转到  添加博客界面   -->
+                    <a th:href="@{/admin/toAddBlog}">+ 添加博客</a>
+                </div>
+                <div id="search-btn">搜索</div>
+                <form class="search-form" th:action="@{/admin/queryByNameBlog}" method="get">
+                    <input id="search-text" type="text" name="typenameSearch">
+                </form>
+                <!--   在搜索框输入文字时，弹出来的提示框-->
+                <ul class="search-ul">
+                </ul>
+
+            </div>
+        </div>
+
+        <!--    右侧底部，用来展示一个表格-->
+        <div class="content-bottom">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">标题名称</th>
+                    <th scope="col">所属分类</th>
+                    <th scope="col">对应操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!--    特别注意，放在表格里面的标签可能有多个，所以不能使用 id 属性-->
+                <tr class="table-color table-warning" th:each="blog,blogState:${blogs}">
+                    <th scope="row" th:text="${blogState.index + 1}"></th>
+                    <td th:text="${blog.getBtitle()}"></td>
+                    <td th:text="${blog.getType().getTypename()}"></td>
+                    <!--    特别注意：下面这些标签的顺序不能打乱  -->
+                    <td class="operation">
+                        <div class="change-btn">编辑</div>
+                        <!--    利用 a 标签发送请求，结合 RestFul 风格-->
+                        <div class="delete-btn">
+                            <!--    使用 RestFul 风格拼接字符串，需要使用 + 号，虽然会报红，但是可以运行-->
+                            <a th:href="@{/admin/deleteBlog/} + ${blog.getBidToString()}">删除</a>
+                        </div>
+
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div id="pagination" class="pagination"></div>
+
+            <!--    一共有多少条分类，利用这个span标签来临时储存数据，在到 js 中进行操作   -->
+            <span th:text="${blogNumber}" class="type-numbers" style="display: none"></span>
+            <!--    存放当前页码-->
+            <span th:text="${currentPage}" class="span-currentPage" style="display: none"></span>
+            <!--    隐藏的 form 表单,用于处理分页时的请求-->
+            <form class="hide-form" th:action="@{/admin/changePageBlog}" method="post" style="display: none">
+                <input type="text" class="currentpage" name="currentPage">
+            </form>
+
+
+
+        </div>
+    </div>
+
+</div>
+
+<!--    分页-->
+<script th:src="@{/js/pagenation/myPagination.js}"></script>
+
+<script>
+
+    $(function () {
+
+        //  添加分类的点击事件
+        $('#addBlog').click(function () {
+            $('#addBlog').hide(400);
+
+            $('.add-form').show(400);
+            $('#add-type').show(400);
+            $('#cancel-add').show(400);
+        });
+        $('#cancel-add').click(function () {
+            $('.add-form').hide(400);
+            $('#add-type').hide(400);
+            $('#cancel-add').hide(400);
+
+            $('#addBlog').show(400);
+        });
+        //  执行添加操作
+        $('#add-type').click(function () {
+            var text = $('#add-text').val();
+            if (text === '') {
+                alert("字段不能为空");
+                return;
+            }
+            $('.add-form').submit();        // 提交表单
+            alert("增加分类成功！");
+        });
+
+        // 点击添加修改按钮的点击事件 -->  由于多个标签类名相同，所以只能利用遍历相邻标签来实现
+        $('.change-btn').click(function () {
+            $(this).hide(400);
+            $(this).next().hide(400);
+
+            $(this).next().next().show(400);
+            $(this).next().next().next().show(400);
+            $(this).next().next().next().next().show(400);
+        });
+        $('.cancel-update').click(function () {
+            $(this).hide(400);
+            $(this).prev().hide(400);
+            $(this).prev().prev().hide(400);
+
+            $(this).prev().prev().prev().show(400);
+            $(this).next().prev().prev().prev().show(400);
+        });
+        /*  执行修改操作  */
+        $('.update-type').click(function () {
+            /*      特别注意，因为类名相同的 input 标签有多个，所以这里尽量使用兄弟选择器*/
+            if ($(this).prev().children('.type-id').val() === '') {
+                alert("修改名称不能为空！");
+                return;
+            }
+            $(this).prev().submit();     // 提交表单
+
+        });
+
+
+        // 搜索功能：利用 Ajax 进行提示
+        $('#search-text').keyup(function () {
+            var inputText = $('#search-text').val();      // 获取用户输入的内容
+            var inputTextObj = {
+                "text": inputText
+            };
+            console.log("用户输入为：" + inputText);
+            if (inputText !== '') {
+                // 不为空，发送 Ajax 请求
+                $.ajax("/admin/typeGetSearchResult", {
+                    type: 'post',
+                    dataType: 'json',
+                    data: JSON.stringify(inputTextObj),
+                    contentType : "application/json",
+                    success: function (data, status) {
+                        var ul =  $('.search-ul');
+                        $('.search-ul li').remove();        // 先删除 ul 标签里面的所有 li 标签
+                        for (var i = 0; i < data.length; i++) {
+                            // 注意，这里就不需要使用 Thymeleaf 模版了
+                            ul.append('<li>' + '<a href="/admin/queryByName?typenameSearch=' + data[i].typename + '">'+ data[i].typename + '</a></li>');
+                        }
+                    }
+                })
+            } else {
+                // 如果为空的话，这清除 ul 标签里面所有内容
+                $('.search-ul li').remove();
+            }
+
+        });
+        // 搜索功能：点击搜索按钮
+        $('#search-btn').click(function () {
+            console.log("提交了");
+            $('.search-form').submit();
+        });
+
+        //   分页-》 利用 Ajax
+        var typeNumbers = parseInt($('.type-numbers').text());      //  一共有多少个分类
+        var eachPageNumber = 7;        // 每页 10 条记录
+        var pageNumber = Math.ceil(typeNumbers / eachPageNumber);     // 总页数
+        var currentPage;        // 当前所在页码
+        // console.log($('.span-currentPage').text());
+        if ($('.span-currentPage').text() === '') {
+            // 第一次访问，页码为1
+            currentPage = 1;
+        } else {
+            currentPage = $('.span-currentPage').text();
+        }
+        console.log("初始页面为" + currentPage);
+        new Page({
+            id: 'pagination',
+            pageTotal: pageNumber, //必填,总页数
+            pageAmount: eachPageNumber,  //每页多少条
+            dataTotal: typeNumbers, //总共多少条数据
+            curPage:currentPage, //初始页码,不填默认为1;因为是重新发送一个请求，所以当前页码会改变，需要处理一下
+            pageSize: 5, //分页个数,不填默认为5
+            showPageTotalFlag:true, //是否显示数据统计,不填默认不显示
+            showSkipInputFlag:true, //是否支持跳转,不填默认不显示
+            // 切换分页按钮每次会触发的事件，在方法中this.curPage,是当前页数，直接可以进行对应的ajax了
+            getPage: function (page) {
+                currentPage = page;
+                $('.currentpage').val(page);        // 将当前页码赋值给 input 标签
+                $('.hide-form').submit();       // 执行表单提交到服务器
+
+                /*      下面是使用 Ajax 实现的，发现有点麻烦，还不如自己一个 from 表单来的实在   */
+                // var pageObj = {
+                //     'currentPage': page
+                // };
+                // console.log(typeof  pageObj);       // 注意：这里传递的是 json 对象，而不是 json 字符串
+                // /**
+                //  *      data: 发送到服务器的数据，默认为纯文本字符串
+                //  *      dataType：预期服务器返回的数据
+                //  *      可以参考 JQuery 官方文档关于 ajax 方法的说明
+                //  * */
+                // $.ajax("/admin/changePage", {
+                //     type: 'post',
+                //     dataType: 'json',
+                //     data: pageObj,
+                //     success: function (data, status) {      // 请求成功的回调函数
+                //         console.log(status);
+                //         console.log(typeof data, "返回的类型");
+                //         console.log(data);
+                //         // 进行数据的填充
+                //         console.log(JSON.stringify(data, null, ""));
+                //         console.log(typeof JSON.stringify(data));
+                //         console.log(data.length);
+                //         console.log(data[0]);
+                //         for (var i = 0; i < data.length; i++) {
+                //             console.log(data[i].typename);
+                //             console.log(data[i].articlenumber);
+                //         }
+                //     }
+                // })
+            }
+        })
+    })
+
+</script>
+
+</body>
+</html>
