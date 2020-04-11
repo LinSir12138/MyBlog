@@ -65,6 +65,7 @@
                     <th scope="col">#</th>
                     <th scope="col">标题名称</th>
                     <th scope="col">所属分类</th>
+                    <th scope="col">发布状态</th>
                     <th scope="col">对应操作</th>
                 </tr>
                 </thead>
@@ -74,6 +75,7 @@
                     <th scope="row" th:text="${blogState.index + 1}"></th>
                     <td th:text="${blog.getBtitle()}"></td>
                     <td th:text="${blog.getType().getTypename()}"></td>
+                    <td th:text="${blog.getPublished()} == 1 ? 已经发布 : 暂存为草稿"></td>
                     <!--    特别注意：下面这些标签的顺序不能打乱  -->
                     <td class="operation">
                         <div class="change-btn">编辑</div>
@@ -127,10 +129,7 @@
 
         //  编辑博客 -》 注意：表格中遍历出来的数据，类名相同，所以要通过兄弟选择器来选择对应的标签
         $('.change-btn').click(function () {
-            console.log($(this));
-            console.log($(this).next().innerHTML);
             $(this).next().submit();
-
         });
 
 

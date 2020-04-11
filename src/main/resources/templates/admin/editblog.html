@@ -59,23 +59,19 @@
             font-size: 24px;
         }
 
-        #title-first #span-save {
-            font-size: 18px;
-        }
-
-
-        #title-first #save {
-            height: 35px;
-            width: 90px;
-            background: #ca0c15;
-            color: white;
-            font-weight: 600;
-            font-size: 18px;
-            border-radius: 4px;
-        }
-
         #title-first #showHTML img {
             height: 170px;
+        }
+
+        /*  返回  */
+        #title-first #return-back {
+            display: inline-block;
+            width: 90px;
+            height: 40px;
+            border: 1px solid #CCCCCC;
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
         }
 
         #title-second {
@@ -170,11 +166,14 @@
     <!--    文章标题-->
     <div id="title-first">
         <span id="span-title">文章标题：</span>
+        <!--    由于是更新操作，所以得传入博客的 id     -->
+        <input type="text" name="bid" th:value="${blog.getBid()}" style="display: none">
         <!--    注意：form表单里面的 input 标签里面显示的值是放在 value 属性里面的  -->
         <input id="article-title" type="text" name="title" th:value="${blog.getBtitle()}">
         <div id="temp-save">保存修改</div>
-        <div id="push-article">
-            <a href="">返回</a>
+        <div id="push-article">发布文章</div>
+        <div id="return-back">
+            <a th:href="@{/admin/Blog}">返回</a>
         </div>
     </div>
     <!--    是否开启评论  -->
@@ -182,7 +181,7 @@
         <span id="span-comment">是否开启评论：</span>
         <div class="button r mybtn my_comment">
             <!--  checked == true -> 显示NO  ;   checked == false  -> 显示 YES -->
-            <input type="checkbox" class="my_checkbox" th:checked="${blog.getCommentabled()} == 1 ? false : true">
+            <input type="checkbox" class="my_checkbox comment_checkbox" th:checked="${blog.getCommentabled()} == 1 ? false : true">
             <div class="knobs"><span></span></div>
             <div class="layer"></div>
         </div>
@@ -192,7 +191,7 @@
         <span>是否原创：</span>
         <div class="button r mybtn my_original">
             <!--  checked == true -> 显示NO  ;   checked == false  -> 显示 YES -->
-            <input type="checkbox" class="my_checkbox" th:checked="${blog.getOriginal()} == 1 ? false : true">
+            <input type="checkbox" class="my_checkbox original_checkbox" th:checked="${blog.getOriginal()} == 1 ? false : true">
             <div class="knobs"><span></span></div>
             <div class="layer"></div>
         </div>
@@ -245,9 +244,7 @@
 
 </form>
 <br>
-<br>
-<br>
-<br>
+
 
 <!--    注意，这里引入的 JQuery 版本是 1.10.2  -->
 <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
@@ -261,8 +258,8 @@
 
     $(function () {
 
-        // 开关按钮
-        var ifComment = 1;       // 是否开启评论，默认开启
+        // 开关按钮 ( 由于是编辑博客，所以需要从后台数据中获取数据并赋予初始值  ) -> 注意，要利用 prop 获取
+        var ifComment = $(".comment_checkbox").prop("checked");      // 是否开启评论
         $('.my_comment').click(function () {
             if (ifComment) {
                 ifComment = 0;
@@ -271,7 +268,7 @@
             }
         });
 
-        var original = 1;        // 是否原创，默认是
+        var original = $('.original_checkbox').prop("checked");       // 是否原创，
         $('.my_original').click(function () {
             if (original) {
                 original = 0;
@@ -334,8 +331,26 @@
 
         // 保存修改
         $('#temp-save').click(function () {
+            articleSaveOrPush(0);
+        });
+        // // 发布文章
+        $('#push-article').click(function () {
+            articleSaveOrPush(1);
+        });
+        // /*   博客发布或者保存，封装成一个函数，供点击事件传递参数   */
+        function articleSaveOrPush(flag) {
             var myForm = $('#my-form');
             var tags = $('.selected_tag');
+            // 首先检查标题和标签是否填写
+            if (tags.length === 0) {
+                alert("请填写标签！！！");
+                return;
+            }
+            if ($('#article-title').val() === '') {
+                alert("请填写标题！！！");
+                return;
+            }
+
             for (var i = 0; i < tags.length; i++) {
                 console.log('选中的标签为：', tags[i].childNodes[0].nodeValue);
                 myForm.append('<input type="text" name="tag" value="' + tags[i].childNodes[0].nodeValue + '">');
@@ -345,13 +360,15 @@
             myForm.append('<input type="text" name="type" value="' + $('#my-type').val() + '">');
             myForm.append('<input type="text" name="original" value="' + original + '">');
             myForm.append('<input type="text" name="ifComment" value="' + ifComment + '">');
-            myForm.append('<input type="text" name="published" value="0">');
+            /*  展示保存博客，不发布，设置为 flag,由外部传参   */
+            myForm.append('<input type="text" name="published" value="' + flag + '">');
 
             myForm.submit();
-        });
+        }
 
 
-        /*  将 md  转换为 html 开始   */
+
+        // 将 md 转换为 html 开始
         $('#btn').click(function () {
             console.log(666);
             // 获得需要展示的 Markdown 格式文件内容
@@ -371,7 +388,7 @@
             })
 
         });
-        /*  将 md  转换为 html 结束  */
+        // 将 md 转换为 html 结束
 
 
         /*  自定义功能区  */

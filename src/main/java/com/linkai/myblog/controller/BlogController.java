@@ -52,7 +52,6 @@ public class BlogController {
         for (int i = 0; i < blogs.size(); i++) {
             blogs.get(i).setType(typeService.queryById(blogs.get(i).getBlogtypeid()));
         }
-        System.out.println(blogs);
         model.addAttribute("blogs", blogs);
 
         // 同时查询共有多少条记录，为分页做准备
@@ -104,9 +103,7 @@ public class BlogController {
         blog.setUpdatetime(new Date());
 
         /*  处理博客对应的分类   */
-        System.out.println("typename = " + typeName);
         Type type = typeService.queryByName(typeName);
-        System.out.println("type = " + type);
         blog.setType(type);
         blog.setBlogtypeid(type.getTypeid());
 
@@ -140,7 +137,6 @@ public class BlogController {
     // 跳转到 博客编辑 页面
     @RequestMapping("/EditBlog")
     public String editBlog(@RequestParam("bid") String bid, Model model) {
-        System.out.println("bid = " + bid);
         // 查询该博客的信息
         Blog blog = blogService.queryById(Long.valueOf(bid));
         model.addAttribute("blog", blog);
@@ -157,7 +153,8 @@ public class BlogController {
 
     // 执行 博客编辑之后的 保存
     @RequestMapping("/updateBlog")
-    public String updateBlog(@RequestParam("title") String title,
+    public String updateBlog(@RequestParam("bid") String bid,
+                             @RequestParam("title") String title,
                              @RequestParam("my-editormd-markdown-doc") String bcontent,
                              @RequestParam("type") String typeName,
                              @RequestParam("original") String orginal,
@@ -165,7 +162,9 @@ public class BlogController {
                              @RequestParam("tag") String[] tags,
                              @RequestParam("published") String published) {
 
+        // 创建一个 blog 对象并赋值 (由于是更新操作，所以需要 id )
         Blog blog = new Blog();
+        blog.setBid(Long.valueOf(bid));
         blog.setBtitle(title);
         blog.setBcontent(bcontent);
 //        blog.setViews(1);     // 不需要设置 view，保持不变
@@ -175,9 +174,22 @@ public class BlogController {
 //        blog.setCreatetime(new Date());       // 创建时间保持不变
         blog.setUpdatetime(new Date());
 
-        //  下午再来完成这部分内容
+        /*  处理博客对应的分类   */
+        Type type = typeService.queryByName(typeName);
+        blog.setType(type);
+        blog.setBlogtypeid(type.getTypeid());
 
-        return "";
+        //  更新该条博客记录
+        int updateBlog = blogService.update(blog);
+
+        // 还要更新 博客和标签关联的那张表 （先删除原来的记录，再插入新纪录）
+        int i = blogtagService.deleteBlog(blog.getBid());       // 删除原来的记录
+        for (int j = 0; j < tags.length; j++) {
+            Tag tag = tagService.queryByName(tags[j]);  // 变量标签数组，根据标签名称查询对应标签
+            blogtagService.insert(new Blogtag(null, blog.getBid(), tag.getTagid()));
+        }
+
+        return "redirect:/admin/Blog";
     }
 
 }

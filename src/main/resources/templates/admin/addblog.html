@@ -78,6 +78,18 @@
             height: 170px;
         }
 
+        /*  返回  */
+        #title-first #return-back {
+            display: inline-block;
+            width: 90px;
+            height: 40px;
+            border: 1px solid #CCCCCC;
+            text-align: center;
+            line-height: 40px;
+            cursor: pointer;
+        }
+
+
         #title-second {
             text-align: center;
             margin-top: 8px;
@@ -160,6 +172,9 @@
         <input id="article-title" type="text" name="title">
         <div id="temp-save">保存为草稿</div>
         <div id="push-article">发布文章</div>
+        <div id="return-back">
+            <a th:href="@{/admin/Blog}">返回</a>
+        </div>
     </div>
     <!--    是否开启评论  -->
     <div class="my_option">
@@ -215,9 +230,7 @@
 
 </form>
 <br>
-<br>
-<br>
-<br>
+
 
 <!--    注意，这里引入的 JQuery 版本是 1.10.2  -->
 <script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
@@ -240,7 +253,6 @@
                 ifComment = 1;
             }
         });
-
         var original = 1;        // 是否原创，默认是
         $('.my_original').click(function () {
             if (original) {
@@ -302,8 +314,16 @@
         /*  Markdown 编辑器初始化结束   */
 
 
-        /*      暂时保存博客，不发布  */
+        /*      暂时保存博客，不发布; 传递的 flag = 0 */
         $('#temp-save').click(function () {
+            articleSaveOrPush(0);
+        });
+        /*      发布博客，传递的参数 falg = 1 */
+        $('#push-article').click(function () {
+            articleSaveOrPush(1);
+        });
+        /*   博客发布或者保存，封装成一个函数，供点击事件传递参数   */
+        function articleSaveOrPush(flag) {
             var myForm = $('#my-form');
             var tags = $('.selected_tag');
             for (var i = 0; i < tags.length; i++) {
@@ -315,13 +335,11 @@
             myForm.append('<input type="text" name="type" value="' + $('#my-type').val() + '">');
             myForm.append('<input type="text" name="original" value="' + original + '">');
             myForm.append('<input type="text" name="ifComment" value="' + ifComment + '">');
-            /*  展示保存博客，不发布，设置为 0   */
-            myForm.append('<input type="text" name="published" value="0">');
+            /*  展示保存博客，不发布，设置为 flag,由外部传参   */
+            myForm.append('<input type="text" name="published" value="' + flag + '">');
 
             myForm.submit();
-        });
-
-
+        }
 
 
         /*  将 md  转换为 html 开始   */

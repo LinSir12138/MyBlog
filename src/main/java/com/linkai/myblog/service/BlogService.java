@@ -60,7 +60,7 @@ public interface BlogService {
      * @param blog 实例对象
      * @return 实例对象
      */
-    Blog update(Blog blog);
+    int update(Blog blog);
 
     /**
      * 通过主键删除数据

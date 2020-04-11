@@ -79,9 +79,8 @@ public class BlogServiceImpl implements BlogService {
      * @return 实例对象
      */
     @Override
-    public Blog update(Blog blog) {
-        this.blogDao.update(blog);
-        return this.queryById(blog.getBid());
+    public int update(Blog blog) {
+        return this.blogDao.update(blog);
     }
 
     /**
