@@ -38,5 +38,14 @@ public interface BlogtagService {
      */
     List<Blogtag> queryByTagId(Long tagid);
 
+    /**
+     * @Description: 根据博客的 id 查询记录，编辑博客时调用，获得该博客说对应的标签的名称，返回 List 集合, 直接一个连表查询
+     * @Param: []
+     * @return: java.util.List<com.linkai.myblog.entity.Blogtag>
+     * @Author: 林凯
+     * @Date: 2020/4/11
+     */
+    List<String> queryTagNameByBlogId(Long bid);
+
 
 }

@@ -34,4 +34,9 @@ public class BlogtagServiceImpl implements BlogtagService {
     public List<Blogtag> queryByTagId(Long tagid) {
         return blogtagDao.queryByTagId(tagid);
     }
+
+    @Override
+    public List<String> queryTagNameByBlogId(Long bid) {
+        return blogtagDao.queryTagNameByBlogId(bid);
+    }
 }

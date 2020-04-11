@@ -77,8 +77,14 @@
                     <!--    特别注意：下面这些标签的顺序不能打乱  -->
                     <td class="operation">
                         <div class="change-btn">编辑</div>
-                        <!--    利用 a 标签发送请求，结合 RestFul 风格-->
+                        <!--    保存该条博客记录的 id， 方便编辑时提交-->
+                        <form th:action="@{/admin/EditBlog}" method="post" style="display: none">
+                            <!--    注意：form表单里面的 input 标签里面显示的值是放在 value 属性里面的  -->
+                            <input type="text" name="bid" th:value="${blog.getBid()}">
+                        </form>
+
                         <div class="delete-btn">
+                            <!--    利用 a 标签发送请求，结合 RestFul 风格-->
                             <!--    使用 RestFul 风格拼接字符串，需要使用 + 号，虽然会报红，但是可以运行-->
                             <a th:href="@{/admin/deleteBlog/} + ${blog.getBidToString()}">删除</a>
                         </div>
@@ -113,59 +119,20 @@
 
     $(function () {
 
-        //  添加分类的点击事件
+        //  添加 博客 点击事件 ——> 这是一个 a 标签，直接进行跳转，这里添加一点动画
         $('#addBlog').click(function () {
             $('#addBlog').hide(400);
-
-            $('.add-form').show(400);
-            $('#add-type').show(400);
-            $('#cancel-add').show(400);
-        });
-        $('#cancel-add').click(function () {
-            $('.add-form').hide(400);
-            $('#add-type').hide(400);
-            $('#cancel-add').hide(400);
-
-            $('#addBlog').show(400);
-        });
-        //  执行添加操作
-        $('#add-type').click(function () {
-            var text = $('#add-text').val();
-            if (text === '') {
-                alert("字段不能为空");
-                return;
-            }
-            $('.add-form').submit();        // 提交表单
-            alert("增加分类成功！");
         });
 
-        // 点击添加修改按钮的点击事件 -->  由于多个标签类名相同，所以只能利用遍历相邻标签来实现
+
+        //  编辑博客 -》 注意：表格中遍历出来的数据，类名相同，所以要通过兄弟选择器来选择对应的标签
         $('.change-btn').click(function () {
-            $(this).hide(400);
-            $(this).next().hide(400);
-
-            $(this).next().next().show(400);
-            $(this).next().next().next().show(400);
-            $(this).next().next().next().next().show(400);
-        });
-        $('.cancel-update').click(function () {
-            $(this).hide(400);
-            $(this).prev().hide(400);
-            $(this).prev().prev().hide(400);
-
-            $(this).prev().prev().prev().show(400);
-            $(this).next().prev().prev().prev().show(400);
-        });
-        /*  执行修改操作  */
-        $('.update-type').click(function () {
-            /*      特别注意，因为类名相同的 input 标签有多个，所以这里尽量使用兄弟选择器*/
-            if ($(this).prev().children('.type-id').val() === '') {
-                alert("修改名称不能为空！");
-                return;
-            }
-            $(this).prev().submit();     // 提交表单
+            console.log($(this));
+            console.log($(this).next().innerHTML);
+            $(this).next().submit();
 
         });
+
 
 
         // 搜索功能：利用 Ajax 进行提示

@@ -74,7 +74,7 @@ public class BlogController {
         return "/admin/addblog";
     }
 
-    // 获得所有的标签，返回JSON数组
+    // 获得所有的标签，返回JSON数组 (新增博客时，供用户选择对应的标签)
     @PostMapping("/Blog/GetTags")
     @ResponseBody
     public String getTags() {
@@ -126,7 +126,6 @@ public class BlogController {
 
 
     // 执行删除博客操作
-
     @RequestMapping("/deleteBlog/{id}")
     public String deleteBlog(@PathVariable("id") String id) {
         // 根据 id 删除博客记录
@@ -135,6 +134,50 @@ public class BlogController {
         blogtagService.deleteBlog(Long.valueOf(id));
 
         return "redirect:/admin/Blog";
+    }
+
+
+    // 跳转到 博客编辑 页面
+    @RequestMapping("/EditBlog")
+    public String editBlog(@RequestParam("bid") String bid, Model model) {
+        System.out.println("bid = " + bid);
+        // 查询该博客的信息
+        Blog blog = blogService.queryById(Long.valueOf(bid));
+        model.addAttribute("blog", blog);
+        // 查询所有的分类，标签信息。供用户添加博客时选择
+        List<Type> types = typeService.queryAll();
+        List<Tag> tags = tagService.queryAll();
+        model.addAttribute("types", types);
+        model.addAttribute("tags", tags);
+        // 查询该条博客记录对应的 标签
+        List<String> selectedTags = blogtagService.queryTagNameByBlogId(blog.getBid());
+        model.addAttribute("selectedTags", selectedTags);
+        return "/admin/editblog";       // 跳转到编辑博客的界面
+    }
+
+    // 执行 博客编辑之后的 保存
+    @RequestMapping("/updateBlog")
+    public String updateBlog(@RequestParam("title") String title,
+                             @RequestParam("my-editormd-markdown-doc") String bcontent,
+                             @RequestParam("type") String typeName,
+                             @RequestParam("original") String orginal,
+                             @RequestParam("ifComment") String ifComment,
+                             @RequestParam("tag") String[] tags,
+                             @RequestParam("published") String published) {
+
+        Blog blog = new Blog();
+        blog.setBtitle(title);
+        blog.setBcontent(bcontent);
+//        blog.setViews(1);     // 不需要设置 view，保持不变
+        blog.setCommentabled(Integer.valueOf(ifComment));
+        blog.setOriginal(Integer.valueOf(orginal));
+        blog.setPublished(Integer.valueOf(published));
+//        blog.setCreatetime(new Date());       // 创建时间保持不变
+        blog.setUpdatetime(new Date());
+
+        //  下午再来完成这部分内容
+
+        return "";
     }
 
 }
