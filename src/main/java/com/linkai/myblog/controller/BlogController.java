@@ -9,11 +9,13 @@ import com.linkai.myblog.service.BlogService;
 import com.linkai.myblog.service.BlogtagService;
 import com.linkai.myblog.service.TagService;
 import com.linkai.myblog.service.TypeService;
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -82,7 +84,7 @@ public class BlogController {
         return tagStr;
     }
 
-    // 执行博客添加操作
+    // 执行博客添加操作-》 发布该博客
     @RequestMapping("/addBlog")
     public String addBlog(@RequestParam("title") String title,
                           @RequestParam("my-editormd-markdown-doc") String bcontent,
@@ -151,9 +153,18 @@ public class BlogController {
         return "/admin/editblog";       // 跳转到编辑博客的界面
     }
 
-    // 执行 博客编辑之后的 保存
+    /**
+    * @Description:  自动保存为草稿（暂时不发布），前端发送的是 Ajax 请求
+     *              需要判断： 新增博客时，根据id判断是否已经存在，如果不存在：insert    如果存在：update
+     *                          编辑博客时，直接 update
+    * @Param: [bid, title, bcontent, typeName, orginal, ifComment, tags, published]
+    * @return: java.lang.String
+    * @Author: 林凯
+    * @Date: 2020/4/12
+    */
     @RequestMapping("/updateBlog")
-    public String updateBlog(@RequestParam("bid") String bid,
+    @ResponseBody
+    public String updateBlog(@RequestParam("blogid") String bid,
                              @RequestParam("title") String title,
                              @RequestParam("my-editormd-markdown-doc") String bcontent,
                              @RequestParam("type") String typeName,
@@ -162,7 +173,39 @@ public class BlogController {
                              @RequestParam("tag") String[] tags,
                              @RequestParam("published") String published) {
 
-        // 创建一个 blog 对象并赋值 (由于是更新操作，所以需要 id )
+        // 如果相等，所以是第一次保存，得执行插入操作
+        // （由于字符串传递过来会报错，所以传递了一个特殊的字符串表示是添加博客时点击第一次暂存）
+        if ("TempSave".equals(bid)) {        // 字符串值相等，用equals，执行 insert 操作
+            System.out.println("相等");
+            Blog blog = new Blog();
+            blog.setBtitle(title);      // 标题
+            blog.setBcontent(bcontent);     // 内容
+            blog.setViews(1);       // 阅读量
+            blog.setCommentabled(Integer.valueOf(ifComment));       // 是否开启评论
+            blog.setOriginal(Integer.valueOf(orginal));     // 是否原创
+            blog.setPublished(Integer.valueOf(published));      // 是否发布
+            blog.setCreatetime(new Date());     // 创建时间
+            blog.setUpdatetime(new Date());     // 最近修改时间
+
+            /*  处理博客对应的分类   */
+            Type type = typeService.queryByName(typeName);
+            blog.setType(type);
+            blog.setBlogtypeid(type.getTypeid());
+
+            Blog insertBlog = blogService.insert(blog);         //新增一条博客记录
+
+            // 还要更新 博客和标签关联的那张表
+            for (int j = 0; j < tags.length; j++) {
+                Tag tag = tagService.queryByName(tags[j]);  // 变量标签数组，根据标签名称查询对应标签
+                blogtagService.insert(new Blogtag(null, blog.getBid(), tag.getTagid()));
+            }
+
+            // 需要返回该博客对应的 id，并以字符串形式返回
+            Blog queryBlog = blogService.queryByTitle(title);       // 获得刚才插入的博客，进而获取该博客 id
+            return String.valueOf(queryBlog.getBid());
+        }
+
+        // 下面执行的是 update 操作
         Blog blog = new Blog();
         blog.setBid(Long.valueOf(bid));
         blog.setBtitle(title);
@@ -189,7 +232,48 @@ public class BlogController {
             blogtagService.insert(new Blogtag(null, blog.getBid(), tag.getTagid()));
         }
 
-        return "redirect:/admin/Blog";
+        return "admin/editblog";
+    }
+
+
+    // 前端发送 Ajax 请求，获得推荐的搜索结果
+    @RequestMapping("/blogGetSearchResult")
+    @ResponseBody
+    public String blogGetSearchResult(@RequestParam("text") String btitle) {
+        /**
+         *      注意，因为前端传递的是 json 对象，可以看到地址栏就是用 ？ 拼接参数的，所以可以使用 @RequestParam
+         *      如果前端传递的是 json 字符串，则直接是使用 @RequestBody 配合对象，或者 Map 接收参数
+         * */
+
+        List<Blog> blogs = blogService.queryByNameLike(btitle);
+        for (Blog b:blogs
+             ) {
+            System.out.println("查询结果为：~~~~~~" + b);
+        }
+        String blogsStr = JSON.toJSONString(blogs);
+        System.out.println(blogsStr);
+        return blogsStr;
+    }
+
+    // 根据 title 查询对应的 Blog，用户点击搜索推荐的条目之后调用。
+    @RequestMapping("/queryByNameBlog")
+    public String queryByBlogTitle(@RequestParam("blogtitleSearch") String btitle, Model model) {
+        if (btitle == "") {
+            return "redirect:/admin/Blog";  // 如果输入框为空，直接重定向到博客首页（注意路径大小写）
+        }
+
+        Blog blog = blogService.queryByTitle(btitle);
+        // 同时查询该条博客记录对应的 type 对象，放入 blog 对象中
+        blog.setType(typeService.queryById(blog.getBlogtypeid()));
+        ArrayList<Blog> blogs = new ArrayList<>();
+        blogs.add(blog);        // 只需要显示1条记录
+        // 同时查询共有多少条记录
+        int typeNumber = typeService.queryAllNumber();
+        model.addAttribute("blogs", blogs);
+        model.addAttribute("typeNumber", 1);    // 因为是查询一条语句，所以是1
+        model.addAttribute("currentPage", 1);       // 表示当前页码为1
+
+        return "/admin/blog";
     }
 
 }

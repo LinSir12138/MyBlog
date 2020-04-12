@@ -167,7 +167,7 @@
     <div id="title-first">
         <span id="span-title">文章标题：</span>
         <!--    由于是更新操作，所以得传入博客的 id     -->
-        <input type="text" name="bid" th:value="${blog.getBid()}" style="display: none">
+        <input type="text" name="bid" id="bid" th:value="${blog.getBid()}" style="display: none">
         <!--    注意：form表单里面的 input 标签里面显示的值是放在 value 属性里面的  -->
         <input id="article-title" type="text" name="title" th:value="${blog.getBtitle()}">
         <div id="temp-save">保存修改</div>
@@ -259,9 +259,10 @@
     $(function () {
 
         // 开关按钮 ( 由于是编辑博客，所以需要从后台数据中获取数据并赋予初始值  ) -> 注意，要利用 prop 获取
-        var ifComment = $(".comment_checkbox").prop("checked");      // 是否开启评论
+        var ifComment = $(".comment_checkbox").prop("checked");      // 是否开启评论 (初次获取的值为 true 或者 false，还有转换为1或者0)
+        ifComment = ifComment ? 0 : 1;      // 将 true或者false转换成为1或者0  -》 注意对应关系，结合插件来判断，false 对应 1
         $('.my_comment').click(function () {
-            if (ifComment) {
+            if (ifComment === 1) {
                 ifComment = 0;
             } else {
                 ifComment = 1;
@@ -269,8 +270,9 @@
         });
 
         var original = $('.original_checkbox').prop("checked");       // 是否原创，
+        original = original ? 0 : 1;        // 将 true 或者 false 转换成为1或者0  -》 注意对应关系，结合插件来判断，false 对应 1
         $('.my_original').click(function () {
-            if (original) {
+            if (original === 1) {
                 original = 0;
                 console.log('change');
             } else {
@@ -329,16 +331,49 @@
         /*  Markdown 编辑器初始化结束   */
 
 
-        // 保存修改
+        // 保存修改，暂时保存，不发布     -》 发送 Ajax 请求
         $('#temp-save').click(function () {
-            articleSaveOrPush(0);
+            // 首先检查标题和标签是否填写
+            var tags = $('.selected_tag');    // 原理：每次点击之后，就会生成一个 ul>li 标签，类名为 selected_tag
+            if (tags.length === 0) {
+                alert("请填写标签！！！");
+                return;
+            }
+            if ($('#article-title').val() === '') {
+                alert("请填写标题！！！");
+                return;
+            }
+
+            var tagNames = [];      // 获得标签名称数组，发送 Ajax 请求时传递的参数
+            for (var i = 0; i < tags.length; i++) {
+                tagNames[i] = tags[i].childNodes[0].nodeValue;
+            }
+
+            // 构建 JSON 对象
+            var dataObj = {
+                "title": $('#article-title').val(),
+                "blogid": $("#bid").val(),     // 在编辑博客界面是，id已经存在,直接获取值即可
+                "my-editormd-markdown-doc": $("#my-editormd-markdown-doc").text(),
+                "type": $('#my-type').val(),
+                // 下面2个变量在前面已经定义过了
+                "original": original + '',      // 字符串类型
+                "ifComment": ifComment + '',    // 字符串类型
+                "tag": tagNames, // 标签名称
+                "published": '0',   // 注意，是字符串类型的，0表示暂存而不发布
+            };
+            $.ajax("/admin/updateBlog", {
+                type: "POST",
+                data: dataObj,      // 注意：这里传递的是一个 json 对象，后端需要利用 @RequestParam 注解
+                dataType: "text",       // 返回的类型为纯文本字符串类型
+                traditional: true,
+                success: function (data, status) {
+                    alert("暂存成功！");
+                }
+            });
+
         });
-        // // 发布文章
+        // 发布文章，提交 from 表单
         $('#push-article').click(function () {
-            articleSaveOrPush(1);
-        });
-        // /*   博客发布或者保存，封装成一个函数，供点击事件传递参数   */
-        function articleSaveOrPush(flag) {
             var myForm = $('#my-form');
             var tags = $('.selected_tag');
             // 首先检查标题和标签是否填写
@@ -361,12 +396,10 @@
             myForm.append('<input type="text" name="original" value="' + original + '">');
             myForm.append('<input type="text" name="ifComment" value="' + ifComment + '">');
             /*  展示保存博客，不发布，设置为 flag,由外部传参   */
-            myForm.append('<input type="text" name="published" value="' + flag + '">');
+            myForm.append('<input type="text" name="published" value="' + 1 + '">');
 
             myForm.submit();
-        }
-
-
+        });
 
         // 将 md 转换为 html 开始
         $('#btn').click(function () {

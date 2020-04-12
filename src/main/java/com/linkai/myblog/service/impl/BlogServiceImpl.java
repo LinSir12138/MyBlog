@@ -105,4 +105,9 @@ public class BlogServiceImpl implements BlogService {
     public int queryAllNumber() {
         return blogDao.queryAllNumber();
     }
+
+    @Override
+    public List<Blog> queryByNameLike(String btitle) {
+        return blogDao.queryByNameLike(btitle);
+    }
 }

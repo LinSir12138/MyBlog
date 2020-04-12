@@ -149,13 +149,12 @@ public class TypeController {
     */
     @RequestMapping("/queryByNameType")
     public String getTypeByName(@RequestParam("typenameSearch") String typename, Model model) {
-        System.out.println("5201314");
         if (typename == "") {
             return "redirect:/admin/Type";  // 如果输入框为空，直接重定向到分类首页（注意路径大小写）
         }
         Type type = typeService.queryByName(typename);
         ArrayList<Type> types = new ArrayList<>();
-        System.out.println("获得的type =" + types);
+        types.add(type);        // 将查询出来的放入 list 集合中
         // 同时查询共有多少条记录，为分页做准备
         int typeNumber = typeService.queryAllNumber();
         model.addAttribute("types", types);
@@ -187,18 +186,5 @@ public class TypeController {
         return "/admin/type";
     }
 
-    /*  下面的代码是用 Ajax 实现的分页，太麻烦了，因为数据量太大，不方便展示，所以替换成立一个 from 表单*/
-//    @RequestMapping("/changePage")
-//    @ResponseBody       // 返回字符串
-//    /**
-//     *      注意，因为前端传递的是 json 对象，可以看到地址栏就是用 ？ 拼接参数的，所以可以使用 @RequestParam
-//     *      如果前端传递的是 json 字符串，则直接是使用 @RequestBody 配合对象，或者 Map 接收参数
-//     * */
-//    public String pageChange(@RequestParam("currentPage") String currentPage ) {
-//        int begin = (Integer.parseInt(currentPage) - 1) * 10;       // 根据当前页面计算实际需要分页的下标
-//        List<Type> types = typeService.queryAllByLimit(begin, 10);
-//        // 将 list 转换为 json 字符串
-//        String typesJson = JSON.toJSONString(types);
-//        return typesJson;
-//    }
+
 }

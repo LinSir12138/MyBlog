@@ -99,4 +99,10 @@
         delete from javaweb_myblog.blog where bid = #{bid}
     </delete>
 
+    <!--    根据博客名称模糊查询，后台进行博客搜索时用到      -->
+    <select id="queryByNameLike" resultType="com.linkai.myblog.entity.Blog">
+        select * from javaweb_myblog.blog where btitle like "%"#{btitle}"%"
+    </select>
+
+
 </mapper>

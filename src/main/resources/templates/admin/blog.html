@@ -48,7 +48,7 @@
                 </div>
                 <div id="search-btn">搜索</div>
                 <form class="search-form" th:action="@{/admin/queryByNameBlog}" method="get">
-                    <input id="search-text" type="text" name="typenameSearch">
+                    <input id="search-text" type="text" name="blogtitleSearch">
                 </form>
                 <!--   在搜索框输入文字时，弹出来的提示框-->
                 <ul class="search-ul">
@@ -143,17 +143,16 @@
             console.log("用户输入为：" + inputText);
             if (inputText !== '') {
                 // 不为空，发送 Ajax 请求
-                $.ajax("/admin/typeGetSearchResult", {
+                $.ajax("/admin/blogGetSearchResult", {
                     type: 'post',
                     dataType: 'json',
-                    data: JSON.stringify(inputTextObj),
-                    contentType : "application/json",
+                    data: inputTextObj,     // 这里的 data 是一个 JSON 对象
                     success: function (data, status) {
                         var ul =  $('.search-ul');
                         $('.search-ul li').remove();        // 先删除 ul 标签里面的所有 li 标签
                         for (var i = 0; i < data.length; i++) {
                             // 注意，这里就不需要使用 Thymeleaf 模版了
-                            ul.append('<li>' + '<a href="/admin/queryByName?typenameSearch=' + data[i].typename + '">'+ data[i].typename + '</a></li>');
+                            ul.append('<li>' + '<a href="/admin/queryByNameBlog?blogtitleSearch=' + data[i].btitle + '">'+ data[i].btitle + '</a></li>');
                         }
                     }
                 })

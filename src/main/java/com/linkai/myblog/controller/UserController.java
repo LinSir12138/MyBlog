@@ -2,10 +2,12 @@ package com.linkai.myblog.controller;
 
 import com.linkai.myblog.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -25,11 +27,16 @@ public class UserController {
 
 
     // 跳转到后台登录页面
-//    @RequestMapping("/toLogin")
     @RequestMapping("/user/login")
-    public String toLogin() {
+    public String toLogin(HttpServletRequest request) {
         System.out.println("来到登录页面");
-        return "/login";
+        // 如果已经存在 Session，这不需要登录，直接进入后天管理界面
+        request.getSession().getAttribute("user");
+        if (request.getSession().getAttribute("user") == null) {
+            return "/login";
+        } else {
+            return "redirect:/admin/Blog";
+        }
     }
 
     // 执行登录，检测用户名密码

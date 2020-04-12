@@ -101,4 +101,13 @@ public interface BlogDao {
     int queryAllNumber();
 
 
+    /**
+    * @Description: 根据博客名字模糊查询，后台管理进行博客搜索时用到
+    * @Param: []
+    * @return: java.util.List<com.linkai.myblog.entity.Blog>
+    * @Author: 林凯
+    * @Date: 2020/4/12
+    */
+    List<Blog> queryByNameLike(String btitle);
+
 }
