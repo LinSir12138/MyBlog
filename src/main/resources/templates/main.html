@@ -277,7 +277,7 @@
                             <span th:text="${blog.getType().getTypename()}"></span>
                         </li>
                     </ul>
-                    <div class="article-content box after" id="dot5" th:text="${blog.getBcontent()}"></div>
+                    <div class="article-content box after dot5"  th:text="${blog.getBcontent()}"></div>
                     <div class="readmore">
                         <a th:href="@{/article/} + ${blog.getBidToString()}" id="readmore">阅读更多</a>
                     </div>
@@ -398,9 +398,8 @@
 
         });
 
-
         //  溢出显示省略号的 js 代码
-        var $dot5 = $('#dot5');
+        var $dot5 = $('.dot5');
         $dot5.append( ' <a class="toggle" href="#"><span class="open">[ + ]</span></a>' );
         function createDots()
         {
