@@ -16,6 +16,18 @@
     <script th:src="@{/js/jquery-3.4.1.js}"></script>
     <script th:src="@{/js/bootstrap/bootstrap.js}"></script>
 
+    <style>
+        /*  对 bootstrap 的 th,td 进行稍微的修改*/
+        th {
+            text-align: center;
+        }
+        td {
+            width: 345px;
+            text-align: center;
+            border: 1px solid #dee2e6 !important;
+        }
+    </style>
+
 </head>
 <body>
 
@@ -114,7 +126,7 @@
 
 </div>
 
-<!--    分页-->
+<!--    分页需要的 js 代码-->
 <script th:src="@{/js/pagenation/myPagination.js}"></script>
 
 <script>

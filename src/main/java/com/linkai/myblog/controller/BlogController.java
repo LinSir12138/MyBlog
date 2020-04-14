@@ -9,6 +9,7 @@ import com.linkai.myblog.service.BlogService;
 import com.linkai.myblog.service.BlogtagService;
 import com.linkai.myblog.service.TagService;
 import com.linkai.myblog.service.TypeService;
+import com.linkai.myblog.util.MyConstant;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -60,6 +61,26 @@ public class BlogController {
         int blogNumber = blogService.queryAllNumber();
         model.addAttribute("blogNumber", blogNumber);
         model.addAttribute("currentPage", 1);       // 表示当前页码为1
+
+        return "/admin/blog";
+    }
+
+    // 博客分页
+    @RequestMapping("/changePageBlog")
+    public String changepageBLog(@RequestParam("currentPage") String currentPage, Model model) {
+        int begin = (Integer.parseInt(currentPage) - 1) * MyConstant.PAGE_SIZE_BLOG;
+        List<Blog> blogs = blogService.queryAllByLimit(begin, MyConstant.PAGE_SIZE_BLOG);
+        // 同时查询该条博客记录对应的 type 对象，放入 blog 对象中
+        for (Blog tempBlog:blogs
+        ) {
+            tempBlog.setType(typeService.queryById(tempBlog.getBlogtypeid()));
+        }
+        model.addAttribute("blogs", blogs);
+
+        // 同时查询共有多少条记录，为分页做准备
+        int blogNumber = blogService.queryAllNumber();
+        model.addAttribute("blogNumber", blogNumber);
+        model.addAttribute("currentPage", currentPage);       // 表示当前页码为1
 
         return "/admin/blog";
     }

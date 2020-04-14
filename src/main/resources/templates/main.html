@@ -87,17 +87,18 @@
 
         .content-left>ul>li {
             width: 735px;
-            height: 300px;
+            /*height: 300px;*/      /*  高度随着内容的高度改变*/
             background-color: #8bff8f;
             box-sizing: border-box;
             border-radius: 5px;
             margin-top: 10px;
             box-shadow: 3px 3px 3px #cccccc;
             position: relative;
+            display: inline-block;      /*  让 li 标签随着里面的内容的高度的增加而增加*/
         }
 
         .content-left>ul>li .article-title {
-            height: 60px;
+            /*height: 60px;*/       /* 高度有内容的高度决定*/
             width: 700px;
             line-height: 60px;
             font-size: 36px;
@@ -132,12 +133,10 @@
         .content-left>ul>li .readmore {
             width: 90px;
             height: 40px;
-            position: absolute;
-            bottom: 5px;
-            left: 310px;
             cursor: pointer;
             border-radius: 5px;
             border: 1px solid #cccccc;
+            margin: 10px auto;
         }
 
         .content-left>ul>li .readmore a {
