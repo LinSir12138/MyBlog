@@ -214,7 +214,7 @@
             <select id="blog-type">
                 <option value="分类" style="display:none">博客标签列表</option>
                 <!--    利用三目运算符更快捷，虽然 IDEA 会报红，但是依旧可以正常运行，不影响 -->
-                <option th:value="${selectedTag}" th:each="selectedTag,selectedTagState:${selectedTags}" th:text="${selectedTag}"></option>
+                <option th:value="${selectedTag.getTagname()}" th:each="selectedTag,selectedTagState:${selectedTags}" th:text="${selectedTag.getTagname()}"></option>
             </select>
         </h4>
         <input type="text" id="selectPage4" class="input-block-level" placeholder="请输入查询关键字">

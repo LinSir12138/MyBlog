@@ -83,6 +83,11 @@ public class BlogServiceImpl implements BlogService {
         return this.blogDao.update(blog);
     }
 
+    @Override
+    public int updateViewsById(Long bid) {
+        return blogDao.updateViewsById(bid);
+    }
+
     /**
      * 通过主键删除数据
      *

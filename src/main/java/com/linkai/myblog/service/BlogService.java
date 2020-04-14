@@ -63,6 +63,15 @@ public interface BlogService {
     int update(Blog blog);
 
     /**
+     * @Description: 根据博客 id 更新博客的阅读数量，使得阅读数量加一
+     * @Param: [bid]
+     * @return: int
+     * @Author: 林凯
+     * @Date: 2020/4/14
+     */
+    int updateViewsById(Long bid);
+
+    /**
      * 通过主键删除数据
      *
      * @param bid 主键

@@ -26,9 +26,11 @@
     </select>
 
 
-    <!--    根据博客 id 查询该博客对应的标签名称，返回 List<String> ，使用连表查询    -->
-    <select id="queryTagNameByBlogId" resultType="java.lang.String">
-        select t.tagname from javaweb_myblog.blogtag bt, javaweb_myblog.tag t where bt.tagid = t.tagid and bt.bid = #{bid}
+<!--   select t.tagname from javaweb_myblog.blogtag bt, javaweb_myblog.tag t where bt.tagid = t.tagid and bt.bid = #{bid}-->
+
+    <!--    根据博客 id 查询该博客对应的标签，返回 List<Tag> ，使用连表查询    -->
+    <select id="queryTagsByBlogId" resultType="com.linkai.myblog.entity.Tag">
+        select t.tagid, t.tagname, t.ariticlenumber from javaweb_myblog.blogtag bt, javaweb_myblog.tag t where  bt.tagid = t.tagid and bt.bid = #{bid}
     </select>
 
 

@@ -33,7 +33,6 @@
     <!--    引入代码高亮 js 文件-->
     <script th:src="@{/js/prism.js}"></script>
 
-
     <style>
         * {
             margin: 0;
@@ -113,22 +112,86 @@
 
         }
 
+
+        /*      文章标题，分类，阅读量等基本信息    */
+        .left-top .tags {
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+        .left-top .tags span {
+            display: inline-block;
+            border: 1px solid #CCCCCC;
+            padding: 5px;
+            margin-right: 20px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            background: -webkit-linear-gradient(left, rgb(245, 149, 149) 1%, rgb(115, 211, 223) 100%);
+            color: white;
+        }
+        .left-top h1 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .left-top .information {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .left-top .information div {
+            display: inline-block;
+            margin-right: 23px;
+            color: #525f7f;
+        }
+
+
+
     </style>
+
 </head>
 
 <body>
 
 <!--    文章页面：头部导航栏-->
-<div th:replace="~{common/commonsfile::article-topbar}"></div>
+<div th:replace="~{/common/commonsfile::article-topbar}"></div>
 
 <div class="content">
 
     <div class="content-bottom" id="text">
 
+
         <div class="content-left">
+
+            <!--    博客标题，发布时间，分类，标签等基本信息-->
+            <div class="left-top">
+                <h1 th:text="${blog.getBtitle()}"></h1>
+                <div class="tags">
+                    <span th:each="tag, tagState:${tags}" th:text="${tag.getTagname()}"></span>
+                </div>
+                <div class="information">
+                    <div>
+                        发布日期:<span th:text="${#dates.format(blog.getCreatetime(), 'yyyy-MM-dd HH')}"></span>
+                    </div>
+                    <div>
+                        阅读量:<span th:text="${blog.getViews()}"></span>
+                    </div>
+                    <div>
+                        所属分类:
+                        <span>
+                            <a href="#" th:text="${blog.getType().getTypename()}"></a>
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!--    博客内容-->
             <div id="showData" class="animated rubberBand language-css">
                 <textarea id="htmlText" th:text="${blog.getBcontent()}" style="display: none"></textarea>
             </div>
+
+
+
+
         </div>
 
         <!--    文章目录    -->
@@ -144,7 +207,9 @@
 
 </div>
 
+<!--    目录生成    -->
 <script th:src="@{/lib/menu/tocbot.js}"></script>
+
 
 
 <script>
@@ -163,6 +228,7 @@
         // 等待转换成为 HTMl 格式之后再展示出来
         $("htmlText").css('display','block');
 
+        /*  目录自动生成  */
         tocbot.init({
             // Where to render the table of contents.
             tocSelector: '.js-toc',

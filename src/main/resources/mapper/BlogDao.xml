@@ -94,6 +94,12 @@
         where bid = #{bid}
     </update>
 
+
+    <!--    根据 id 更新博客的阅读数量，阅读数量 + 1        -->
+    <update id="updateViewsById">
+        update javaweb_myblog.blog set views = views + 1 where bid = #{bid}
+    </update>
+
     <!--通过主键删除-->
     <delete id="deleteById">
         delete from javaweb_myblog.blog where bid = #{bid}

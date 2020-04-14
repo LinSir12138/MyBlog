@@ -169,7 +169,7 @@ public class BlogController {
         model.addAttribute("types", types);
         model.addAttribute("tags", tags);
         // 查询该条博客记录对应的 标签
-        List<String> selectedTags = blogtagService.queryTagNameByBlogId(blog.getBid());
+        List<Tag> selectedTags = blogtagService.queryTagsByBlogId(blog.getBid());
         model.addAttribute("selectedTags", selectedTags);
         return "/admin/editblog";       // 跳转到编辑博客的界面
     }

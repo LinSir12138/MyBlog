@@ -1,6 +1,7 @@
 package com.linkai.myblog.dao;
 
 import com.linkai.myblog.entity.Blogtag;
+import com.linkai.myblog.entity.Tag;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -52,6 +53,6 @@ public interface BlogtagDao {
     * @Author: 林凯
     * @Date: 2020/4/11
     */
-    List<String> queryTagNameByBlogId(Long bid);
+    List<Tag> queryTagsByBlogId(Long bid);
 
 }

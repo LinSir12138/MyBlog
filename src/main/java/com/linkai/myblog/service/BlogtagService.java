@@ -1,6 +1,7 @@
 package com.linkai.myblog.service;
 
 import com.linkai.myblog.entity.Blogtag;
+import com.linkai.myblog.entity.Tag;
 
 import java.util.List;
 
@@ -45,7 +46,7 @@ public interface BlogtagService {
      * @Author: 林凯
      * @Date: 2020/4/11
      */
-    List<String> queryTagNameByBlogId(Long bid);
+    List<Tag> queryTagsByBlogId(Long bid);
 
 
 }

@@ -6,10 +6,14 @@
     <title>Title</title>
     <!--    引入导航栏的 css 代码文件-->
     <link rel="stylesheet" th:href="@{/css/article-title.css}">
-    <!--    引入右侧关于博客介绍，标签，分类的 css 样式文件-->
+    <!--    引入右侧关于  "博客介绍"，"标签"，"分类" 的 css 样式文件-->
     <link rel="stylesheet" th:href="@{/css/article-introduce.css}">
     <!--    引入动画的 css 样式文件-->
     <link rel="stylesheet" th:href="@{/css/animate.css}">
+    <!--    滑动到顶部火箭 -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/rocketTop.css}">
+    <!--    分页-->
+    <link rel="stylesheet" th:href="@{/css/pagenation/myPagination.css}">
 
     <!--    字体图标    -->
     <script src="http://at.alicdn.com/t/font_1697913_qro0wpzn1zo.js"></script>
@@ -21,6 +25,9 @@
     <script th:src="@{/js/jquery.waypoints.js}"></script>
     <!--    引入 “溢出显示省略号” 的 js-->
     <script th:src="@{/js/jquery.dotdotdot.js}"></script>
+    <!--    滑动到顶部 js -->
+    <script type="text/javascript" th:src="@{/js/rocketTop.js}"></script>
+
 
     <style>
         * {
@@ -37,14 +44,11 @@
         .content {
             width: 100%;
             padding-top: 35px;
-            height: 1650px;
-            /*background-color: papayawhip;*/
         }
 
 
         .content-bottom {
             margin: 100px auto;
-            height: 1000px;
             width: 1135px;
             background-color: #fee7f2;
             border-radius: 15px;
@@ -56,9 +60,9 @@
             font-size: 22px;
         }
 
+        /*******************      左侧的一系列博客              */
         .content-left {
             width: 735px;
-            height: 1000px;
             /*background-color: #1bd7db;*/
             box-sizing: border-box;
             margin-left: 30px;
@@ -75,43 +79,34 @@
             fill: currentColor;
         }
 
-        .content-left ul {
-            list-style: none;
-        }
-
-        .content-left>ul {
+        .content-left .each-data {
             width: 735px;
-            height: 1000px;
-            background-color: #fcb4fe;
-        }
-
-        .content-left>ul>li {
-            width: 735px;
-            /*height: 300px;*/      /*  高度随着内容的高度改变*/
+            /*height: 300px;*/ /*  高度随着内容的高度改变*/
             background-color: #8bff8f;
             box-sizing: border-box;
             border-radius: 5px;
-            margin-top: 10px;
+            margin-bottom: 10px;
             box-shadow: 3px 3px 3px #cccccc;
             position: relative;
-            display: inline-block;      /*  让 li 标签随着里面的内容的高度的增加而增加*/
+            display: inline-block; /*  让 li 标签随着里面的内容的高度的增加而增加*/
         }
 
-        .content-left>ul>li .article-title {
-            /*height: 60px;*/       /* 高度有内容的高度决定*/
+        .content-left .each-data .article-title {
+            /*height: 60px;*/ /* 高度有内容的高度决定*/
             width: 700px;
             line-height: 60px;
             font-size: 36px;
             font-weight: bolder;
         }
 
-        .content-left>ul>li ul{
+        .content-left .each-data ul {
             height: 45px;
             width: 600px;
             background-color: peru;
+
         }
 
-        .content-left>ul>li ul li {
+        .content-left .each-data ul li {
             height: 45px;
             width: 130px;
             margin-left: 20px;
@@ -119,9 +114,10 @@
             background-color: #0e8dc7;
             text-align: center;
             line-height: 45px;
+            list-style: none;
         }
 
-        .content-left>ul>li .article-content {
+        .content-left .each-data .article-content {
             width: 702px;
             height: 135px;
             margin-top: 5px;
@@ -130,7 +126,7 @@
             font-size: 20px;
         }
 
-        .content-left>ul>li .readmore {
+        .content-left .each-data .readmore {
             width: 90px;
             height: 40px;
             cursor: pointer;
@@ -139,7 +135,7 @@
             margin: 10px auto;
         }
 
-        .content-left>ul>li .readmore a {
+        .content-left .each-data .readmore a {
             width: 100%;
             height: 100%;
             margin: 0 auto;
@@ -149,9 +145,14 @@
             text-decoration: none;
         }
 
-        .content-left>ul>li span {
+        .content-left .each-data span {
             display: inline-block;
         }
+
+        .pagination {
+            margin: 0 auto;
+        }
+
 
         /*  #####################   搜索框     ################33*/
         .search {
@@ -204,7 +205,7 @@
         .search .search-list {
             width: 100%;
             height: 500px;
-            overflow-y:auto;
+            overflow-y: auto;
             border-radius: 10px;
             padding-top: 4px;
 
@@ -220,19 +221,50 @@
             border-radius: 5px;
         }
 
-        /*  ###########################         底部      ###############################*/
-        .footer {
+
+
+
+        /**************         右侧              ******************/
+        /*      文章统计    */
+        .article-statistics {
+            margin-top: 10px;
             width: 100%;
-            height: 200px;
-            background-color: #1a1a19;
+            height: 345px;
+            background-color: #d8ffdc;
+            box-sizing: border-box;
         }
 
-        #btn-up {
-            position: fixed;
-            right: 20px;
-            bottom: 80px;
-            display: none;
+         .article-statistics p {
+            height: 40px;
+            width: 100%;
+            line-height: 40px;
+            text-align: center;
         }
+
+         .article-statistics ul {
+            float: left;
+            background-color: paleturquoise;
+        }
+
+         .article-statistics ul li {
+             height: 80px;
+             width: 157px;
+             background-color: palevioletred;
+             list-style: none;
+             line-height: 40px;
+             float: left;
+             text-align: center;
+        }
+
+        .article-statistics ul li .decoration {
+            text-align: center;
+
+        }
+
+        .article-statistics ul li .number-statistics {
+            text-align: center;
+        }
+
 
 
     </style>
@@ -250,38 +282,50 @@
     <div class="content-bottom" id="text">
 
         <div id="content-left" class="content-left">
-            <ul>
-                <li th:each="blog:${blogs}">
-                    <p class="article-title" th:text="${blog.getBtitle()}"></p>
-                    <ul>
 
-                        <li class="article-time" >
-                            <svg class="icon" aria-hidden="true">
-                                <use xlink:href="#icon-rili"></use>
-                            </svg>
-                            <span th:text="${#dates.format(blog.getCreatetime(), 'yyyy-MM-dd')}"></span>
-                        </li>
+            <div class="each-data" th:each="blog:${blogs}">
+                <p class="article-title" th:text="${blog.getBtitle()}"></p>
+                <ul>
 
-                        <li class="article-views" >
-                            <svg class="icon" aria-hidden="true">
-                                <use xlink:href="#icon-yanjing"></use>
-                            </svg>
-                            <span th:text="${blog.getViews()}"></span>
-                        </li>
+                    <li class="article-time">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-rili"></use>
+                        </svg>
+                        <span th:text="${#dates.format(blog.getCreatetime(), 'yyyy-MM-dd')}"></span>
+                    </li>
 
-                        <li class="article-starts" >
-                            <svg class="icon" aria-hidden="true">
-                                <use xlink:href="#icon-wenjianjia"></use>
-                            </svg>
-                            <span th:text="${blog.getType().getTypename()}"></span>
-                        </li>
-                    </ul>
-                    <div class="article-content box after dot5"  th:text="${blog.getBcontent()}"></div>
-                    <div class="readmore">
-                        <a th:href="@{/article/} + ${blog.getBidToString()}" id="readmore">阅读更多</a>
-                    </div>
-                </li>
-            </ul>
+                    <li class="article-views">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-yanjing"></use>
+                        </svg>
+                        <span th:text="${blog.getViews()}"></span>
+                    </li>
+
+                    <li class="article-starts">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#icon-wenjianjia"></use>
+                        </svg>
+                        <span th:text="${blog.getType().getTypename()}"></span>
+                    </li>
+                </ul>
+                <div class="article-content box after dot5" th:text="${blog.getBcontent()}"></div>
+                <div class="readmore">
+                    <a th:href="@{/article/} + ${blog.getBidToString()}" id="readmore">阅读更多</a>
+                </div>
+            </div>
+
+            <!--    分页  -->
+            <div id="pagination" class="pagination"></div>
+            <!--    一共有多少条分类，利用这个span标签来临时储存数据，在到 js 中进行操作   -->
+            <span th:text="${blogNumber}" class="type-numbers" style="display: none"></span>
+            <!--    存放当前页码-->
+            <span th:text="${currentPage}" class="span-currentPage" style="display: none"></span>
+            <!--    隐藏的 form 表单,用于处理分页时的请求-->
+            <form class="hide-form" th:action="@{/changePageBlog}" method="post" style="display: none">
+                <input type="text" class="currentpage" name="currentPage">
+            </form>
+
+
         </div>
 
         <!--    将右侧关于介绍博客，文章分类，标签的部分抽取出来，这里直接使用-->
@@ -291,14 +335,13 @@
 
 </div>
 
-<!--    底部-->
-<footer class="footer">
 
-</footer>
 
-<div class="btn-message">
-    <a href="#">留言</a>
-    <div id="btn-up">向上</div>
+<div id="shape">
+    <div class="shapeColor">
+        <div class="shapeFly">
+        </div>
+    </div>
 </div>
 
 <!--    注意：所有放在搜索框中的标签，类名都必须要带 search  ，方面搜索框的显示与隐藏-->
@@ -327,8 +370,44 @@
 <div id="copy-text" title="复制到剪切板"></div>
 <textarea id="hide-text" style="display: none"></textarea>
 
+<!--    分页需要的 js 代码-->
+<script th:src="@{/js/pagenation/myPagination.js}"></script>
+
 <script>
     window.addEventListener('load', function (event) {
+
+
+        //   分页, 提交 form 表单
+        var typeNumbers = parseInt($('.type-numbers').text());      //  一共有多少个分类
+        var eachPageNumber = 6;        // 每页 6 条记录
+        var pageNumber = Math.ceil(typeNumbers / eachPageNumber);     // 总页数
+        var currentPage;        // 当前所在页码
+        // console.log($('.span-currentPage').text());
+        if ($('.span-currentPage').text() === '') {
+            // 第一次访问，页码为1
+            currentPage = 1;
+        } else {
+            currentPage = $('.span-currentPage').text();
+        }
+        console.log("初始页面为" + currentPage);
+        new Page({
+            id: 'pagination',
+            pageTotal: pageNumber, //必填,总页数
+            pageAmount: eachPageNumber,  //每页多少条
+            dataTotal: typeNumbers, //总共多少条数据
+            curPage:currentPage, //初始页码,不填默认为1;因为是重新发送一个请求，所以当前页码会改变，需要处理一下
+            pageSize: 5, //分页个数,不填默认为5
+            showPageTotalFlag:true, //是否显示数据统计,不填默认不显示
+            showSkipInputFlag:true, //是否支持跳转,不填默认不显示
+            // 切换分页按钮每次会触发的事件，在方法中this.curPage,是当前页数，直接可以进行对应的ajax了
+            getPage: function (page) {
+                currentPage = page;
+                $('.currentpage').val(page);        // 将当前页码赋值给 input 标签，里面的值需要提交给后端
+                $('.hide-form').submit();       // 执行表单提交到服务器
+
+            }
+        })
+
 
         /*  增加了 百度一下 图标显示并跳转到百度搜索的功能，以及复制到剪切板图标 */
         var selectedText = '';
@@ -399,24 +478,23 @@
 
         //  溢出显示省略号的 js 代码
         var $dot5 = $('.dot5');
-        $dot5.append( ' <a class="toggle" href="#"><span class="open">[ + ]</span></a>' );
-        function createDots()
-        {
+        $dot5.append(' <a class="toggle" href="#"><span class="open">[ + ]</span></a>');
+        function createDots() {
             $dot5.dotdotdot({
                 after: 'a.toggle'
             });
         }
         function destroyDots() {
-            $dot5.trigger( 'destroy' );
+            $dot5.trigger('destroy');
         }
         createDots();
         $dot5.on(
             'click',
             'a.toggle',
-            function() {
-                $dot5.toggleClass( 'opened' );
+            function () {
+                $dot5.toggleClass('opened');
 
-                if ( $dot5.hasClass( 'opened' ) ) {
+                if ($dot5.hasClass('opened')) {
                     destroyDots();
                 } else {
                     createDots();
@@ -424,6 +502,20 @@
                 return false;
             }
         );
+
+
+        // 发送 Ajax 请求，统计“文章数量”，“标签数量”， “访客数量等信息”
+        $.ajax("/Statistic", {
+            type: "GET",
+            dataType: "JSON",
+            success: function (data, status) {
+                $('#article-numbers').text(data.blogNumbers);
+                $('#type-numbers').text(data.typeNumbers);
+                $('#tag-numbers').text(data.tagNumbers);
+            }
+
+
+        });
 
         // 滚到顶部按钮
         $("#btn-up").click(function () {
@@ -433,7 +525,7 @@
         // 滚动监测
         var waypoint = new Waypoint({
             element: document.getElementById('content-left'),
-            handler: function(direction) {
+            handler: function (direction) {
                 if (direction === 'down') {
                     console.log('down');
                     $("#btn-up").show(400);
@@ -448,7 +540,7 @@
 </script>
 
 
-<canvas class="fireworks" style="position:fixed;left:0;top:0;z-index:99999999;pointer-events:none;"></canvas>
+<canvas class="fireworks" style="position:fixed;left:0;top:0;z-index:10;pointer-events:none;"></canvas>
 <script type="text/javascript" src="js/click.js"></script>
 
 </body>

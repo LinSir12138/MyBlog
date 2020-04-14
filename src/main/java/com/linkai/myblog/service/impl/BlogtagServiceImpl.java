@@ -2,6 +2,7 @@ package com.linkai.myblog.service.impl;
 
 import com.linkai.myblog.entity.Blogtag;
 import com.linkai.myblog.dao.BlogtagDao;
+import com.linkai.myblog.entity.Tag;
 import com.linkai.myblog.service.BlogtagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,7 +37,9 @@ public class BlogtagServiceImpl implements BlogtagService {
     }
 
     @Override
-    public List<String> queryTagNameByBlogId(Long bid) {
-        return blogtagDao.queryTagNameByBlogId(bid);
+    public List<Tag> queryTagsByBlogId(Long bid) {
+        return blogtagDao.queryTagsByBlogId(bid);
     }
+
+
 }

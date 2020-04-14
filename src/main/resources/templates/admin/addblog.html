@@ -385,7 +385,6 @@
             for (var i = 0; i < tags.length; i++) {
                 console.log('选中的标签名称为：', tags[i].childNodes[0].nodeValue);
                 myForm.append('<input type="text" name="tag" value="' + tags[i].childNodes[0].nodeValue + '">');
-
             }
 
             myForm.append('<input type="text" name="type" value="' + $('#my-type').val() + '">');

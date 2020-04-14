@@ -45,6 +45,16 @@ public interface BlogDao {
 
 
     /**
+    * @Description: 根据博客 id 更新博客的阅读数量，使得阅读数量加一
+    * @Param: [bid]
+    * @return: int
+    * @Author: 林凯
+    * @Date: 2020/4/14
+    */
+    int updateViewsById(Long bid);
+
+
+    /**
     * @Description: 查询所有的博客信息
     * @Param: []
     * @return: java.util.List<com.linkai.myblog.entity.Blog>

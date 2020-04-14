@@ -1,5 +1,7 @@
 
 /*  文章界面右侧关于博客的介绍，博客标签，分类等等 */
+
+/*    博客介绍    */
 .content-right {
     width: 315px;
     height: 900px;
@@ -67,4 +69,31 @@
     width: 130px;
     height: 40px;
     background-color: #49c3ee;
+}
+
+
+/*      文章统计    */
+.content-right .article-statistics {
+    margin-top: 10px;
+    width: 100%;
+    height: 345px;
+    background-color: #d8ffdc;
+    box-sizing: border-box;
+}
+
+.content-right .article-statistics p {
+    height: 40px;
+    width: 100%;
+    line-height: 40px;
+    text-align: center;
+}
+
+.content-right .article-statistics ul {
+    float: left;
+    background-color: paleturquoise;
+}
+
+.content-right .article-statistics ul li {
+    height: 40px;
+    background-color: palevioletred;
 }
