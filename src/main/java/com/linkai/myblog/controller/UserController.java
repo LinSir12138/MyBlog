@@ -33,7 +33,7 @@ public class UserController {
         // 如果已经存在 Session，这不需要登录，直接进入后天管理界面
         request.getSession().getAttribute("user");
         if (request.getSession().getAttribute("user") == null) {
-            return "/login";
+            return "login";
         } else {
             return "redirect:/admin/Blog";
         }

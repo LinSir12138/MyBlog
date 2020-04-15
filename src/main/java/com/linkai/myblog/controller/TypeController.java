@@ -45,7 +45,7 @@ public class TypeController {
         model.addAttribute("types", types);
         model.addAttribute("typeNumber", typeNumber);
         model.addAttribute("currentPage", 1);       // 表示当前页码为1
-        return "/admin/type";
+        return "admin/type";
     }
 
 
@@ -160,7 +160,7 @@ public class TypeController {
         model.addAttribute("types", types);
         model.addAttribute("typeNumber", 1);    // 因为是查询一条语句，所以是1
         model.addAttribute("currentPage", 1);       // 表示当前页码为1
-        return "/admin/type";       // 返回到分类页面
+        return "admin/type";       // 返回到分类页面
     }
 
 
@@ -183,7 +183,7 @@ public class TypeController {
         model.addAttribute("typeNumber", typeNumber);
         // 同时将当前页面传递过去
         model.addAttribute("currentPage", currentPage);
-        return "/admin/type";
+        return "admin/type";
     }
 
 

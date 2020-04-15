@@ -52,7 +52,7 @@ public class TagController {
         model.addAttribute("tags", tags);
         model.addAttribute("tagNumber", tagNumber);
         model.addAttribute("currentPage", 1);       // 表示当前页码为1
-        return "/admin/tag";
+        return "admin/tag";
     }
 
 
@@ -163,7 +163,7 @@ public class TagController {
         model.addAttribute("tags", tags);
         model.addAttribute("tagNumber", 1);    // 因为是查询一条语句，所以是1
         model.addAttribute("currentPage", 1);       // 表示当前页码为1
-        return "/admin/tag";       // 返回到分类页面
+        return "admin/tag";       // 返回到分类页面
     }
 
 
@@ -185,7 +185,7 @@ public class TagController {
         model.addAttribute("tagNumber", typeNumber);
         // 同时将当前页面传递过去
         model.addAttribute("currentPage", currentPage);
-        return "/admin/tag";
+        return "admin/tag";
     }
 
 

@@ -62,7 +62,7 @@ public class BlogController {
         model.addAttribute("blogNumber", blogNumber);
         model.addAttribute("currentPage", 1);       // 表示当前页码为1
 
-        return "/admin/blog";
+        return "admin/blog";
     }
 
     // 博客分页
@@ -82,7 +82,7 @@ public class BlogController {
         model.addAttribute("blogNumber", blogNumber);
         model.addAttribute("currentPage", currentPage);       // 表示当前页码为1
 
-        return "/admin/blog";
+        return "admin/blog";
     }
 
     // 跳转到添加博客页面
@@ -93,7 +93,7 @@ public class BlogController {
         List<Tag> tags = tagService.queryAll();
         model.addAttribute("types", types);
         model.addAttribute("tags", tags);
-        return "/admin/addblog";
+        return "admin/addblog";
     }
 
     // 获得所有的标签，返回JSON数组 (新增博客时，供用户选择对应的标签)
@@ -171,7 +171,7 @@ public class BlogController {
         // 查询该条博客记录对应的 标签
         List<Tag> selectedTags = blogtagService.queryTagsByBlogId(blog.getBid());
         model.addAttribute("selectedTags", selectedTags);
-        return "/admin/editblog";       // 跳转到编辑博客的界面
+        return "admin/editblog";       // 跳转到编辑博客的界面
     }
 
     /**
@@ -294,7 +294,7 @@ public class BlogController {
         model.addAttribute("typeNumber", 1);    // 因为是查询一条语句，所以是1
         model.addAttribute("currentPage", 1);       // 表示当前页码为1
 
-        return "/admin/blog";
+        return "admin/blog";
     }
 
 }
