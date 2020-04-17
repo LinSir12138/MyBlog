@@ -1,4 +1,4 @@
-package com.linkai.myblog.confing;
+package com.linkai.myblog.config;
 
 import com.linkai.myblog.interceptor.LoginInterceptor;
 import org.springframework.context.annotation.Configuration;

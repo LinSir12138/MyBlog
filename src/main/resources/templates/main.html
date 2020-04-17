@@ -44,14 +44,17 @@
         .content {
             width: 100%;
             padding-top: 35px;
+            display: inline-block;      /*  由内部的内容的高度撑起盒子的高度    */
         }
 
 
         .content-bottom {
-            margin: 100px auto;
+            margin: 80px 170px;
+            margin-bottom: 0px;
             width: 1135px;
             background-color: #fee7f2;
             border-radius: 15px;
+            display: inline-block;      /*  由内部的内容的高度撑起盒子的高度    */
         }
 
         .content-bottom p {
@@ -89,6 +92,7 @@
             box-shadow: 3px 3px 3px #cccccc;
             position: relative;
             display: inline-block; /*  让 li 标签随着里面的内容的高度的增加而增加*/
+            border: 2px solid #ccc;
         }
 
         .content-left .each-data .article-title {
@@ -149,8 +153,10 @@
             display: inline-block;
         }
 
+        /************     分页导航条      *******************8*/
         .pagination {
-            margin: 0 auto;
+            margin: 10px auto;
+            text-align: center;
         }
 
 
@@ -266,6 +272,15 @@
         }
 
 
+        /*************        文章底部      ******************88*/
+        .my-footer {
+            width: 500px;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            margin: 40px auto;
+        }
+
 
     </style>
 
@@ -275,7 +290,7 @@
 <!--    文章页面：头部导航栏-->
 <div th:replace="~{common/commonsfile::article-topbar}"></div>
 
-
+<!--    中部内容-->
 <div class="content">
 
 
@@ -335,8 +350,12 @@
 
 </div>
 
+<!--    文章底部-->
+<div class="my-footer">
+    © 2020 | LinKaiBlog | <a href="http://www.beian.miit.gov.cn/">赣ICP备20003376号</a>
+</div>
 
-
+<!--    滑动顶部小火箭 -->
 <div id="shape">
     <div class="shapeColor">
         <div class="shapeFly">
