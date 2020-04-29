@@ -100,7 +100,7 @@
                         <div class="delete-btn">
                             <!--    利用 a 标签发送请求，结合 RestFul 风格-->
                             <!--    使用 RestFul 风格拼接字符串，需要使用 + 号，虽然会报红，但是可以运行-->
-                            <a th:href="@{/admin/deleteBlog/} + ${blog.getBidToString()}">删除</a>
+                            <a th:href="@{/admin/deleteBlog/} + ${blog.bidToString()}">删除</a>
                         </div>
 
                     </td>

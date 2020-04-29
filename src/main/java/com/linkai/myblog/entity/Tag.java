@@ -29,7 +29,7 @@ public class Tag implements Serializable {
     }
 
     // 返回 id 转换成为的 String 字符串，在 js 中插入搜索推荐标签是使用 RestFul 风格是用到
-    public String getIdToString() {
+    public String idToString() {
         return String.valueOf(this.tagid);
     }
 

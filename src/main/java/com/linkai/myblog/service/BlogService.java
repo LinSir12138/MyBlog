@@ -60,7 +60,7 @@ public interface BlogService {
      * @param blog 实例对象
      * @return 实例对象
      */
-    int update(Blog blog);
+    Blog update(Blog blog);
 
     /**
      * @Description: 根据博客 id 更新博客的阅读数量，使得阅读数量加一

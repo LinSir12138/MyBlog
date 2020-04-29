@@ -3,6 +3,7 @@ package com.linkai.myblog.dao;
 import com.linkai.myblog.entity.Blog;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,7 +15,7 @@ import java.util.List;
  * @since 2020-04-07 21:06:54
  */
 @Mapper
-@Repository
+@Repository         // 可以在主类上用扫描包 @MapperScan 替代
 public interface BlogDao {
 
 

@@ -31,10 +31,18 @@ spring:
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
 
+#  Redis 缓存相关配置
+  redis:
+    port: 6379                # 端口号
+    host: "39.98.86.223"    # 服务器地址
+    database: 0             # 默认数据库
+    password: 666          # 密码
+
+
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 
 server:
   port: 80

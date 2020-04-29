@@ -194,6 +194,8 @@ public class BlogController {
                              @RequestParam("tag") String[] tags,
                              @RequestParam("published") String published) {
 
+
+
         // 如果相等，所以是第一次保存，得执行插入操作
         // （由于字符串传递过来会报错，所以传递了一个特殊的字符串表示是添加博客时点击第一次暂存）
         if ("TempSave".equals(bid)) {        // 字符串值相等，用equals，执行 insert 操作
@@ -226,6 +228,9 @@ public class BlogController {
             return String.valueOf(queryBlog.getBid());
         }
 
+        System.out.println("controller 更新一条博客");
+
+
         // 下面执行的是 update 操作
         Blog blog = new Blog();
         blog.setBid(Long.valueOf(bid));
@@ -244,7 +249,7 @@ public class BlogController {
         blog.setBlogtypeid(type.getTypeid());
 
         //  更新该条博客记录
-        int updateBlog = blogService.update(blog);
+        Blog updateBlog = blogService.update(blog);
 
         // 还要更新 博客和标签关联的那张表 （先删除原来的记录，再插入新纪录）
         int i = blogtagService.deleteBlog(blog.getBid());       // 删除原来的记录

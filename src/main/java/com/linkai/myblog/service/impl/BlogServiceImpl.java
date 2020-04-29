@@ -4,6 +4,11 @@ import com.linkai.myblog.entity.Blog;
 import com.linkai.myblog.dao.BlogDao;
 import com.linkai.myblog.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -20,14 +25,20 @@ public class BlogServiceImpl implements BlogService {
     @Autowired
     private BlogDao blogDao;
 
+    @Autowired
+    @Qualifier("myRedisTemplate")
+    private RedisTemplate redisTemplate;
+
     /**
-     * 通过ID查询单条数据
+     * 通过ID查询单条数据，使用了 缓存
      *
      * @param bid 主键
      * @return 实例对象
      */
     @Override
+    @Cacheable(value = "blog")      // 缓存组件的名称为 blog ，key 默认为参数名称，即博客的 id
     public Blog queryById(Long bid) {
+        System.out.println("查询了数据库， id = " + bid);
         return this.blogDao.queryById(bid);
     }
 
@@ -68,19 +79,25 @@ public class BlogServiceImpl implements BlogService {
      * @Date: 2020/4/10
      */
     @Override
+    @Cacheable(value = "blog")      // key 默认为Blog的 title
     public Blog queryByTitle(String btitle) {
         return blogDao.queryByTitle(btitle);
     }
 
     /**
      * 修改数据
+     * 特别注意：使用 Redis 之后，是将方法的返回值存入的 Redis 中，所以这里的 update 返回值应该是 Blog 类型
+     *          然而调用 Dao 层的方法返回值却应该是 int 类型
      *
      * @param blog 实例对象
      * @return 实例对象
      */
     @Override
-    public int update(Blog blog) {
-        return this.blogDao.update(blog);
+    @CachePut(value = "blog", keyGenerator = "mykeyGenerator")      // 返回值应为 Blog 类型
+    public Blog update(Blog blog) {
+        System.out.println("更新了blog");
+        int update = blogDao.update(blog);
+        return blog;
     }
 
     @Override

@@ -76,8 +76,13 @@ public class Blog implements Serializable {
         return bid;
     }
 
-    /*    返回 bid 对应的 String 类型*/
-    public String getBidToString() {return String.valueOf(bid);}
+
+    /**
+     *      返回 bid 对应的 String 类型
+     *      注意：使用 Redis 之后，get 开头的方法，必须是实体类里面有的属性
+     *      所以这里的方法名不能以 get 开头
+     * */
+    public String bidToString() {return String.valueOf(bid);}
 
     public void setBid(Long bid) {
         this.bid = bid;
