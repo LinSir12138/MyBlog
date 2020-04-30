@@ -1,6 +1,8 @@
 package com.linkai.myblog.service;
 
 import com.linkai.myblog.entity.Blog;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 
 /**
@@ -29,13 +31,23 @@ public interface BlogService {
     List<Blog> queryByTypeId(Long typeid);
 
     /**
-     * 查询多条数据
+     *  分页查询 --》 查询多条数据
      *
      * @param offset 查询起始位置
      * @param limit 查询条数
      * @return 对象列表
      */
     List<Blog> queryAllByLimit(int offset, int limit);
+
+    /**
+     * @Description:   分类中进行分页查询    ——》 限定分类的同时，分页查询博客
+     * @Param: []
+     * @return: java.util.List<com.linkai.myblog.entity.Blog>
+     * @Author: 林凯
+     * @Date: 2020/4/30
+     */
+    List<Blog> queryBlogByLimitAndType(@Param("specificTypeId") Long specificTypeId, @Param("offset") int offset, @Param("limit") int limit);
+
 
     /**
      * 新增数据

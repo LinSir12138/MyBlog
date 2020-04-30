@@ -52,6 +52,13 @@ public class Type implements Serializable {
         this.typename = typename;
     }
 
+    /**
+     *      将 articlenumber 转换为 String 类型
+     * */
+    public String articleNumberToString() {
+        return String.valueOf(this.articlenumber);
+    }
+
     public Integer getArticlenumber() {
         return articlenumber;
     }

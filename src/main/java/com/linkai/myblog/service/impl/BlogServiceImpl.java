@@ -59,6 +59,11 @@ public class BlogServiceImpl implements BlogService {
         return this.blogDao.queryAllByLimit(offset, limit);
     }
 
+    @Override
+    public List<Blog> queryBlogByLimitAndType(Long specificTypeId, int offset, int limit) {
+        return blogDao.queryBlogByLimitAndType(specificTypeId, offset, limit);
+    }
+
     /**
      * 新增数据
      *

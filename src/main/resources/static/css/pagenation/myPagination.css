@@ -1,6 +1,12 @@
+.pagination {
+    text-align: center;
+    margin: 15px;
+}
+
 .pagination ul {
     list-style: none;
     padding-left: 0;
+    text-align: center;
 }
 
 .pagination ul li {

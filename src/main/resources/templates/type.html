@@ -3,10 +3,351 @@
 <head>
     <meta charset="UTF-8">
     <title>文章分类</title>
+
+    <!--    引入导航栏的 css 代码文件-->
+    <link rel="stylesheet" th:href="@{/css/article-title.css}">
+    <!--    滑动到顶部火箭 -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/rocketTop.css}">
+    <!--    分页-->
+    <link rel="stylesheet" th:href="@{/css/pagenation/myPagination.css}">
+
+
+    <!--    字体图标    -->
+    <script src="http://at.alicdn.com/t/font_1697913_qro0wpzn1zo.js"></script>
+    <!--    引入 JQuery-->
+    <script th:src="@{/js/jquery-3.4.1.js}"></script>
+    <!--    引入平滑滚动的 js-->
+    <script th:src="@{/js/jquery.scrollTo.js}"></script>
+    <!--    引入滚动监测的 js-->
+    <script th:src="@{/js/jquery.waypoints.js}"></script>
+    <!--    引入 “溢出显示省略号” 的 js-->
+    <script th:src="@{/js/jquery.dotdotdot.js}"></script>
+    <!--    滑动到顶部 js -->
+    <script type="text/javascript" th:src="@{/js/rocketTop.js}"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-image: url("/image/bc.png");
+        }
+
+/******************************     中部内容区域          ************************8*/
+        /*  有一个最低高度，之后里面的高度由里面的内容决定*/
+        .content {
+            width: 1135px;
+            /*!*height: 800px;          !*  待定*!*!   */
+            margin: 0 auto;
+            background-color: paleturquoise;
+            margin-top: 120px;
+        }
+
+        .content-top {
+            width: 100%;
+            /*height: 240px;*/ /*  高度由里面的内容决定*/
+            background-color: #b9eeff;
+            display: inline-block;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px 5px 5px;
+            box-shadow: 3px 3px 3px #cccccc;
+        }
+
+        .content-top p {
+            width: 100%;
+            height: 35px;
+            line-height: 35px;
+            padding-left: 2em;
+        }
+
+        /*    顶部的所有分类，  a标签表示           */
+        .content-top a {
+            margin: 10px 10px;
+            float: left;
+            text-align: center;
+            display: inline-block;
+            padding: 5px;
+            border: 1px solid #ccc;
+            font-size: 20px;
+            border-radius: 5px 5px 5px;
+            color: white;
+            background: -webkit-linear-gradient(left, rgb(245, 149, 149) 1%, rgb(115, 211, 223) 100%);
+            text-decoration: navajowhite;
+        }
+
+        .content-top a:hover {
+            background: -webkit-linear-gradient(359deg, rgb(255, 149, 250) 35%, rgb(103, 241, 203) 81%);
+        }
+
+        .content-bottom {
+            width: 100%;
+            display: inline-block;
+        }
+
+        /*      每条具体的博客的一些样式       */
+        .each-data {
+            width: 100%;
+            /*height: 300px;*/ /*  高度随着内容的高度改变*/
+            background-color: #b9ffc7;
+            box-sizing: border-box;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-shadow: 3px 3px 3px #cccccc;
+            position: relative;
+            display: inline-block; /*  让 li 标签随着里面的内容的高度的增加而增加*/
+            border: 2px solid #ccc;
+        }
+
+        .each-data .article-title {
+            /*height: 60px;*/ /* 高度有内容的高度决定*/
+            font-size: 36px;
+            font-weight: bolder;
+            padding: 25px;
+        }
+
+        .each-data ul {
+            height: 45px;
+            width: 600px;
+            background-color: peru;
+
+        }
+
+        .each-data ul li {
+            height: 45px;
+            width: 130px;
+            margin-left: 20px;
+            float: left;
+            background-color: #0e8dc7;
+            text-align: center;
+            line-height: 45px;
+            list-style: none;
+        }
+
+        .each-data .article-content {
+            width: 100%;
+            height: 135px;
+            margin-top: 10px;
+            padding: 0 35px;
+            box-sizing: border-box;
+            background-color: orange;
+            font-size: 20px;
+            overflow: hidden;
+        }
+
+        .each-data .readmore {
+            width: 90px;
+            height: 40px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: 1px solid #cccccc;
+            margin: 10px auto;
+        }
+
+        .each-data .readmore a {
+            width: 100%;
+            height: 100%;
+            margin: 0 auto;
+            display: block;
+            line-height: 40px;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .each-data span {
+            display: inline-block;
+        }
+
+        .icon {
+            width: 1em;
+            height: 1em;
+            vertical-align: -0.15em;
+            padding-left: 6px;
+            fill: currentColor;
+        }
+
+
+/************************************       底部导航栏       ***************8*/
+
+        .footer {
+            width: 100%;
+            height: 50px;
+            background-color: pink;
+        }
+
+
+    </style>
+
 </head>
-
-
 <body>
+
+<!--    文章页面：头部导航栏-->
+<div th:replace="~{common/commonsfile::article-topbar}"></div>
+
+<div class="content">
+
+    <!--    展示所有的分类-->
+    <div class="content-top">
+        <p>当前位置：首页 >  分类</p>
+        <a th:href="@{/toSpecificType/} + ${type.idToString()}" th:each="type,typeState:${types}"
+           th:text="${type.getTypename()} + ' ' + ${type.articleNumberToString()} + ' '"></a>
+    </div>
+
+    <!--     该分类下面的所有文章   -->
+    <div class="content-bottom">
+        <div class="each-data" th:each="blog:${blogs}">
+            <p class="article-title" th:text="${blog.getBtitle()}"></p>
+            <ul>
+
+                <li class="article-time">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-rili"></use>
+                    </svg>
+                    <span th:text="${#dates.format(blog.getCreatetime(), 'yyyy-MM-dd')}"></span>
+                </li>
+
+                <li class="article-views">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-yanjing"></use>
+                    </svg>
+                    <span th:text="${blog.getViews()}"></span>
+                </li>
+
+                <li class="article-starts">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-wenjianjia"></use>
+                    </svg>
+                    <span th:text="${blog.getType().getTypename()}"></span>
+                </li>
+            </ul>
+            <div class="article-content box after dot5" th:text="${blog.getBcontent()}"></div>
+            <div class="readmore">
+                <a th:href="@{/article/} + ${blog.bidToString()}" id="readmore">阅读更多</a>
+            </div>
+        </div>
+
+        <!--    分页  -->
+        <div id="pagination" class="pagination"></div>
+        <!--    一共有多少条分类，利用这个span标签来临时储存数据，在到 js 中进行操作   -->
+        <span th:text="${blogNumber}" class="type-numbers" style="display: none"></span>
+        <!--    存放当前页码-->
+        <span th:text="${currentPage}" class="span-currentPage" style="display: none"></span>
+        <!--    隐藏的 form 表单,用于处理分页时的请求-->
+        <form class="hide-form" th:action="@{/typeChangePageBlog}" method="post" style="display: none">
+            <!--    当前页数-->
+            <input type="text" class="currentpage" name="currentPage">
+            <!--    当前所属分类  -->
+            <input type="text" th:value="${types.get(0).getTypeid()}" class="currentTypeId" name="currentTypeId">
+        </form>
+
+
+    </div>
+
+
+</div>
+
+<div class="footer"></div>
+
+<!--    滑动顶部小火箭 -->
+<div id="shape">
+    <div class="shapeColor">
+        <div class="shapeFly">
+        </div>
+    </div>
+</div>
+
+
+<!--    分页需要的 js 代码-->
+<script th:src="@{/js/pagenation/myPagination.js}"></script>
+
+<script>
+
+    $(function () {
+
+        //   分页, 提交 form 表单
+        var typeNumbers = parseInt($('.type-numbers').text());      //  一共有多少个分类
+        var eachPageNumber = 6;        // 每页 6 条记录
+        var pageNumber = Math.ceil(typeNumbers / eachPageNumber);     // 总页数
+        var currentPage;        // 当前所在页码
+        // console.log($('.span-currentPage').text());
+        if ($('.span-currentPage').text() === '') {
+            // 第一次访问，页码为1
+            currentPage = 1;
+        } else {
+            currentPage = $('.span-currentPage').text();
+        }
+        console.log("初始页面为" + currentPage);
+        new Page({
+            id: 'pagination',
+            pageTotal: pageNumber, //必填,总页数
+            pageAmount: eachPageNumber,  //每页多少条
+            dataTotal: typeNumbers, //总共多少条数据
+            curPage:currentPage, //初始页码,不填默认为1;因为是重新发送一个请求，所以当前页码会改变，需要处理一下
+            pageSize: 5, //分页个数,不填默认为5
+            showPageTotalFlag:true, //是否显示数据统计,不填默认不显示
+            showSkipInputFlag:true, //是否支持跳转,不填默认不显示
+            // 切换分页按钮每次会触发的事件，在方法中this.curPage,是当前页数，直接可以进行对应的ajax了
+            getPage: function (page) {
+                currentPage = page;
+                $('.currentpage').val(page);        // 将当前页码赋值给 input 标签，里面的值需要提交给后端
+                $('.hide-form').submit();       // 执行表单提交到服务器
+
+            }
+        })
+
+
+        //  溢出显示省略号的 js 代码
+        var $dot5 = $('.dot5');
+        $dot5.append(' <a class="toggle" href="#"><span class="open">[ + ]</span></a>');
+        function createDots() {
+            $dot5.dotdotdot({
+                after: 'a.toggle'
+            });
+        }
+        function destroyDots() {
+            $dot5.trigger('destroy');
+        }
+        createDots();
+        $dot5.on(
+            'click',
+            'a.toggle',
+            function () {
+                $dot5.toggleClass('opened');
+
+                if ($dot5.hasClass('opened')) {
+                    destroyDots();
+                } else {
+                    createDots();
+                }
+                return false;
+            }
+        );
+
+
+        // 滚到顶部按钮
+        $("#btn-up").click(function () {
+            $(window).scrollTo(0, 700);
+        });
+
+        // 滚动监测
+        var waypoint = new Waypoint({
+            element: document.getElementById('content-left'),
+            handler: function (direction) {
+                if (direction === 'down') {
+                    console.log('down');
+                    $("#btn-up").show(400);
+                } else if (direction === 'up') {
+                    console.log('up');
+                    $("#btn-up").hide(400);
+                }
+            }
+        })
+
+    })
+
+</script>
 
 
 </body>
