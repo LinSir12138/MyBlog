@@ -37,6 +37,16 @@ public class TypeServiceImpl implements TypeService {
     }
 
     @Override
+    public int updateArcileNumberInc(String typeName) {
+        return typeDao.updateArcileNumberInc(typeName);
+    }
+
+    @Override
+    public int updateArcileNumberDec(String typeName) {
+        return typeDao.updateArcileNumberDec(typeName);
+    }
+
+    @Override
     public List<Type> queryAll() {
         return typeDao.queryAll();
     }

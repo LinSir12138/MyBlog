@@ -18,6 +18,16 @@
         update javaweb_myblog.type set typename = #{typename} where typeid = #{typeid}
     </update>
 
+    <!--    将该分类下面的博客数量加 1 -->
+    <update id="updateArcileNumberInc">
+        update javaweb_myblog.type set  articlenumber = articlenumber + 1 where typename = #{typeName}
+    </update>
+
+    <!--    将该分类下面的博客数量减 1-->
+    <update id="updateArcileNumberDec">
+        update javaweb_myblog.type set  articlenumber = articlenumber - 1 where typename = #{typeName}
+    </update>
+
     <!--     根据 id 删除1列  -->
     <delete id="deleteById">
         delete from javaweb_myblog.type where typeid = #{id}

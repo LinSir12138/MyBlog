@@ -211,7 +211,8 @@ public class BlogController {
             blog.setUpdatetime(new Date());     // 最近修改时间
 
             /*  处理博客对应的分类   */
-            Type type = typeService.queryByName(typeName);
+            typeService.updateArcileNumberInc(typeName);                       // 该分类下面的博客数量加 1
+            Type type = typeService.queryByName(typeName);      // 查出才 Type 对象，放入 Blog 对象中
             blog.setType(type);
             blog.setBlogtypeid(type.getTypeid());
 
@@ -244,9 +245,21 @@ public class BlogController {
         blog.setUpdatetime(new Date());
 
         /*  处理博客对应的分类   */
+        // 1. 看博客分类是否改变，如果改变了，就得将原来分类下博客数量减 1， 新的分类下博客数量加 1
+        Long oldTypeId = blogService.queryById(Long.valueOf(bid)).getBlogtypeid();
+        Type oldType = typeService.queryById(oldTypeId);
+        String oldTypeName = oldType.getTypename();
+        if (oldTypeName != typeName) {
+            // 不相等，说明博客的分类发生了变化，得进行修改
+            typeService.updateArcileNumberInc(typeName);
+            typeService.updateArcileNumberDec(oldTypeName);
+        }
+
         Type type = typeService.queryByName(typeName);
         blog.setType(type);
         blog.setBlogtypeid(type.getTypeid());
+
+
 
         //  更新该条博客记录
         Blog updateBlog = blogService.update(blog);

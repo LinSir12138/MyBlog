@@ -43,6 +43,25 @@ public interface TypeDao {
     */
     int update(Type type);
 
+
+    /**
+    * @Description: 根据分类名称，将该分类下的博客数量加 1
+    * @Param: [typeName]
+    * @return: int
+    * @Author: 林凯
+    * @Date: 2020/4/30
+    */
+    int updateArcileNumberInc(String typeName);
+
+    /**
+     * @Description: 根据分类名称，将该分类下的博客数量减 1
+     * @Param: [typeName]
+     * @return: int
+     * @Author: 林凯
+     * @Date: 2020/4/30
+     */
+    int updateArcileNumberDec(String typeName);
+
     /**
     * @Description: 查询所有的分类记录，添加博客时调用
     * @Param: []
