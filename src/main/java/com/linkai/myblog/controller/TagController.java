@@ -6,6 +6,7 @@ import com.linkai.myblog.entity.Tag;
 import com.linkai.myblog.service.BlogtagService;
 import com.linkai.myblog.service.impl.TagServiceImpl;
 import com.linkai.myblog.util.MyConstant;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,7 +44,7 @@ public class TagController {
      * @Author: 林凯
      * @Date: 2020/4/5
      */
-    @RequestMapping("/Tag")
+    @GetMapping("/Tag")
     public String tag(Model model) {
         // 跳转时，查询前面10条记录展示出来
         List<Tag> tags = tagService.queryAllByLimit(0, MyConstant.PAGE_SIZE_TAG);
@@ -63,7 +64,7 @@ public class TagController {
      * @Author: 林凯
      * @Date: 2020/4/5
      */
-    @RequestMapping("/addTag")
+    @PostMapping("/addTag")
     public String addTag(@RequestParam("tagname") String tagName) {
         System.out.println("999999");
         Tag tag = new Tag();
@@ -75,8 +76,9 @@ public class TagController {
     }
 
 
-    @RequestMapping("/CheckTag")
+    @PostMapping("/CheckTag")
     @ResponseBody
+    @ApiOperation("保存博客时检查标签是否为空")
     public String checkTag(@RequestParam("id") String id) {
         System.out.println("TagId = " + id);
         List<Blogtag> blogtags = blogtagService.queryByTagId(Long.valueOf(id));
@@ -95,7 +97,7 @@ public class TagController {
      * @Author: 林凯
      * @Date: 2020/4/5
      */
-    @RequestMapping("/deleteTag")
+    @PostMapping("/deleteTag")
     public String deleteTag(@RequestParam("id") String id) {
         // 首先查看该标签是否被某篇博客所使用的，如果有，则删除失败  (这一步在前端利用 Ajax 已经完成了)
         System.out.println("删除~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -111,7 +113,7 @@ public class TagController {
      * @Author: 林凯
      * @Date: 2020/4/5
      */
-    @RequestMapping("/updateTag")
+    @PostMapping("/updateTag")
     public String updateTag(@RequestParam("updatetagname") String updatetagname, @RequestParam("tagId") String tagId, Model model) {
         Tag tag = new Tag();
         tag.setTagid(parseLong(tagId));
@@ -130,8 +132,9 @@ public class TagController {
      * @Author: 林凯
      * @Date: 2020/4/5
      */
-    @RequestMapping("/tagGetSearchResult")
+    @PostMapping("/tagGetSearchResult")
     @ResponseBody
+    @ApiOperation("后台搜索标签时，获得推荐的搜索结果")
     public String getSearchResult(@RequestBody HashMap<String, String> map) {
         String inputText = map.get("text");
         List<Tag> tags = tagService.queryLike(inputText);
@@ -148,7 +151,7 @@ public class TagController {
      * @Author: 林凯
      * @Date: 2020/4/5
      */
-    @RequestMapping("/queryByNameTag")
+    @GetMapping("/queryByNameTag")
     public String getTagByName(@RequestParam("tagnameSearch") String tagname, Model model) {
         System.out.println("5201314");
         if (tagname == "") {
@@ -174,7 +177,7 @@ public class TagController {
      * @Author: 林凯
      * @Date: 2020/4/5
      */
-    @RequestMapping("/changePageTag")
+    @PostMapping("/changePageTag")
     public String changePage(@RequestParam("currentPage") String currentPage, Model model) {
         int begin = (Integer.parseInt(currentPage) - 1) * MyConstant.PAGE_SIZE_TYPE;
         System.out.println("begin:" + begin);

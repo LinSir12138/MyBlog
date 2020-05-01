@@ -11,6 +11,8 @@ import com.linkai.myblog.service.TagService;
 import com.linkai.myblog.service.TypeService;
 import com.linkai.myblog.util.MyConstant;
 import com.sun.org.apache.xpath.internal.operations.Mod;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -43,7 +45,7 @@ public class BlogController {
 
 
     // 跳转到博客管理界面
-    @RequestMapping("/Blog")
+    @GetMapping("/Blog")
     public String blog(Model model) {
         // 分页查询后7条博客记录(这个查询是连表查询，可以查询从对应博客的分类)
         List<Blog> blogs = blogService.queryAllByLimit(0, 7);
@@ -66,7 +68,7 @@ public class BlogController {
     }
 
     // 博客分页
-    @RequestMapping("/changePageBlog")
+    @PostMapping("/changePageBlog")
     public String changepageBLog(@RequestParam("currentPage") String currentPage, Model model) {
         int begin = (Integer.parseInt(currentPage) - 1) * MyConstant.PAGE_SIZE_BLOG;
         List<Blog> blogs = blogService.queryAllByLimit(begin, MyConstant.PAGE_SIZE_BLOG);
@@ -86,7 +88,7 @@ public class BlogController {
     }
 
     // 跳转到添加博客页面
-    @RequestMapping("/toAddBlog")
+    @GetMapping("/toAddBlog")
     public String toAddBlog(Model model) {
         // 查询所有的分类，标签信息。供用户添加博客时选择
         List<Type> types = typeService.queryAll();
@@ -98,7 +100,8 @@ public class BlogController {
 
     // 获得所有的标签，返回JSON数组 (新增博客时，供用户选择对应的标签)
     @PostMapping("/Blog/GetTags")
-    @ResponseBody
+    @ResponseBody()
+    @ApiOperation("获得所有的标签，返回JSON数组 (新增博客时，供用户选择对应的标签)")
     public String getTags() {
         List<Tag> tags = tagService.queryAll();
         String tagStr = JSON.toJSONString(tags);
@@ -106,7 +109,7 @@ public class BlogController {
     }
 
     // 执行博客添加操作-》 发布该博客
-    @RequestMapping("/addBlog")
+    @PostMapping("/addBlog")
     public String addBlog(@RequestParam("title") String title,
                           @RequestParam("my-editormd-markdown-doc") String bcontent,
                           @RequestParam("type") String typeName,
@@ -146,7 +149,7 @@ public class BlogController {
 
 
     // 执行删除博客操作
-    @RequestMapping("/deleteBlog/{id}")
+    @GetMapping("/deleteBlog/{id}")
     public String deleteBlog(@PathVariable("id") String id) {
         // 根据 id 删除博客记录
         blogService.deleteById(Long.valueOf(id));
@@ -158,7 +161,7 @@ public class BlogController {
 
 
     // 跳转到 博客编辑 页面
-    @RequestMapping("/EditBlog")
+    @PostMapping("/EditBlog")
     public String editBlog(@RequestParam("bid") String bid, Model model) {
         // 查询该博客的信息
         Blog blog = blogService.queryById(Long.valueOf(bid));
@@ -183,8 +186,9 @@ public class BlogController {
     * @Author: 林凯
     * @Date: 2020/4/12
     */
-    @RequestMapping("/updateBlog")
+    @PostMapping("/updateBlog")
     @ResponseBody
+    @ApiOperation("临时保存博客草稿")
     public String updateBlog(@RequestParam("blogid") String bid,
                              @RequestParam("title") String title,
                              @RequestParam("my-editormd-markdown-doc") String bcontent,
@@ -276,9 +280,10 @@ public class BlogController {
 
 
     // 前端发送 Ajax 请求，获得推荐的搜索结果
-    @RequestMapping("/blogGetSearchResult")
+    @PostMapping("/blogGetSearchResult")
     @ResponseBody
-    public String blogGetSearchResult(@RequestParam("text") String btitle) {
+    @ApiOperation("获得搜索的推荐结果")
+    public String blogGetSearchResult(@ApiParam("博客标题") @RequestParam("text") String btitle) {
         /**
          *      注意，因为前端传递的是 json 对象，可以看到地址栏就是用 ？ 拼接参数的，所以可以使用 @RequestParam
          *      如果前端传递的是 json 字符串，则直接是使用 @RequestBody 配合对象，或者 Map 接收参数
@@ -295,7 +300,7 @@ public class BlogController {
     }
 
     // 根据 title 查询对应的 Blog，用户点击搜索推荐的条目之后调用。
-    @RequestMapping("/queryByNameBlog")
+    @GetMapping("/queryByNameBlog")
     public String queryByBlogTitle(@RequestParam("blogtitleSearch") String btitle, Model model) {
         if (btitle == "") {
             return "redirect:/admin/Blog";  // 如果输入框为空，直接重定向到博客首页（注意路径大小写）

@@ -10,6 +10,7 @@ import com.linkai.myblog.service.TagService;
 import com.linkai.myblog.service.TypeService;
 import com.linkai.myblog.util.MyConstant;
 import com.sun.org.apache.xpath.internal.operations.Mod;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,7 +41,7 @@ public class MainController {
     BlogtagService blogtagService;
 
     // 跳转到 main  页面
-    @RequestMapping({"/", "/main"})
+    @GetMapping({"/", "/main"})
     public String toMain(Model model) {
         List<Blog> blogs = blogService.queryAllByLimit(0, MyConstant.PAGE_SIZE_SHOWBLOG);
         // 从数据库中查询该篇博客对应的 type 对象，放入该 blog 对象中
@@ -60,7 +61,7 @@ public class MainController {
     }
 
     //  首页  --》  处理分页的点击事件
-    @RequestMapping("/changePageBlog")
+    @PostMapping("/changePageBlog")
     public String changepageBLog(@RequestParam("currentPage") String currentPage, Model model) {
         int begin = (Integer.parseInt(currentPage) - 1) * MyConstant.PAGE_SIZE_SHOWBLOG;
         List<Blog> blogs = blogService.queryAllByLimit(begin, MyConstant.PAGE_SIZE_SHOWBLOG);
@@ -113,7 +114,7 @@ public class MainController {
 
 
     // 跳转到文章详情页面
-    @RequestMapping("/article/{id}")
+    @GetMapping("/article/{id}")
     public String showArticle(@PathVariable("id") String id, Model model) {
         // 首先，更新该博客的 “阅读数量”
         blogService.updateViewsById(Long.valueOf(id));
@@ -130,7 +131,7 @@ public class MainController {
     }
 
     // 跳转的文章分类页面
-    @RequestMapping("/Type")
+    @GetMapping("/Type")
     public String toType(Model model) {
         List<Type> types = typeService.queryAll();
         model.addAttribute("types", types);
@@ -171,8 +172,9 @@ public class MainController {
     }
 
 
-    @RequestMapping("/Statistic")
+    @GetMapping("/Statistic")
     @ResponseBody
+    @ApiOperation("统计博客数据")
     public String statistic() {
         int blogNumbers = blogService.queryAllNumber();     // 总博客数量
         int tagNumbers = tagService.queryAllNumber();      // 总标签数量

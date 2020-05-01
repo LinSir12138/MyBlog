@@ -8,6 +8,8 @@ import com.linkai.myblog.service.BlogService;
 import com.linkai.myblog.service.BlogtagService;
 import com.linkai.myblog.service.impl.TypeServiceImpl;
 import com.linkai.myblog.util.MyConstant;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -36,7 +38,7 @@ public class TypeController {
     * @Author: 林凯
     * @Date: 2020/4/5
     */
-    @RequestMapping("/Type")
+    @GetMapping("/Type")
     public String type(Model model) {
         // 跳转时，查询前面10条记录展示出来
         List<Type> types = typeService.queryAllByLimit(0, MyConstant.PAGE_SIZE_TYPE);
@@ -56,7 +58,7 @@ public class TypeController {
     * @Author: 林凯
     * @Date: 2020/4/5
     */
-    @RequestMapping("/addType")
+    @PostMapping("/addType")
     public String addType(@RequestParam("typename") String typeName) {
         System.out.println("999999");
         Type type = new Type();
@@ -75,8 +77,9 @@ public class TypeController {
     * @Author: 林凯
     * @Date: 2020/4/11
     */
-    @RequestMapping("/CheckType")
+    @PostMapping("/CheckType")
     @ResponseBody
+    @ApiOperation("删除分类之前，检查分类是否被占用")
     public String checkTag(@RequestParam("id") String id) {
         System.out.println("TagId = " + id);
         List<Blog> blog = blogService.queryByTypeId(Long.valueOf(id));
@@ -95,7 +98,7 @@ public class TypeController {
     * @Author: 林凯
     * @Date: 2020/4/5
     */
-    @RequestMapping("/deleteType")
+    @PostMapping("/deleteType")
     public String deleteType(@RequestParam("id") String id) {
         // 删除之前还需要判断该分类是否被占用，没有被占用才能删除，（交由前端发送 Ajax 请求到 CheckType 来完成）
         typeService.deleteById(Long.parseLong(id));
@@ -110,7 +113,7 @@ public class TypeController {
     * @Author: 林凯
     * @Date: 2020/4/5
     */
-    @RequestMapping("/updateType")
+    @PostMapping("/updateType")
     public String updateType(@RequestParam("updatetypename") String updatetypename, @RequestParam("typeId") String typeId, Model model) {
         Type type = new Type();
         type.setTypeid(Long.parseLong(typeId));
@@ -129,8 +132,9 @@ public class TypeController {
     * @Author: 林凯
     * @Date: 2020/4/5
     */
-    @RequestMapping("/typeGetSearchResult")
+    @PostMapping("/typeGetSearchResult")
     @ResponseBody
+    @ApiOperation("后台搜索分类时，获得推荐的搜索结果")
     public String getSearchResult(@RequestBody HashMap<String, String> map) {
         String inputText = map.get("text");
         List<Type> types = typeService.queryLike(inputText);
@@ -147,7 +151,7 @@ public class TypeController {
     * @Author: 林凯
     * @Date: 2020/4/5
     */
-    @RequestMapping("/queryByNameType")
+    @GetMapping("/queryByNameType")
     public String getTypeByName(@RequestParam("typenameSearch") String typename, Model model) {
         if (typename == "") {
             return "redirect:/admin/Type";  // 如果输入框为空，直接重定向到分类首页（注意路径大小写）
@@ -172,7 +176,7 @@ public class TypeController {
     * @Author: 林凯
     * @Date: 2020/4/5
     */
-    @RequestMapping("/changePageType")
+    @PostMapping("/changePageType")
     public String changePage(@RequestParam("currentPage") String currentPage, Model model) {
         int begin = (Integer.parseInt(currentPage) - 1) * MyConstant.PAGE_SIZE_TYPE;
         System.out.println("begin:" + begin);
