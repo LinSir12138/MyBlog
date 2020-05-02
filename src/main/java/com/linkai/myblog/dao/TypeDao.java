@@ -63,6 +63,15 @@ public interface TypeDao {
     int updateArcileNumberDec(String typeName);
 
     /**
+    * @Description: 根据分类 ID，将该分类下的博客数量减 1，删除博客时调用
+    * @Param: [typeId]
+    * @return: int
+    * @Author: 林凯
+    * @Date: 2020/5/1
+    */
+    int updateArcileNumberDecById(Long typeId);
+
+    /**
     * @Description: 查询所有的分类记录，添加博客时调用
     * @Param: []
     * @return: java.util.List<com.linkai.myblog.entity.Type>

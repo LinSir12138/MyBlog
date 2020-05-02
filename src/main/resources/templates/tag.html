@@ -35,7 +35,7 @@
             background-image: url("/image/bc.png");
         }
 
-/******************************     中部内容区域          ************************8*/
+        /******************************     中部内容区域          ************************8*/
         /*  有一个最低高度，之后里面的高度由里面的内容决定*/
         .content {
             width: 1135px;
@@ -169,7 +169,7 @@
         }
 
 
-/************************************       底部导航栏       ***************8*/
+        /************************************       底部导航栏       ***************8*/
 
         .my-footer {
             width: 500px;
@@ -192,9 +192,9 @@
 
     <!--    展示所有的分类-->
     <div class="content-top">
-        <p>当前位置：首页 >  分类</p>
-        <a th:href="@{/toSpecificType/} + ${type.idToString()}" th:each="type,typeState:${types}"
-           th:text="${type.getTypename()} + ' ' + ${type.articleNumberToString()} + ' '"></a>
+        <p>当前位置：首页 >  标签</p>
+        <a th:href="@{/toSpecificTag/} + ${tag.idToString()}" th:each="tag,tagState:${tags}"
+           th:text="${tag.getTagname()} + ' ' + ${tag.articleNumberToString()} + ' '"></a>
     </div>
 
     <!--     该分类下面的所有文章   -->
@@ -237,11 +237,11 @@
         <!--    存放当前页码-->
         <span th:text="${currentPage}" class="span-currentPage" style="display: none"></span>
         <!--    隐藏的 form 表单,用于处理分页时的请求-->
-        <form class="hide-form" th:action="@{/typeChangePageBlog}" method="post" style="display: none">
+        <form class="hide-form" th:action="@{/tagChangePageBlog}" method="post" style="display: none">
             <!--    当前页数-->
             <input type="text" class="currentpage" name="currentPage">
             <!--    当前所属分类  -->
-            <input type="text" th:value="${types.get(0).getTypeid()}" class="currentTypeId" name="currentTypeId">
+            <input type="text" th:value="${tags.get(0).getTagid()}" class="currentTagId" name="currentTagId">
         </form>
 
 
@@ -272,8 +272,8 @@
     $(function () {
 
         // 获取当前用户查看的是 哪个分类下面的文章
-        var mytype = [[ ${typeid} ]];
-        console.log(mytype);
+        var mytag = [[ ${tagid} ]];
+        console.log(mytag);
 
         //   分页, 提交 form 表单
         var typeNumbers = parseInt($('.type-numbers').text());      //  一共有多少个分类

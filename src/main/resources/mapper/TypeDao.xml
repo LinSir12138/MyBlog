@@ -28,6 +28,11 @@
         update javaweb_myblog.type set  articlenumber = articlenumber - 1 where typename = #{typeName}
     </update>
 
+
+    <update id="updateArcileNumberDecById">
+        update javaweb_myblog.type set  articlenumber = articlenumber - 1 where typeid = #{typeId}
+    </update>
+
     <!--     根据 id 删除1列  -->
     <delete id="deleteById">
         delete from javaweb_myblog.type where typeid = #{id}

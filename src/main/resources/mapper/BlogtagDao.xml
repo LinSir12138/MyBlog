@@ -33,5 +33,10 @@
         select t.tagid, t.tagname, t.ariticlenumber from javaweb_myblog.blogtag bt, javaweb_myblog.tag t where  bt.tagid = t.tagid and bt.bid = #{bid}
     </select>
 
+    <!--   根据标签 id 查询该标签下所有博客的数量，对博客进行CRUD时会调用-->
+    <select id="queryCouontBlogByTagId" resultType="java.lang.Integer">
+        select count(*) from javaweb_myblog.blogtag where tagid = #{tagId}
+    </select>
+
 
 </mapper>

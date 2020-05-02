@@ -29,13 +29,17 @@ public class SwaggerConfig {
     @Bean       // 注册一个bean
     public Docket docket(Environment environment) {
 
+        // 获取项目的环境；dev， pro
+        Profiles profiles = Profiles.of("dev");
+        // 判断是否在 dev 环境中,只在开发环境使用 Swagger
+        boolean flag = environment.acceptsProfiles(profiles);
 
         // 看源码，传递参数
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .groupName("JackLin")
                 // 是否启用 Swagger
-                .enable(true)
+                .enable(flag)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.linkai.myblog.controller"))
                 .build();       // build -》 工厂模式

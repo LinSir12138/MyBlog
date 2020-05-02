@@ -41,5 +41,10 @@ public class BlogtagServiceImpl implements BlogtagService {
         return blogtagDao.queryTagsByBlogId(bid);
     }
 
+    @Override
+    public int queryCouontBlogByTagId(Long tagId) {
+        return blogtagDao.queryCouontBlogByTagId(tagId);
+    }
+
 
 }

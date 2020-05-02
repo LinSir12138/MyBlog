@@ -37,6 +37,7 @@ public interface BlogtagDao {
     int deleteBlog(Long bid);
 
 
+
     /**
     * @Description: 根据标签的id查询记录，删除标签时调用，查看是否存在某篇博客占用该标签
     * @Param: []
@@ -54,5 +55,15 @@ public interface BlogtagDao {
     * @Date: 2020/4/11
     */
     List<Tag> queryTagsByBlogId(Long bid);
+
+
+    /**
+    * @Description: 根据标签的 id 查询该标签下面博客的数量
+    * @Param: []
+    * @return: int
+    * @Author: 林凯
+    * @Date: 2020/5/2
+    */
+    int queryCouontBlogByTagId(Long tagId);
 
 }

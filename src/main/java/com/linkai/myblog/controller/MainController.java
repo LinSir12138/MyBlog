@@ -80,36 +80,6 @@ public class MainController {
         return "main";
     }
 
-    // 分类  ---> 选择特定的分类之后，查看该分类下所有博客时的  "分页"  点击事件
-    @PostMapping("/typeChangePageBlog")
-    public String typeChangePageBlog(@RequestParam("currentTypeId") String currentTypeId, @RequestParam("currentPage") String currentPage, Model model) {
-        int begin = (Integer.parseInt(currentPage) - 1) * MyConstant.PAGE_SIZE_SHOWBLOG;
-        System.out.println("id = " + currentTypeId);
-        System.out.println("begin = " + begin);
-        List<Blog> blogs = blogService.queryBlogByLimitAndType(Long.valueOf(currentTypeId), begin, MyConstant.PAGE_SIZE_SHOWBLOG);
-        System.out.println("szie = " + blogs.size());
-
-        // 3. 同时查询该条博客记录对应的 type 对象，放入 blog 对象中
-        for (Blog tempBlog:blogs
-        ) {
-            tempBlog.setType(typeService.queryById(tempBlog.getBlogtypeid()));
-        }
-        model.addAttribute("blogs", blogs);
-
-        // 4. 查询所有的分类
-        List<Type> types = typeService.queryAll();
-        model.addAttribute("types", types);
-
-        // 5. 同时查询该分类下面 共有多少条记录，为分页做准备
-        int blogNumber = typeService.queryById(Long.valueOf(currentTypeId)).getArticlenumber();
-        model.addAttribute("blogNumber", blogNumber);
-
-
-        model.addAttribute("currentPage", currentPage);       // 表示当前页码为1
-
-        return "type";
-    }
-
 
 
 
@@ -129,6 +99,8 @@ public class MainController {
 
         return "article";
     }
+
+/*************************************      前台--》  “分类” 页面     *****************************/
 
     // 跳转的文章分类页面
     @GetMapping("/Type")
@@ -167,9 +139,74 @@ public class MainController {
 
         model.addAttribute("currentPage", 1);       // 表示当前页码为1
 
+        model.addAttribute("typeid", typeid);      // 同时，将 typeid 传递过去
+
 
         return "type";
     }
+
+    // 分类分页 ---> 选择特定的分类之后，查看该分类下所有博客时的  "分页"  点击事件
+    @PostMapping("/typeChangePageBlog")
+    public String typeChangePageBlog(@RequestParam("currentTypeId") String currentTypeId, @RequestParam("currentPage") String currentPage, Model model) {
+        int begin = (Integer.parseInt(currentPage) - 1) * MyConstant.PAGE_SIZE_SHOWBLOG;
+        System.out.println("id = " + currentTypeId);
+        System.out.println("begin = " + begin);
+        List<Blog> blogs = blogService.queryBlogByLimitAndType(Long.valueOf(currentTypeId), begin, MyConstant.PAGE_SIZE_SHOWBLOG);
+        Long typeid = blogs.get(0).getBlogtypeid();
+        System.out.println("szie = " + blogs.size());
+
+        // 3. 同时查询该条博客记录对应的 type 对象，放入 blog 对象中
+        for (Blog tempBlog:blogs
+        ) {
+            tempBlog.setType(typeService.queryById(tempBlog.getBlogtypeid()));
+        }
+        model.addAttribute("blogs", blogs);
+
+        // 4. 查询所有的分类
+        List<Type> types = typeService.queryAll();
+        model.addAttribute("types", types);
+
+        // 5. 同时查询该分类下面 共有多少条记录，为分页做准备
+        int blogNumber = typeService.queryById(Long.valueOf(currentTypeId)).getArticlenumber();
+        model.addAttribute("blogNumber", blogNumber);
+
+
+        model.addAttribute("currentPage", currentPage);       // 表示当前页码为1
+        model.addAttribute("typeid", typeid);      // 同时，将 typeid 传递过去
+
+
+        return "type";
+    }
+
+/*#************************************      前台--》  “标签” 页面     *****************************/
+
+    /**
+     *      跳转到 “标签”  页面
+     **/
+    @GetMapping("/Tag")
+    public String toTag(Model model) {
+
+        /**
+         *      1. 查询所有的标签, 同时查询对应标签下博客的数量
+         * */
+        List<Tag> tags = tagService.queryAll();
+        int count;
+        for (Tag t:tags
+        ) {
+            count = blogtagService.queryCouontBlogByTagId(t.getTagid());
+            t.setAriticlenumber(count);
+        }
+        model.addAttribute("tags", tags);
+
+
+
+
+        return "/tag";
+    }
+
+
+
+
 
 
     @GetMapping("/Statistic")

@@ -50,6 +50,13 @@ public class Tag implements Serializable {
         return ariticlenumber;
     }
 
+    /**
+     *      返回 ariticlenumber 转换的 String 字符串，在 js 中插入搜索推荐标签是使用 RestFul 风格是用到
+     * */
+    public String articleNumberToString() {
+        return String.valueOf(this.ariticlenumber);
+    }
+
     public void setAriticlenumber(Integer ariticlenumber) {
         this.ariticlenumber = ariticlenumber;
     }

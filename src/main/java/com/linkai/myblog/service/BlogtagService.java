@@ -48,5 +48,14 @@ public interface BlogtagService {
      */
     List<Tag> queryTagsByBlogId(Long bid);
 
+    /**
+     * @Description: 根据标签的 id 查询该标签下面博客的数量
+     * @Param: []
+     * @return: int
+     * @Author: 林凯
+     * @Date: 2020/5/2
+     */
+    int queryCouontBlogByTagId(Long tagId);
+
 
 }

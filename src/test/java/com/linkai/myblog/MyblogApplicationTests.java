@@ -19,4 +19,10 @@ class MyblogApplicationTests {
         List<Type> test = typeService.queryLike("test");
     }
 
+    @Test
+    void test1() {
+        typeService.updateArcileNumberDecById(Long.valueOf(2));
+
+    }
+
 }
