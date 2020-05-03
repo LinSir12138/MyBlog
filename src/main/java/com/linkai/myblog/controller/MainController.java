@@ -100,9 +100,14 @@ public class MainController {
         return "article";
     }
 
-/*************************************      前台--》  “分类” 页面     *****************************/
+/**
+ *********************************          前台  ----》  “分类”  页面     ******************************************************************
+ * */
 
-    // 跳转的文章分类页面
+
+    /**
+     *      跳转的文章分类页面
+     * */
     @GetMapping("/Type")
     public String toType(Model model) {
         List<Type> types = typeService.queryAll();
@@ -110,7 +115,9 @@ public class MainController {
         return "type";
     }
 
-    // 分类页面中，点击具体的分类跳转展示该分类下面的所有博客
+    /**
+     *      分类页面中，点击具体的分类跳转展示该分类下面的所有博客
+     * */
     @GetMapping("/toSpecificType/{typeid}")
     public String toSpecificType(@PathVariable("typeid") String typeid, Model model) {
         // 1. 类型转换一下
@@ -145,12 +152,12 @@ public class MainController {
         return "type";
     }
 
-    // 分类分页 ---> 选择特定的分类之后，查看该分类下所有博客时的  "分页"  点击事件
+    /**
+     *      分类分页 ---> 选择特定的分类之后，查看该分类下所有博客时的  "分页"  点击事件
+     * */
     @PostMapping("/typeChangePageBlog")
     public String typeChangePageBlog(@RequestParam("currentTypeId") String currentTypeId, @RequestParam("currentPage") String currentPage, Model model) {
         int begin = (Integer.parseInt(currentPage) - 1) * MyConstant.PAGE_SIZE_SHOWBLOG;
-        System.out.println("id = " + currentTypeId);
-        System.out.println("begin = " + begin);
         List<Blog> blogs = blogService.queryBlogByLimitAndType(Long.valueOf(currentTypeId), begin, MyConstant.PAGE_SIZE_SHOWBLOG);
         Long typeid = blogs.get(0).getBlogtypeid();
         System.out.println("szie = " + blogs.size());
@@ -178,7 +185,9 @@ public class MainController {
         return "type";
     }
 
-/*#************************************      前台--》  “标签” 页面     *****************************/
+/**
+ *********************************          前台  ----》  “标签”  页面     ******************************************************************
+ * */
 
     /**
      *      跳转到 “标签”  页面
@@ -187,24 +196,138 @@ public class MainController {
     public String toTag(Model model) {
 
         /**
-         *      1. 查询所有的标签, 同时查询对应标签下博客的数量
+         *      1. 查询所有的标签, 标签下博客的数量已经存在 Tag 表中，可以直接获取
          * */
         List<Tag> tags = tagService.queryAll();
-        int count;
-        for (Tag t:tags
-        ) {
-            count = blogtagService.queryCouontBlogByTagId(t.getTagid());
-            t.setAriticlenumber(count);
-        }
         model.addAttribute("tags", tags);
 
-
-
-
-        return "/tag";
+        return "tag";
     }
 
 
+    /**
+     *      标签页面中，点击具体的标签跳转展示该标签下面的所有博客
+     * */
+    @GetMapping("/toSpecificTag/{tagid}")
+    public String toSpecificTag(@PathVariable("tagid") String tagid, Model model) {
+        /**
+         *      1. 类型转换一下
+         * */
+        Long id = Long.valueOf(tagid);
+
+        /**
+         *      2. 因为需要分页展示，所以这里需要分页查询
+         * */
+        List<Blog> blogs = blogService.queryBlogByLimitAndTag(id, 0, MyConstant.PAGE_SIZE_SHOWBLOG);
+
+        /**
+         *        3. 因为前台要展示该博客所属分类，所以也还有查询分类放入 Blog 对象中
+         * */
+        Type type = null;       // 遍历 blogs 列表，通过 blgotypeid 查询 Type 对象并放入 Blog 对象中
+        for (Blog b:blogs
+             ) {
+            type = typeService.queryById(b.getBlogtypeid());
+            b.setType(type);
+        }
+        model.addAttribute("blogs", blogs);
+
+        /**
+         *      4. 查询所有的标签
+         * */
+        List<Tag> tags = tagService.queryAll();
+        model.addAttribute("tags", tags);
+
+
+        /**
+         *      5. 同时查询该标签下面共有多少条记录，为分页做准备
+         * */
+        Tag tag = tagService.queryById(Long.valueOf(tagid));
+        int blogNumber = tag.getAriticlenumber();
+        model.addAttribute("blogNumber", blogNumber);
+
+        /**
+         *      6. 将 currentpage(当前页) 和 tagid 传入
+         * */
+        model.addAttribute("currentPage", 1);
+        model.addAttribute("tagid", tagid);
+
+        return "tag";
+    }
+
+
+    /**
+    * @Description: 标签分页  ---》  选择特定的标签之后，查看该标签下所有博客时的  "分页"  点击事件
+    * @Param: []
+    * @return: java.lang.String
+    * @Author: 林凯
+    * @Date: 2020/5/2
+    */
+    @PostMapping("/tagChangePageBlog")
+    public String tagChangePageBlog(@RequestParam("currentTagId") String currentTagId, @RequestParam("currentPage") String currentPage, Model model) {
+        /**
+         *      1. 根据规则查询对应的博客集合
+         * */
+        int begin = (Integer.parseInt(currentPage) - 1) * MyConstant.PAGE_SIZE_SHOWBLOG;
+        List<Blog> blogs = blogService.queryBlogByLimitAndTag(Long.valueOf(currentTagId), begin, MyConstant.PAGE_SIZE_SHOWBLOG);
+
+        /**
+         *      2. 查询该条博客记录对应的 type 对象，并放入 blog 对象中
+         * */
+        for (Blog tempBlog:blogs
+        ) {
+            tempBlog.setType(typeService.queryById(tempBlog.getBlogtypeid()));
+        }
+        model.addAttribute("blogs", blogs);
+
+
+        /**
+         *      3. 查询所有标签
+         * */
+        List<Tag> tags = tagService.queryAll();
+        model.addAttribute("tags",tags);
+
+
+        /**
+         *      4. 同时查询该标签下面共有多少条记录，为分页做准备
+         * */
+        Tag tag = tagService.queryById(Long.valueOf(currentTagId));
+        int blogNumber = tag.getAriticlenumber();
+        model.addAttribute("blogNumber", blogNumber);
+
+        /**
+         *     5. 将 currentpage(当前页) 和 tagid 传入
+         * */
+        model.addAttribute("currentPage", currentPage);
+        model.addAttribute("tagid", currentTagId);
+
+        return "tag";
+    }
+
+
+/**
+ *********************************          前台  ----》  “时间轴”  页面     ******************************************************************
+ * */
+
+
+    /** 
+    * @Description: 跳转到 “时间轴”  页面
+    * @Param: [] 
+    * @return: java.lang.String 
+    * @Author: 林凯
+    * @Date: 2020/5/2 
+    */ 
+    @GetMapping("/Timeline")
+    public String toTimeline(Model model) {
+        List<Map<String, Object>> listWithCount = blogService.queryTimeLingWithCount();
+        System.out.println("listWithCount size = " + listWithCount.size());
+        List<Map<String, Object>> listWithOutCount = blogService.queryTimeLingWithOutCount();
+        System.out.println("listWithOutCount size = " + listWithOutCount.size());
+
+        model.addAttribute("listWithCount", listWithCount);
+        model.addAttribute("listWithOutCount", listWithOutCount);
+
+        return "timeline";
+    }
 
 
 

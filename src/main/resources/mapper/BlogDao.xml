@@ -41,6 +41,13 @@
     </select>
 
 
+    <!--    限定标签的同时，分页查询博客  -->
+    <select id="queryBlogByLimitAndTag" resultType="com.linkai.myblog.entity.Blog">
+         select
+            b.bid, b.btitle, b.bcontent, b.views, b.commentabled, b.original, b.published, b.createtime, b.updatetime, t.typename, b.blogtypeid
+        from javaweb_myblog.blog b, javaweb_myblog.blogtag bt, javaweb_myblog.type t where b.bid = bt.bid and b.blogtypeid = t.typeid and bt.tagid = #{specificTagId} order by b.bid desc
+        limit #{offset}, #{limit}
+    </select>
 
 
     <!--    查询所有的博客信息-->
@@ -121,8 +128,25 @@
         select * from javaweb_myblog.blog where btitle like "%"#{btitle}"%"
     </select>
 
+    <!--    "时间轴", 查询每个月份下的博客有多少篇   -->
+    <select id="queryTimeLingWithCount" resultType="java.util.Map">
+        select year(javaweb_myblog.blog.createtime)  as 'year',
+               month(javaweb_myblog.blog.createtime) as 'month',
+               count(*)                              as 'count'
+        from javaweb_myblog.blog
+        group by year(javaweb_myblog.blog.createtime) desc,
+                  month(javaweb_myblog.blog.createtime) desc
+    </select>
 
-
+    <!--    “时间轴” 查询，不统计数量  -->
+    <select id="queryTimeLingWithOutCount" resultType="java.util.Map">
+        select year(javaweb_myblog.blog.createtime)  as 'year',
+               month(javaweb_myblog.blog.createtime) as 'month',
+               javaweb_myblog.blog.createtime        as 'time',
+               javaweb_myblog.blog.btitle            as 'title',
+               javaweb_myblog.blog.bid           as 'bid'
+        from javaweb_myblog.blog order by javaweb_myblog.blog.createtime desc;
+    </select>
 
 
 </mapper>

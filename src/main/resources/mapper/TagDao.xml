@@ -64,5 +64,10 @@
         select * from javaweb_myblog.tag
     </select>
 
+    <!--    根据 id 查询数据-->
+    <select id="queryById" resultType="com.linkai.myblog.entity.Tag">
+        select * from javaweb_myblog.tag where tagid = #{tagid}
+    </select>
+
 
 </mapper>

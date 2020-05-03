@@ -48,6 +48,12 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    public Tag queryById(Long tagid) {
+        return tagDao.queryById(tagid);
+    }
+
+
+    @Override
     public List<Tag> queryLike(String tagName) {
         return tagDao.queryLike(tagName);
     }

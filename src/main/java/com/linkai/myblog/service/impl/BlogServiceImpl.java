@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.Map;
 
 /**
  * (Blog)表服务实现类
@@ -62,6 +63,11 @@ public class BlogServiceImpl implements BlogService {
     @Override
     public List<Blog> queryBlogByLimitAndType(Long specificTypeId, int offset, int limit) {
         return blogDao.queryBlogByLimitAndType(specificTypeId, offset, limit);
+    }
+
+    @Override
+    public List<Blog> queryBlogByLimitAndTag(Long specificTagId, int offset, int limit) {
+        return blogDao.queryBlogByLimitAndTag(specificTagId, offset, limit);
     }
 
     /**
@@ -137,4 +143,16 @@ public class BlogServiceImpl implements BlogService {
     public List<Blog> queryByNameLike(String btitle) {
         return blogDao.queryByNameLike(btitle);
     }
+
+    @Override
+    public List<Map<String, Object>> queryTimeLingWithCount() {
+        return blogDao.queryTimeLingWithCount();
+    }
+
+    @Override
+    public List<Map<String, Object>> queryTimeLingWithOutCount() {
+        return blogDao.queryTimeLingWithOutCount();
+    }
+
+
 }

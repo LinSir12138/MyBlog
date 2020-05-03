@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>时间轴</title>
+
+    <!--     “时间轴” css 代码文件 -->
+    <link rel="stylesheet" th:href="@{/timeline/css/history.css}">
+    <!--    引入导航栏的 css 代码文件 -->
+    <link rel="stylesheet" th:href="@{/css/article-title.css}">
+    <!--    滑动到顶部火箭 -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/rocketTop.css}">
+
+
+    <!--    字体图标    -->
+    <script src="http://at.alicdn.com/t/font_1697913_qro0wpzn1zo.js"></script>
+    <!--    引入 JQuery-->
+    <script th:src="@{/js/jquery-3.4.1.js}"></script>
+    <!--    引入平滑滚动的 js-->
+    <script th:src="@{/js/jquery.scrollTo.js}"></script>
+    <!--    引入滚动监测的 js-->
+    <script th:src="@{/js/jquery.waypoints.js}"></script>
+    <!--    滑动到顶部 js -->
+    <script type="text/javascript" th:src="@{/js/rocketTop.js}"></script>
+
+
+    <style>
+        body{
+            background-image: url("/image/bc.png");
+        }
+
+        /**************************************     时间轴             *******************/
+        .head-warp {
+            margin-top: 45px;
+        }
+
+        .main {
+            border: 1px solid #d7acac;
+            box-shadow: 2px 2px 2px #d6cff8;
+            border-radius: 5px 5px 5px 5px;
+        }
+
+        /************************************       底部导航栏       ***************8*/
+        .my-footer {
+            width: 500px;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+            margin: 40px auto;
+        }
+
+        dt a {
+            background: linear-gradient(to right, #fa709a 0%, #fee140 100%);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+    </style>
+
+</head>
+<body>
+
+
+<!--    头部导航栏-->
+<div th:replace="~{common/commonsfile::article-topbar}"></div>
+
+<!-- 时间轴 开始 -->
+<div class="head-warp">
+    <div class="head">
+        <div class="nav-box">
+            <ul>
+                <li class="cur" style="text-align:center; font-size:62px; font-family:'微软雅黑', '宋体'">JackLin博客时间轴</li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="main">
+    <div class="history">
+
+        <div class="history-date" th:each="itemWithCount:${listWithCount}">
+             <ul>
+                 <h2 class="first">
+                     <a href="#" th:text="${itemWithCount.get('year')} + '年' + ${itemWithCount.get('month')} + '月' + '(' + ${itemWithCount.get('count')} + ')'"></a>
+                 </h2>
+
+                 <li class="green" th:each="itemWithOutCount:${listWithOutCount}"
+                    th:if="${itemWithOutCount.get('year')} == ${itemWithCount.get('year')} and ${itemWithOutCount.get('month')} == ${itemWithCount.get('month')}">
+                     <h3>
+                         [[ ${itemWithOutCount.get('month')} + '月' + ${#dates.day(itemWithOutCount.get('time')) + '日'} ]]
+                         <span th:text="${#dates.hour(itemWithOutCount.get('time'))} + '时' + ${#dates.minute(itemWithOutCount.get('time')) + '分'}"></span>
+                     </h3>
+                     <dl>
+                         <dt>
+                             <a th:href="@{/article/} + ${itemWithOutCount.get('bid')}" th:text="${itemWithOutCount.get('title')}" target="_blank"></a>
+                         </dt>
+                     </dl>
+                 </li>
+             </ul>
+        </div>
+    </div>
+</div>
+
+<!--    文章底部-->
+<div class="my-footer">
+    © 2020 | LinKaiBlog | <a href="https://github.com/LinSir12138/MyBlog" title="https://github.com/LinSir12138/MyBlog" target="_blank">本博客已开源</a> | <a href="http://www.beian.miit.gov.cn/">赣ICP备20003376号</a>
+</div>
+
+<!--    滑动顶部小火箭 -->
+<div id="shape">
+    <div class="shapeColor">
+        <div class="shapeFly">
+        </div>
+    </div>
+</div>
+
+<script>
+    // 滚到顶部按钮
+    $("#btn-up").click(function () {
+        $(window).scrollTo(0, 700);
+    });
+
+    // 滚动监测
+    var waypoint = new Waypoint({
+        element: document.getElementById('content-left'),
+        handler: function (direction) {
+            if (direction === 'down') {
+                console.log('down');
+                $("#btn-up").show(400);
+            } else if (direction === 'up') {
+                console.log('up');
+                $("#btn-up").hide(400);
+            }
+        }
+    })
+
+
+</script>
+
+<!--    时间轴的 JS 代码-->
+<script th:src="@{/timeline/js/main.js}"></script>
+
+</body>
+</html>

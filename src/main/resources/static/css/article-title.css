@@ -17,7 +17,7 @@
     /*  利用背景平铺属性或者彩色效果  */
     background-image: url("../image/titlebc.png");
     background-repeat: repeat-y;
-    z-index: 10;
+    z-index: 100;
 }
 
 .title-left {

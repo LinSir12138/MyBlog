@@ -2,6 +2,7 @@ package com.linkai.myblog.dao;
 
 import com.linkai.myblog.entity.Blogtag;
 import com.linkai.myblog.entity.Tag;
+import com.linkai.myblog.entity.Type;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

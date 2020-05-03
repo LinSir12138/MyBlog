@@ -7,6 +7,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * (Blog)表数据库访问层
@@ -56,15 +57,6 @@ public interface BlogDao {
 
 
     /**
-    * @Description: 查询所有的博客信息
-    * @Param: []
-    * @return: java.util.List<com.linkai.myblog.entity.Blog>
-    * @Author: 林凯
-    * @Date: 2020/4/7
-    */
-    List<Blog> queryAll();
-
-    /**
      * 通过ID查询单条数据
      *
      * @param bid 主键
@@ -111,6 +103,15 @@ public interface BlogDao {
     */
     List<Blog> queryBlogByLimitAndType(@Param("specificTypeId") Long specificTypeId, @Param("offset") int offset, @Param("limit") int limit);
 
+    /**
+    * @Description:    标签中进行分页查询   ---》 限定标签的同时，分页查询博客
+    * @Param: [specificTagId, offset, limit]
+    * @return: java.util.List<com.linkai.myblog.entity.Blog>
+    * @Author: 林凯
+    * @Date: 2020/5/2
+    */
+    List<Blog> queryBlogByLimitAndTag(@Param("specificTagId") Long specificTagId, @Param("offset") int offset, @Param("limit") int limit);
+
 
     /**
      * @Description: 查询共有多少条记录，为分页做准备
@@ -122,6 +123,17 @@ public interface BlogDao {
     int queryAllNumber();
 
 
+
+    /**
+     * @Description: 查询所有的博客信息,“时间轴” 页面用到
+     * @Param: []
+     * @return: java.util.List<com.linkai.myblog.entity.Blog>
+     * @Author: 林凯
+     * @Date: 2020/4/7
+     */
+    List<Blog> queryAll();
+
+
     /**
     * @Description: 根据博客名字模糊查询，后台管理进行博客搜索时用到
     * @Param: []
@@ -130,5 +142,26 @@ public interface BlogDao {
     * @Date: 2020/4/12
     */
     List<Blog> queryByNameLike(String btitle);
+
+
+    /**
+    * @Description: “时间轴” 页面的查询，查询结果 ---》
+     *                查询结果：  year, month, count
+    * @Param: []
+    * @return: java.util.List<java.lang.Object>
+    * @Author: 林凯
+    * @Date: 2020/5/3
+    */
+    List<Map<String, Object>> queryTimeLingWithCount();
+
+    /**
+    * @Description: “时间轴”页面查询，查询结果 ---》
+     *              结果集： year, month, time ,title
+    * @Param: []
+    * @return: java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+    * @Author: 林凯
+    * @Date: 2020/5/3
+    */
+    List<Map<String, Object>> queryTimeLingWithOutCount();
 
 }

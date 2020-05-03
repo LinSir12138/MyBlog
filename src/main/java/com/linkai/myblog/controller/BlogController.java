@@ -118,6 +118,7 @@ public class BlogController {
                           @RequestParam("tag") String[] tags,
                           @RequestParam("published") String published) {
 
+        System.out.println("发布博客");
         /**
          *      1. 新增（insert） 一条博客记录
          * */

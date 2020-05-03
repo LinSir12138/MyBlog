@@ -333,6 +333,7 @@
 
         // 保存修改，暂时保存，不发布     -》 发送 Ajax 请求
         $('#temp-save').click(function () {
+            alert("暂存成功！");
             // 首先检查标题和标签是否填写
             var tags = $('.selected_tag');    // 原理：每次点击之后，就会生成一个 ul>li 标签，类名为 selected_tag
             if (tags.length === 0) {

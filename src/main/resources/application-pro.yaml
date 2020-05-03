@@ -38,6 +38,10 @@ spring:
     database: 0             # 默认数据库
 #    password: 666          # 密码
 
+  thymeleaf:
+    cache: false
+
+
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
@@ -46,3 +50,5 @@ mybatis:
 
 server:
   port: 80
+
+

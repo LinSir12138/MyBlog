@@ -62,6 +62,15 @@ public interface TagDao {
     Tag queryByName(String tagName);
 
     /**
+    * @Description:  根据 id 查询数据
+    * @Param: [tagid]
+    * @return: com.linkai.myblog.entity.Tag
+    * @Author: 林凯
+    * @Date: 2020/5/2
+    */
+    Tag queryById(Long tagid);
+
+    /**
     * @Description: 根据标签名称模糊查询
     * @Param:
     * @return:

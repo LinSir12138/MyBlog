@@ -4,6 +4,7 @@ import com.linkai.myblog.entity.Blog;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * (Blog)表服务接口
@@ -47,6 +48,16 @@ public interface BlogService {
      * @Date: 2020/4/30
      */
     List<Blog> queryBlogByLimitAndType(@Param("specificTypeId") Long specificTypeId, @Param("offset") int offset, @Param("limit") int limit);
+
+    /**
+     * @Description:    标签中进行分页查询   ---》 限定标签的同时，分页查询博客
+     * @Param: [specificTagId, offset, limit]
+     * @return: java.util.List<com.linkai.myblog.entity.Blog>
+     * @Author: 林凯
+     * @Date: 2020/5/2
+     */
+    List<Blog> queryBlogByLimitAndTag(@Param("specificTagId") Long specificTagId, @Param("offset") int offset, @Param("limit") int limit);
+
 
 
     /**
@@ -108,4 +119,24 @@ public interface BlogService {
      * @Date: 2020/4/12
      */
     List<Blog> queryByNameLike(String btitle);
+
+    /**
+     * @Description: “时间轴” 页面的查询，查询结果 ---》
+     *                查询结果：  year, month, count
+     * @Param: []
+     * @return: java.util.List<java.lang.Object>
+     * @Author: 林凯
+     * @Date: 2020/5/3
+     */
+    List<Map<String, Object>> queryTimeLingWithCount();
+
+    /**
+     * @Description: “时间轴”页面查询，查询结果 ---》
+     *              结果集： year, month, time ,title
+     * @Param: []
+     * @return: java.util.List<java.util.Map<java.lang.String,java.lang.Object>>
+     * @Author: 林凯
+     * @Date: 2020/5/3
+     */
+    List<Map<String, Object>> queryTimeLingWithOutCount();
 }
