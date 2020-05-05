@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.linkai.myblog.dao.FriendDao">
+
+    <resultMap type="com.linkai.myblog.entity.Friend" id="FriendMap">
+        <result property="fId" column="f_id" jdbcType="INTEGER"/>
+        <result property="fBlogtitle" column="f_blogtitle" jdbcType="VARCHAR"/>
+        <result property="fBlogaddress" column="f_blogaddress" jdbcType="VARCHAR"/>
+        <result property="fImageaddress" column="f_imageaddress" jdbcType="VARCHAR"/>
+        <result property="fEmail" column="f_email" jdbcType="VARCHAR"/>
+        <result property="fTime" column="f_time" jdbcType="TIMESTAMP"/>
+        <result property="fFlag" column="f_flag" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="fId" useGeneratedKeys="true">
+        insert into javaweb_myblog.friend(f_blogtitle, f_blogaddress, f_imageaddress, f_email, f_time, f_flag)
+        values (#{fBlogtitle}, #{fBlogaddress}, #{fImageaddress}, #{fEmail}, #{fTime}, #{fFlag})
+    </insert>
+
+
+
+</mapper>

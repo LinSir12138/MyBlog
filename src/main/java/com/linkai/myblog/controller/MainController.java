@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.linkai.myblog.entity.Blog;
 import com.linkai.myblog.entity.Tag;
 import com.linkai.myblog.entity.Type;
-import com.linkai.myblog.service.BlogService;
-import com.linkai.myblog.service.BlogtagService;
-import com.linkai.myblog.service.TagService;
-import com.linkai.myblog.service.TypeService;
+import com.linkai.myblog.service.*;
 import com.linkai.myblog.util.MyConstant;
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import io.swagger.annotations.ApiOperation;
@@ -39,6 +36,8 @@ public class MainController {
     TagService tagService;
     @Autowired
     BlogtagService blogtagService;
+    @Autowired
+    MainService mainService;
 
     // 跳转到 main  页面
     @GetMapping({"/", "/main"})
@@ -356,12 +355,14 @@ public class MainController {
     */
     @PostMapping("/becomeFirend")
     @ResponseBody
-    public String becomeFirend(@RequestParam("blogTitle") String blogTitle, @RequestParam("blogAddress") String blogAddress,
+    public String becomeFirend(@RequestParam("blogTitle") String blogTitle,
+                               @RequestParam("blogAddress") String blogAddress,
                                @RequestParam("imageAddress") String imageAddress,
                                @RequestParam("emailAddress") String emailAddress,
                                Model model) {
 
         System.out.println("message = " + blogTitle + blogAddress + imageAddress + emailAddress);
+        mainService.becomeFriend(blogTitle, blogAddress, imageAddress, emailAddress);
         return "OK";
     }
 

@@ -1,12 +1,16 @@
 package com.linkai.myblog;
 
 import com.linkai.myblog.dao.BlogDao;
+import com.linkai.myblog.dao.FriendDao;
+import com.linkai.myblog.entity.Friend;
 import com.linkai.myblog.entity.Type;
 import com.linkai.myblog.service.TypeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.context.request.FacesRequestAttributes;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +22,9 @@ class MyblogApplicationTests {
 
     @Autowired
     private BlogDao blogDao;
+
+    @Autowired
+    private FriendDao friendDao;
 
     @Test
     void contextLoads() {
@@ -48,6 +55,19 @@ class MyblogApplicationTests {
         }
     }
 
+    @Test
+    void testInsert() {
 
+        Friend friend = new Friend();
+        friend.setFBlogtitle("blogTitle");
+        friend.setFBlogaddress("blogAddress");
+        friend.setFImageaddress("imageAddress");
+        friend.setFEmail("emailAddress");
+        friend.setFTime(new Date());
+        friend.setFFlag(0);
+
+
+        friendDao.insert(friend);
+    }
 
 }
