@@ -330,6 +330,42 @@ public class MainController {
     }
 
 
+/**
+*********************************          前台  ----》  “友链”  页面     ******************************************************************
+* */
+
+    /**
+    * @Description: 跳转到 “友链” 界面
+    * @Param: []
+    * @return: java.lang.String
+    * @Author: 林凯
+    * @Date: 2020/5/3
+    */
+    @GetMapping("/Friend")
+    public String toFriend() {
+        return "friend";
+    }
+
+
+    /**
+    * @Description: 前端通过 from 表单提交友链申请
+    * @Param: []
+    * @return: java.lang.String
+    * @Author: 林凯
+    * @Date: 2020/5/4
+    */
+    @PostMapping("/becomeFirend")
+    @ResponseBody
+    public String becomeFirend(@RequestParam("blogTitle") String blogTitle, @RequestParam("blogAddress") String blogAddress,
+                               @RequestParam("imageAddress") String imageAddress,
+                               @RequestParam("emailAddress") String emailAddress,
+                               Model model) {
+
+        System.out.println("message = " + blogTitle + blogAddress + imageAddress + emailAddress);
+        return "OK";
+    }
+
+
 
 
     @GetMapping("/Statistic")

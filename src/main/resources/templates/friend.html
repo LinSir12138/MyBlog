@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>友链</title>
+
+    <!--    引入导航栏的 css 代码文件-->
+    <link rel="stylesheet" th:href="@{/css/article-title.css}">
+    <!--    滑动到顶部火箭 -->
+    <link rel="stylesheet" type="text/css" th:href="@{/css/rocketTop.css}">
+
+    <!--    字体图标    -->
+    <script src="http://at.alicdn.com/t/font_1697913_qro0wpzn1zo.js"></script>
+    <!--    引入 JQuery-->
+    <script th:src="@{/js/jquery-3.4.1.js}"></script>
+    <!--    引入平滑滚动的 js-->
+    <script th:src="@{/js/jquery.scrollTo.js}"></script>
+    <!--    引入滚动监测的 js-->
+    <script th:src="@{/js/jquery.waypoints.js}"></script>
+    <!--    引入 “溢出显示省略号” 的 js-->
+    <script th:src="@{/js/jquery.dotdotdot.js}"></script>
+    <!--    滑动到顶部 js -->
+    <script type="text/javascript" th:src="@{/js/rocketTop.js}"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-image: url("/image/bc.png");
+        }
+
+        .content {
+            width: 1135px;
+            margin: 0 auto;
+            /*background-color: paleturquoise;*/
+            margin-top: 120px;
+        }
+
+/*************************      中间区域的    顶部           **************************************/
+
+        .content-top {
+            width: 100%;
+            display: inline-block;
+        }
+
+        .content-top p {
+            font-size: 30px;
+            font-weight: 900;
+            text-align: center;
+            line-height: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #ccc;
+            margin-bottom: 10px;
+        }
+
+        .content-top .friend {
+            width: 100%;
+        }
+
+        .content-top a {
+            height: 110px;
+            line-height: 100px;
+            float: left;
+            display: inline-block;
+            border: 1px solid #caffed;
+            margin: 10px 0px 0px 10px;
+            border-radius: 15px;
+            background-image: linear-gradient(to right, #eea2a2 0%, #bbc1bf 19%, #57c6e1 42%, #b49fda 79%, #7ac5d8 100%);
+            box-shadow: 5px 5px 5px #7ac5d8;
+        }
+
+        .content-top a:hover {
+            background-image: linear-gradient(-225deg, #2CD8D5 0%, #C5C1FF 56%, #FFBAC3 100%);
+        }
+
+        .content-top a img {
+            height: 90px;
+            width: 90px;
+            border-radius: 90px;
+            display: inline-block;
+            float: left;
+            margin-left: 10px;
+            margin-top: 10px;
+        }
+
+        .content-top a div {
+            height: 90px;
+            float: left;
+            line-height: 90px;
+            margin-left: 13px;
+            font-size: 24px;
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+
+/*************************      中间区域的    中部          **************************************/
+
+        .content-center {
+            width: 1135px;
+            border-top: 2px solid #ccc;
+            margin-top: 45px;
+        }
+
+        .p-title {
+            font-size: 30px;
+            margin: 15px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .content-center .p-content {
+            margin: 5px;
+            font-size: 18px;
+            padding-left: 20em;
+        }
+
+/*************************      中间区域的    底部          **************************************/
+
+        .content-bottom {
+
+        }
+
+        .content-bottom .p-input {
+            text-align: center;
+        }
+
+        .content-bottom .submit {
+            height: 45px;
+            width: 110px;
+            margin: 10px auto;
+            line-height: 45px;
+            text-align: center;
+            border: 1px solid;
+            font-size: 22px;
+            font-weight: 700;
+            cursor: pointer;
+            background-color: #a6fe9e8a;
+        }
+
+        .content-bottom input {
+            height: 30px;
+            margin: 10px;
+            width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 22px;
+        }
+
+
+    </style>
+
+
+</head>
+<body>
+
+<!--    文章页面：头部导航栏-->
+<div th:replace="~{common/commonsfile::article-topbar}"></div>
+
+<div class="content">
+
+    <div class="content-top">
+        <p>我的友链</p>
+        <div class="friend">
+            <a href="#">
+                <img src="http://m.imeitou.com/uploads/allimg/2020041017/kdv3zp4bymc.jpeg" alt="">
+                <div>666的博客</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="content-center">
+        <p class="p-title">申请友链注意事项</p>
+        <p class="p-content">（1）网站不得包含色情，政治敏感内容</p>
+        <p class="p-content">（2）申请友链之前，尽量先将本站加入到你的友链当中</p>
+        <p class="p-content">（3）网站能够正常访问</p>
+        <p class="p-content">（4）填写下面表单，审核通过之后你能够收到一封邮件</p>
+        <p class="p-title">本站信息</p>
+        <p class="p-content">本站名称：JackLin的个人博客</p>
+        <p class="p-content">本站地址：http://linkaiblog.top</p>
+        <p class="p-content">头像地址：http://linkaiblog.top/image/logo.png</p>
+        <p class="p-content">个人邮箱：jacklin.it@qq.com</p>
+    </div>
+
+    <div class="content-bottom">
+        <form class="my-form">
+            <p class="p-title">申请友链</p>
+            <p class="p-input">
+                网站名称：<input type="text" class="blogTitle" name="blogTitle" required="required">
+            </p>
+            <p class="p-input">
+                网站地址：<input type="text" class="blogAddress" name="blogAddress" required="required">
+            </p>
+            <p class="p-input">
+                头像地址：<input type="text" class="imageAddress" name="imageAddress" required="required">
+            </p>
+            <p class="p-input">
+                个人邮箱：<input type="text" class="emailAddress" name="emailAddress" placeholder="选填(尽量填写)" required="required">
+            </p>
+            <div class="submit">提交申请</div>
+        </form>
+    </div>
+</div>
+
+
+<!--    文章底部-->
+<div class="my-footer">
+    © 2020 | LinKaiBlog | <a href="https://github.com/LinSir12138/MyBlog" title="https://github.com/LinSir12138/MyBlog" target="_blank">本博客已开源</a> | <a href="http://www.beian.miit.gov.cn/">赣ICP备20003376号</a>
+</div>
+
+<!--    滑动顶部小火箭 -->
+<div id="shape">
+    <div class="shapeColor">
+        <div class="shapeFly">
+        </div>
+    </div>
+</div>
+
+<script>
+
+    // 处理 “友链申请”   ---》  发送 ajax 请求
+    var submit = $('.submit');
+    submit.click(function () {
+        if (checkMsg() === false) {
+            return;
+        }
+
+        var blogTitle = $(".blogTitle").val();
+        var blogAddress = $(".blogAddress").val();
+        var imageAddress = $(".imageAddress").val();
+        var emailAddress = $(".emailAddress").val();
+        var dataObj = {
+            "blogTitle": blogTitle,
+            "blogAddress": blogAddress,
+            "imageAddress": imageAddress,
+            "emailAddress": emailAddress
+        };
+
+        $.ajax("/becomeFirend", {
+            type: "POST",
+            data: dataObj,       // 注意：这里传递的是一个 json 对象，后端需要利用 @RequestParam 注解
+            dataType: "text",  // 返回的类型为纯文本字符串类型
+            traditional: true,
+            success: function (data, status) {
+                if (data == 'OK') {
+                    alert("申请成功，正在审核中！审核通过之后您将收到邮件通知！");
+                } else {
+                    alert("系统繁忙，请稍后再试！");
+                }
+            }
+
+        })
+    });
+
+    function checkUrl(URL) {
+        var str = URL;
+        //判断URL地址的正则表达式为:http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?
+        //下面的代码中应用了转义字符"\"输出一个字符"/"
+        var Expression = /http(s)?:\/\/([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?/;
+        var objExp = new RegExp(Expression);
+        if (objExp.test(str) == true) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+    function checkEmail(email){
+        var re = '/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/';
+        if(re.test(str)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    function checkMsg() {
+        var blogTitle = $(".blogTitle").val();
+        var blogAddress = $(".blogAddress").val();
+        var imageAddress = $(".imageAddress").val();
+        var emailAddress = $(".emailAddress").val();
+
+        if (blogTitle === '') {
+            alert("博客标题不能为空！");
+            return false;
+        }
+        if (blogAddress === '') {
+            alert("博客地址不能为空！");
+            return false;
+        }
+        if (checkUrl(blogAddress) === false) {
+            alert("不合法博客地址！");
+            return false;
+        }
+        if (imageAddress === '') {
+            alert("图片地址不能为空！");
+            return false;
+        }
+        if (checkUrl(imageAddress) === false) {
+            alert("不合法图片地址！");
+            return false;
+        }
+        if (emailAddress !== '') {
+            // 不为空才能调用 checkEmail 函数
+            if (checkEmail(emailAddress) === false) {
+                alert("不合法邮箱地址！");
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
+    // 滚到顶部按钮
+    $("#btn-up").click(function () {
+        $(window).scrollTo(0, 700);
+    });
+
+    // 滚动监测
+    var waypoint = new Waypoint({
+        element: document.getElementById('content-left'),
+        handler: function (direction) {
+            if (direction === 'down') {
+                console.log('down');
+                $("#btn-up").show(400);
+            } else if (direction === 'up') {
+                console.log('up');
+                $("#btn-up").hide(400);
+            }
+        }
+    })
+</script>
+
+</body>
+</html>
