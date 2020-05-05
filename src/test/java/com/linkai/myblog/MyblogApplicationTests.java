@@ -57,17 +57,11 @@ class MyblogApplicationTests {
 
     @Test
     void testInsert() {
-
-        Friend friend = new Friend();
-        friend.setFBlogtitle("blogTitle");
-        friend.setFBlogaddress("blogAddress");
-        friend.setFImageaddress("imageAddress");
-        friend.setFEmail("emailAddress");
-        friend.setFTime(new Date());
-        friend.setFFlag(0);
-
-
-        friendDao.insert(friend);
+        List<Friend> friends = friendDao.queryAll();
+        for (Friend f:friends
+             ) {
+            System.out.println(f);
+        }
     }
 
 }

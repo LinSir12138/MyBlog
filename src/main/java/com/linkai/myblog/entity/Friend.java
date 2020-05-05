@@ -7,10 +7,10 @@ import java.io.Serializable;
  * (Friend)实体类
  *
  * @author 林凯
- * @since 2020-05-05 19:44:23
+ * @since 2020-05-05 21:24:47
  */
 public class Friend implements Serializable {
-    private static final long serialVersionUID = 788100260494184084L;
+    private static final long serialVersionUID = -81951042846740251L;
     
     private Integer fId;
     /**

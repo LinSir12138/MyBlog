@@ -13,6 +13,43 @@
     </resultMap>
 
 
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="FriendMap">
+        select
+          f_id, f_blogtitle, f_blogaddress, f_imageaddress, f_email, f_time, f_flag
+        from javaweb_myblog.friend
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="FriendMap">
+        select
+          f_id, f_blogtitle, f_blogaddress, f_imageaddress, f_email, f_time, f_flag
+        from javaweb_myblog.friend
+        <where>
+            <if test="fId != null">
+                and f_id = #{fId}
+            </if>
+            <if test="fBlogtitle != null and fBlogtitle != ''">
+                and f_blogtitle = #{fBlogtitle}
+            </if>
+            <if test="fBlogaddress != null and fBlogaddress != ''">
+                and f_blogaddress = #{fBlogaddress}
+            </if>
+            <if test="fImageaddress != null and fImageaddress != ''">
+                and f_imageaddress = #{fImageaddress}
+            </if>
+            <if test="fEmail != null and fEmail != ''">
+                and f_email = #{fEmail}
+            </if>
+            <if test="fTime != null">
+                and f_time = #{fTime}
+            </if>
+            <if test="fFlag != null">
+                and f_flag = #{fFlag}
+            </if>
+        </where>
+    </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="fId" useGeneratedKeys="true">
@@ -20,6 +57,35 @@
         values (#{fBlogtitle}, #{fBlogaddress}, #{fImageaddress}, #{fEmail}, #{fTime}, #{fFlag})
     </insert>
 
+    <!--通过主键修改数据-->
+    <update id="update">
+        update javaweb_myblog.friend
+        <set>
+            <if test="fBlogtitle != null and fBlogtitle != ''">
+                f_blogtitle = #{fBlogtitle},
+            </if>
+            <if test="fBlogaddress != null and fBlogaddress != ''">
+                f_blogaddress = #{fBlogaddress},
+            </if>
+            <if test="fImageaddress != null and fImageaddress != ''">
+                f_imageaddress = #{fImageaddress},
+            </if>
+            <if test="fEmail != null and fEmail != ''">
+                f_email = #{fEmail},
+            </if>
+            <if test="fTime != null">
+                f_time = #{fTime},
+            </if>
+            <if test="fFlag != null">
+                f_flag = #{fFlag},
+            </if>
+        </set>
+        where f_id = #{fId}
+    </update>
 
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from javaweb_myblog.friend where f_id = #{fId}
+    </delete>
 
 </mapper>
