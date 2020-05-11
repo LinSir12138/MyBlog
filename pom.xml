@@ -20,6 +20,12 @@
 
     <dependencies>
 
+        <!--    邮件任务    -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+
         <!--    RabbitMQ 消息队列-->
         <dependency>
             <groupId>org.springframework.boot</groupId>

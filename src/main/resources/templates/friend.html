@@ -150,6 +150,11 @@
         }
 
 
+        .my-footer {
+            text-align: center;
+            margin: 10px auto;
+        }
+
     </style>
 
 
@@ -267,8 +272,8 @@
         }
     };
     function checkEmail(email){
-        var re = '/^(\w-*\.*)+@(\w-?)+(\.\w{2,})+$/';
-        if(re.test(str)){
+        var reg = /^[a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*\.[a-z]{2,}$/
+        if(reg.test(email)){
             return true;
         }else{
             return false;

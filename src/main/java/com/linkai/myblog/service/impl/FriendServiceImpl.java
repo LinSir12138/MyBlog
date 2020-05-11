@@ -3,6 +3,8 @@ package com.linkai.myblog.service.impl;
 import com.linkai.myblog.entity.Friend;
 import com.linkai.myblog.dao.FriendDao;
 import com.linkai.myblog.service.FriendService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -16,8 +18,13 @@ import java.util.List;
  */
 @Service("friendService")
 public class FriendServiceImpl implements FriendService {
-    @Resource
+
+
+    @Autowired
     private FriendDao friendDao;
+
+
+
 
 
     /**

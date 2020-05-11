@@ -1,10 +1,10 @@
 # \u6570\u636E\u5E93\u914D\u7F6E\uFF0C\u53EF\u4EE5\u53C2\u8003  DataSourceProperties \u7C7B
 spring:
   datasource:
-    url: jdbc:mysql://39.98.86.223:3306/mybatis?serverTImezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false
+    url: jdbc:mysql://101.132.147.111:3306/javaweb_myblog?serverTImezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=false
     driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    password: alymysql123456
+    username:
+    password:
 # 想指定数据源，利用 type 指定
 # Spring Boot 默认是不注入这些属性值的，需要自己绑定
 # druid 数据源专有配置
@@ -32,18 +32,25 @@ spring:
 #  Redis 缓存相关配置
   redis:
     port: 6379                # 端口号
-    host: "39.98.86.223"    # 服务器地址
+    host: "101.132.147.111"    # 服务器地址
     database: 0             # 默认数据库
-#    password: 666          # 密码
+
 
 # RabbitMQ 相关配置
   rabbitmq:
-    host: 39.98.86.223
-    username: guest
-    password: guest
+    host: 101.132.147.111
+    username:
+    password:
 
   thymeleaf:
     cache: false
+
+#   邮件发送相关配置
+  mail:
+    username: 1670822659@qq.com
+    password: afzyyyzyyquaeiei
+    host: smtp.qq.com
+    properties.mail.smtp.ssl.enable: true
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml

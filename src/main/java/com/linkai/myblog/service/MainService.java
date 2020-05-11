@@ -7,5 +7,4 @@ public interface MainService {
 
     void becomeFriend(String blogTitle, String blogAddress, String imageAddress, String emailAddress);
 
-    public void inserFirend(Friend friend);
 }
