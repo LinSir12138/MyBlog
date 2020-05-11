@@ -2,10 +2,16 @@ package com.linkai.myblog.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
-import org.springframework.stereotype.Controller;
+import com.google.gson.Gson;
+import com.qiniu.common.QiniuException;
+import com.qiniu.http.Response;
+import com.qiniu.storage.Configuration;
+import com.qiniu.storage.Region;
+import com.qiniu.storage.UploadManager;
+import com.qiniu.storage.model.DefaultPutRet;
+import com.qiniu.util.Auth;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -14,11 +20,66 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
-import java.util.Calendar;
-import java.util.UUID;
 
 @RestController     // 不仅视图解析器，直接返回字符串
 public class FileController {
+
+
+    @RequestMapping("/uploadQNY")
+    public JSONObject fileUploadQNY(@RequestParam("editormd-image-file") MultipartFile file, HttpServletRequest request) {
+
+        // 注意是在 ：com.qiniu.storage 包下面的
+        Configuration cfg = new Configuration(Region.region2());        // 由于我们选择的是华南的机房，所以这里调用 region2()
+
+        UploadManager uploadManager = new UploadManager(cfg);
+        String accessKey = "";
+        String secretKey = "";
+        String bucket = "jacklin-blog";     // 填写我们的存储空间的名称
+
+
+        //默认不指定key的情况下，以文件内容的hash值作为文件名
+        // 我们这里的 key 可以指定为 本地文件的文件名
+        String key = file.getOriginalFilename();
+
+        // Edit.md  构造返回的 Json 字符串
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("url", "http://image.linkaiblog.top/" + key);
+        jsonObject.put("message", "upload success!");
+
+        //如果文件名为空，直接回到返回
+        if ("".equals(key)){
+            // 0 表示上传失败
+            jsonObject.put("success", 0);
+            return jsonObject;
+        }
+
+        try {
+            byte[] uploadButes = file.getBytes();
+            Auth auth = Auth.create(accessKey, secretKey);
+            String upToken = auth.uploadToken(bucket);
+
+            Response response = uploadManager.put(uploadButes, key, upToken);
+            // 解析上传成功的结果  --》 需要用到 com.google.gson.Gson
+            DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
+            System.out.println("文件名为：" + putRet.key);
+            System.out.println("文件内容的hash值为" + putRet.hash);
+        } catch (QiniuException ex) {
+            Response r = ex.response;
+            System.err.println(r.toString());
+            try {
+                System.err.println(r.bodyString());
+            } catch (QiniuException ex2) {
+                //ignore
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        // 1 表示上传成功
+        jsonObject.put("success", 1);
+        return jsonObject;
+    }
 
     @RequestMapping("/upload")
     public JSONObject fileUpload(@RequestParam("editormd-image-file") MultipartFile file , HttpServletRequest request) throws IOException {

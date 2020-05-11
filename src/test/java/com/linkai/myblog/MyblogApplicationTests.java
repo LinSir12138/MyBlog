@@ -1,21 +1,27 @@
 package com.linkai.myblog;
 
+import com.google.gson.Gson;
 import com.linkai.myblog.dao.BlogDao;
 import com.linkai.myblog.dao.FriendDao;
 import com.linkai.myblog.entity.Friend;
 import com.linkai.myblog.entity.Type;
 import com.linkai.myblog.service.TypeService;
 import com.linkai.myblog.service.impl.MainServiceImpl;
+import com.qiniu.common.QiniuException;
+import com.qiniu.http.Response;
+import com.qiniu.storage.Configuration;
+import com.qiniu.storage.Region;
+import com.qiniu.storage.UploadManager;
+import com.qiniu.storage.model.DefaultPutRet;
+import com.qiniu.util.Auth;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.web.context.request.FacesRequestAttributes;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -102,6 +108,41 @@ class MyblogApplicationTests {
     @Test
     void testMQ() {
         mainService.becomeFriend("666的博客", "https://blog.csdn.net/guanmao4322/article/details/88388199", "https://blog.csdn.net/guanmao4322/article/details/88388199", "1670822659@qq.com");
+
+    }
+
+    @Test
+    void testUpload() {
+        // 注意是在 ：com.qiniu.storage 包下面的
+        Configuration cfg = new Configuration(Region.region2());        // 由于我们选择的是华南的机房，所以这里调用 region2()
+
+        UploadManager uploadManager = new UploadManager(cfg);
+        String accessKey = "";
+        String secretKey = "";
+        String bucket = "jacklin-blog";     // 填写我们的存储空间的名称
+
+        String localFilePath = "D:\\temp\\test.png";
+        String key = null;
+
+        Auth auth = Auth.create(accessKey, secretKey);
+        String upToken = auth.uploadToken(bucket);
+
+        // com.qiniu.http.Response;
+        try {
+            Response response = uploadManager.put(localFilePath, key, upToken);
+            // 解析上传成功的结果
+            DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
+            System.out.println(putRet.key);
+            System.out.println(putRet.hash);
+        } catch (QiniuException e) {
+            Response r = e.response;
+            System.err.println(r.toString());
+            try {
+                System.err.println(r.bodyString());
+            } catch (QiniuException ex) {
+                ex.printStackTrace();
+            }
+        }
 
     }
 
