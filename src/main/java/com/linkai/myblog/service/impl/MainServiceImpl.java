@@ -75,6 +75,10 @@ public class MainServiceImpl implements MainService {
         // 执行插入操作
         friendDao.insert(friend);
 
+        if ("".equals(map.get("emailAddress"))) {
+            return;     // 如果邮件为空，直接返回，不发送邮件
+        }
+
         // 发送邮件，通知等待 审核
         try {
             sendEmail(map.get("emailAddress"));

@@ -111,39 +111,6 @@ class MyblogApplicationTests {
 
     }
 
-    @Test
-    void testUpload() {
-        // 注意是在 ：com.qiniu.storage 包下面的
-        Configuration cfg = new Configuration(Region.region2());        // 由于我们选择的是华南的机房，所以这里调用 region2()
 
-        UploadManager uploadManager = new UploadManager(cfg);
-        String accessKey = "";
-        String secretKey = "";
-        String bucket = "jacklin-blog";     // 填写我们的存储空间的名称
-
-        String localFilePath = "D:\\temp\\test.png";
-        String key = null;
-
-        Auth auth = Auth.create(accessKey, secretKey);
-        String upToken = auth.uploadToken(bucket);
-
-        // com.qiniu.http.Response;
-        try {
-            Response response = uploadManager.put(localFilePath, key, upToken);
-            // 解析上传成功的结果
-            DefaultPutRet putRet = new Gson().fromJson(response.bodyString(), DefaultPutRet.class);
-            System.out.println(putRet.key);
-            System.out.println(putRet.hash);
-        } catch (QiniuException e) {
-            Response r = e.response;
-            System.err.println(r.toString());
-            try {
-                System.err.println(r.bodyString());
-            } catch (QiniuException ex) {
-                ex.printStackTrace();
-            }
-        }
-
-    }
 
 }

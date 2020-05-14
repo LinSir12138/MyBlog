@@ -27,6 +27,9 @@ public class FriendController {
     private FriendService friendService;
 
 
+    /**
+     *      后台跳转到 “友链管理”  界面
+     * */
     @GetMapping("/Friend")
     public String toFriend(Model model) {
         List<Friend> friends = friendService.queryAll();

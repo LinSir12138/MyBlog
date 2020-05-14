@@ -40,8 +40,8 @@ spring:
   # RabbitMQ 相关配置
   rabbitmq:
     host: 101.132.147.111
-    username:
-    password:
+    username: guest
+    password: guest
 
   thymeleaf:
     cache: false
@@ -49,7 +49,7 @@ spring:
   #   邮件发送相关配置
   mail:
     username: 1670822659@qq.com
-    password: afzyyyzyyquaeiei
+    password:
     host: smtp.qq.com
     properties.mail.smtp.ssl.enable: true
 

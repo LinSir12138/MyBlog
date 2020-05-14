@@ -14,6 +14,8 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/rocketTop.css}">
     <!--    分页-->
     <link rel="stylesheet" th:href="@{/css/pagenation/myPagination.css}">
+    <!--    关于底部备案号的 css 样式文件   -->
+    <link rel="stylesheet" th:href="@{/css/blog-footer.css}">
 
     <!--    字体图标    -->
     <script src="http://at.alicdn.com/t/font_1697913_qro0wpzn1zo.js"></script>
@@ -53,7 +55,6 @@
             margin: 80px 170px;
             margin-bottom: 0px;
             width: 1135px;
-            background-color: #fee7f2;
             border-radius: 15px;
             display: inline-block;      /*  由内部的内容的高度撑起盒子的高度    */
         }
@@ -86,11 +87,11 @@
         .content-left .each-data {
             width: 735px;
             /*height: 300px;*/ /*  高度随着内容的高度改变*/
-            background-color: #8bff8f;
+            background-color: #ffffffbf;
             box-sizing: border-box;
             border-radius: 5px;
-            margin-bottom: 10px;
-            box-shadow: 3px 3px 3px #cccccc;
+            margin-bottom: 25px;
+            box-shadow: 0px -5px 10px yellow, 5px 0 10px red;   /* 彩色边框 */
             position: relative;
             display: inline-block; /*  让 li 标签随着里面的内容的高度的增加而增加*/
             border: 2px solid #ccc;
@@ -102,13 +103,21 @@
             line-height: 60px;
             font-size: 36px;
             font-weight: bolder;
+            background: linear-gradient(to right, #fa709a 0%, #fee140 100%);
+            -webkit-background-clip: text;
+            color: transparent;
+            font-family: 华文细黑;
+            margin-left: 15px;
+
         }
 
         .content-left .each-data ul {
             height: 45px;
             width: 600px;
-            background-color: peru;
-
+            margin-left: 20px;
+            border-bottom: 3px transparent solid;       /*      彩色边框    */
+            /*border-image: linear-gradient(to right,#ff3c00,#23b7cb) 1 10;*/
+            border-image: linear-gradient(to right,#fea15c,#a6d2ad) 1 10;
         }
 
         .content-left .each-data ul li {
@@ -116,7 +125,7 @@
             width: 130px;
             margin-left: 20px;
             float: left;
-            background-color: #0e8dc7;
+            /*background-color: #0e8dc7;*/
             text-align: center;
             line-height: 45px;
             list-style: none;
@@ -127,8 +136,9 @@
             height: 135px;
             margin-top: 5px;
             margin-left: 15px;
-            background-color: orange;
+            /*background-color: orange;*/
             font-size: 20px;
+            overflow: hidden;
         }
 
         .content-left .each-data .readmore {
@@ -148,6 +158,9 @@
             line-height: 40px;
             text-align: center;
             text-decoration: none;
+            background: -webkit-linear-gradient(359deg, rgb(255, 149, 250) 35%, rgb(103, 241, 203) 81%);
+            font-size: 19px;
+            font-family: sans-serif;
         }
 
         .content-left .each-data span {
@@ -228,60 +241,11 @@
             border-radius: 5px;
         }
 
-
-
-
         /**************         右侧              ******************/
-        /*      文章统计    */
-         .article-statistics {
-            margin-top: 10px;
-            width: 100%;
-            height: 345px;
-            background-color: #d8ffdc;
-            box-sizing: border-box;
-        }
-
-         .article-statistics p {
-            height: 40px;
-            width: 100%;
-            line-height: 40px;
-            text-align: center;
-        }
-
-         .article-statistics ul {
-            float: left;
-            background-color: paleturquoise;
-        }
-
-         .article-statistics ul li {
-             height: 80px;
-             width: 157px;
-             background-color: palevioletred;
-             list-style: none;
-             line-height: 40px;
-             float: left;
-             text-align: center;
-        }
-
-        .article-statistics ul li .decoration {
-            text-align: center;
-
-        }
-
-        .article-statistics ul li .number-statistics {
-            text-align: center;
-        }
-
+        /*      文章统计,这部分 CSS 抽取出来了，放在 article-introduce.css  */
 
         /*************        文章底部      ******************88*/
-        .my-footer {
-            width: 500px;
-            height: 40px;
-            text-align: center;
-            line-height: 40px;
-            margin: 40px auto;
-        }
-
+      /*    关于备案号的css代码，抽取出来了，放在 blog-footer.css */
 
     </style>
 
@@ -293,7 +257,6 @@
 
 <!--    中部内容-->
 <div class="content">
-
 
     <div class="content-bottom" id="text">
 
@@ -352,9 +315,7 @@
 </div>
 
 <!--    文章底部-->
-<div class="my-footer">
-    © 2020 | LinKaiBlog | <a href="https://github.com/LinSir12138/MyBlog" title="https://github.com/LinSir12138/MyBlog" target="_blank">本博客已开源</a> | <a href="http://www.beian.miit.gov.cn/">赣ICP备20003376号</a>
-</div>
+<div th:replace="~{common/commonsfile::blog-footerbar}"></div>
 
 <!--    滑动顶部小火箭 -->
 <div id="shape">
@@ -393,11 +354,15 @@
 <!--    分页需要的 js 代码-->
 <script th:src="@{/js/pagenation/myPagination.js}"></script>
 
+<!--    关于时间统计的 JS 代码-->
+<script th:src="@{/js/time.js}"></script>
+
 <script>
     window.addEventListener('load', function (event) {
 
-
-        //   分页, 提交 form 表单
+        /**
+         *      分页, 提交 form 表单
+         * */
         var typeNumbers = parseInt($('.type-numbers').text());      //  一共有多少个分类
         var eachPageNumber = 6;        // 每页 6 条记录
         var pageNumber = Math.ceil(typeNumbers / eachPageNumber);     // 总页数
@@ -429,7 +394,9 @@
         })
 
 
-        /*  增加了 百度一下 图标显示并跳转到百度搜索的功能，以及复制到剪切板图标 */
+        /**
+         *      增加了 百度一下 图标显示并跳转到百度搜索的功能，以及复制到剪切板图标
+         * */
         var selectedText = '';
         var text = document.getElementById('text');
         var ico = document.getElementById('to-baidu');
@@ -470,7 +437,9 @@
         });
 
 
-        /*  实现点击搜索按钮弹出搜索框的功能    */
+        /**
+         *      实现点击搜索按钮弹出搜索框的功能 ---》 具体的搜索功能暂未实现
+         * */
         var searchBtn = document.getElementById('search-article');
         var searchBox = document.getElementsByClassName('search')[0];
         searchBtn.addEventListener('click', function () {
@@ -496,7 +465,9 @@
 
         });
 
-        //  溢出显示省略号的 js 代码
+        /**
+         *      溢出显示省略号的 js 代码
+         * */
         var $dot5 = $('.dot5');
         $dot5.append(' <a class="toggle" href="#"><span class="open">[ + ]</span></a>');
         function createDots() {
@@ -524,7 +495,9 @@
         );
 
 
-        // 发送 Ajax 请求，统计“文章数量”，“标签数量”， “访客数量等信息”
+        /**
+         *      发送 Ajax 请求，统计“文章数量”，“标签数量”， “访客数量等信息”
+         * */
         $.ajax("/Statistic", {
             type: "GET",
             dataType: "JSON",

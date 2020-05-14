@@ -20,6 +20,12 @@
     z-index: 100;
 }
 
+h1 {
+    float: left;
+    line-height: 70px;
+    font-family: 华文细黑;
+}
+
 .title-left {
     width: 70px;
     height: 70px;
@@ -42,6 +48,8 @@
 .title-log {
     height: 100%;
     float: left;
+    padding-right: 25px;
+    margin-left: -95px;
 }
 
 .title-log img {
@@ -51,7 +59,7 @@
 .title-center ul {
     /*float: right;*/
     height: 70px;
-    width: 990px;       /*  1035 - 70*/
+    width: 1070px;       /*  1035 - 70*/
     /*background-color: red;*/
     margin-left: 145px;
 }

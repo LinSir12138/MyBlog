@@ -5,17 +5,30 @@
 .content-right {
     width: 315px;
     height: 900px;
-    background-color: palegreen;
     float: right;
     box-sizing: border-box;
     margin-right: 20px;
     margin-top: 10px;
 }
 
+.myblog {
+    font-family: 华文细黑;
+    font-size: 28px !important;
+    font-weight: 800 !important;
+    background: linear-gradient(to right, #fa709a 0%, #fee140 100%) !important;
+    -webkit-background-clip: text !important;
+    color: transparent !important;
+    height: 40px;
+    line-height: 40px !important;
+}
+
 .content-right .content-myinfo {
     width: 100%;
     height: 345px;
-    background-color: #d8ffdc;
+    background-color: #ffffffbf;
+    box-shadow: 0px -5px 10px yellow, 5px 0 10px red;
+    border-radius: 5px;
+    border: 2px solid #ccc;
     box-sizing: border-box;
 }
 
@@ -32,7 +45,8 @@
     height: 80px;
     display: block;
     margin: 0 auto;
-    padding-top: 20px;
+    margin-top: 20px;
+    border-radius: 80px;
 }
 
 .content-right .content-myinfo p {
@@ -74,26 +88,46 @@
 
 /*      文章统计    */
 .content-right .article-statistics {
-    margin-top: 10px;
+    margin-top: 25px;
     width: 100%;
     height: 345px;
-    background-color: #d8ffdc;
+    background-color: #ffffffbf;
     box-sizing: border-box;
+    box-shadow: 0px -5px 10px yellow, 5px 0 10px red;
+    border-radius: 5px;
+    border: 2px solid #ccc;
 }
 
-.content-right .article-statistics p {
-    height: 40px;
+.content-right .article-statistics .title-statistics {
     width: 100%;
-    line-height: 40px;
+    height: 80px;
+    line-height: 80px;
+    font-family: 华文细黑;
     text-align: center;
+    font-weight: 800;
+    font-size: 28px;
 }
 
 .content-right .article-statistics ul {
-    float: left;
-    background-color: paleturquoise;
+    width: 100%;
+    list-style: none;
 }
 
 .content-right .article-statistics ul li {
+    width: 100%;
+    height: 80px;
+}
+
+.content-right .article-statistics ul li .decoration {
+    width: 100%;
     height: 40px;
-    background-color: palevioletred;
+    text-align: center;
+    line-height: 40px;
+}
+
+.content-right .article-statistics ul li .number-statistics {
+    width: 100%;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
 }

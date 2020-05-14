@@ -10,6 +10,8 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/rocketTop.css}">
     <!--    分页-->
     <link rel="stylesheet" th:href="@{/css/pagenation/myPagination.css}">
+    <!--    关于底部备案号的 css 样式文件   -->
+    <link rel="stylesheet" th:href="@{/css/blog-footer.css}">
 
 
     <!--    字体图标    -->
@@ -41,7 +43,7 @@
             width: 1135px;
             /*!*height: 800px;          !*  待定*!*!   */
             margin: 0 auto;
-            background-color: paleturquoise;
+            background-color: #ffffffbf;
             margin-top: 120px;
         }
 
@@ -94,8 +96,8 @@
             background-color: #b9ffc7;
             box-sizing: border-box;
             border-radius: 5px;
-            margin-bottom: 20px;
-            box-shadow: 3px 3px 3px #cccccc;
+            margin-bottom: 25px;
+            box-shadow: 0px -5px 10px yellow, 5px 0 10px red;
             position: relative;
             display: inline-block; /*  让 li 标签随着里面的内容的高度的增加而增加*/
             border: 2px solid #ccc;
@@ -105,13 +107,22 @@
             /*height: 60px;*/ /* 高度有内容的高度决定*/
             font-size: 36px;
             font-weight: bolder;
-            padding: 25px;
+            padding-top: 25px;
+            padding-left: 15px;
+            background: linear-gradient(to right, #fa709a 0%, #fee140 100%);
+            -webkit-background-clip: text;
+            color: transparent;
+            font-family: 华文细黑;
         }
 
         .each-data ul {
             height: 45px;
             width: 600px;
-            background-color: peru;
+            /*background-color: peru;*/
+            border-bottom: 3px transparent solid;
+            border-image: linear-gradient(to right,#ff3c00,#23b7cb) 1 10;
+            /* padding-left: 10px; */
+            margin-left: 25px;
 
         }
 
@@ -120,7 +131,7 @@
             width: 130px;
             margin-left: 20px;
             float: left;
-            background-color: #0e8dc7;
+            /*background-color: #0e8dc7;*/
             text-align: center;
             line-height: 45px;
             list-style: none;
@@ -132,7 +143,7 @@
             margin-top: 10px;
             padding: 0 35px;
             box-sizing: border-box;
-            background-color: orange;
+            /*background-color: orange;*/
             font-size: 20px;
             overflow: hidden;
         }
@@ -154,6 +165,10 @@
             line-height: 40px;
             text-align: center;
             text-decoration: none;
+            background: -webkit-linear-gradient(359deg, rgb(255, 149, 250) 35%, rgb(103, 241, 203) 81%);
+            font-size: 19px;
+            font-weight: 800;
+            font-family: 宋体;
         }
 
         .each-data span {
@@ -170,14 +185,7 @@
 
 
         /************************************       底部导航栏       ***************8*/
-
-        .my-footer {
-            width: 500px;
-            height: 40px;
-            text-align: center;
-            line-height: 40px;
-            margin: 40px auto;
-        }
+        /*    关于备案号的css代码，抽取出来了，放在 blog-footer.css */
 
 
     </style>
@@ -251,9 +259,7 @@
 </div>
 
 <!--    文章底部-->
-<div class="my-footer">
-    © 2020 | LinKaiBlog | <a href="https://github.com/LinSir12138/MyBlog" title="https://github.com/LinSir12138/MyBlog" target="_blank">本博客已开源</a> | <a href="http://www.beian.miit.gov.cn/">赣ICP备20003376号</a>
-</div>
+<div th:replace="~{common/commonsfile::blog-footerbar}"></div>
 
 <!--    滑动顶部小火箭 -->
 <div id="shape">
@@ -266,6 +272,8 @@
 
 <!--    分页需要的 js 代码-->
 <script th:src="@{/js/pagenation/myPagination.js}"></script>
+<!--    关于时间统计的 JS 代码-->
+<script th:src="@{/js/time.js}"></script>
 
 <script>
 

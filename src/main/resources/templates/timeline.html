@@ -10,6 +10,8 @@
     <link rel="stylesheet" th:href="@{/css/article-title.css}">
     <!--    滑动到顶部火箭 -->
     <link rel="stylesheet" type="text/css" th:href="@{/css/rocketTop.css}">
+    <!--    关于底部备案号的 css 样式文件   -->
+    <link rel="stylesheet" th:href="@{/css/blog-footer.css}">
 
 
     <!--    字体图标    -->
@@ -29,9 +31,19 @@
             background-image: url("/image/bc.png");
         }
 
-        /**************************************     时间轴             *******************/
+        /**************************************     时间轴  --->             *******************/
         .head-warp {
-            margin-top: 45px;
+            margin-top: 90px;
+        }
+
+        dl a {
+            background: linear-gradient(to right, #fa709a 0%, #fee140 100%);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .cur {
+            font-size: 26px !important;
         }
 
         .main {
@@ -41,19 +53,7 @@
         }
 
         /************************************       底部导航栏       ***************8*/
-        .my-footer {
-            width: 500px;
-            height: 40px;
-            text-align: center;
-            line-height: 40px;
-            margin: 40px auto;
-        }
-
-        dt a {
-            background: linear-gradient(to right, #fa709a 0%, #fee140 100%);
-            -webkit-background-clip: text;
-            color: transparent;
-        }
+      /*    将 css 代码抽取出来了，放在 blog-footer.css   中 */
 
     </style>
 
@@ -101,9 +101,7 @@
 </div>
 
 <!--    文章底部-->
-<div class="my-footer">
-    © 2020 | LinKaiBlog | <a href="https://github.com/LinSir12138/MyBlog" title="https://github.com/LinSir12138/MyBlog" target="_blank">本博客已开源</a> | <a href="http://www.beian.miit.gov.cn/">赣ICP备20003376号</a>
-</div>
+<div th:replace="~{common/commonsfile::blog-footerbar}"></div>
 
 <!--    滑动顶部小火箭 -->
 <div id="shape">
@@ -112,6 +110,12 @@
         </div>
     </div>
 </div>
+
+
+<!--    时间轴的 JS 代码-->
+<script th:src="@{/timeline/js/main.js}"></script>
+<!--    关于时间统计的 JS 代码-->
+<script th:src="@{/js/time.js}"></script>
 
 <script>
     // 滚到顶部按钮
@@ -136,8 +140,6 @@
 
 </script>
 
-<!--    时间轴的 JS 代码-->
-<script th:src="@{/timeline/js/main.js}"></script>
 
 </body>
 </html>

@@ -19,10 +19,11 @@
     </div>
     <div class="title-center">
         <div class="title-log">
-            <a href="main.html" title="jacklin.it@qq.com">
+            <a th:href="@{/main}" title="jacklin.it@qq.com">
                 <img th:src="@{/image/logo.png}" alt="">
             </a>
         </div>
+        <h1>JackLin的博客</h1>
 
         <ul>
             <li>
@@ -107,10 +108,11 @@
 
 <!--    文章界面：右侧关于博客介绍，文章标签，分类等-->
 <div class="content-right" th:fragment="article-rightbar">
+
     <div class="content-myinfo">
         <img th:src="@{/image/logo.png}" alt="">
         <!--                <p>哔哩哔哩干杯~(￣▽￣)~*</p>-->
-        <p class="p1 animated rubberBand">我的博客</p>
+        <p class="p1 animated rubberBand myblog">JackLin的博客</p>
         <p class="p2">Talk is cheap, show me the code!</p>
         <!--    <p>Code is cheap, show me the <span>girlfriend</span>!!!</p>    -->
         <p class="p3">
@@ -132,19 +134,21 @@
 
     <div class="article-statistics">
         <p class="title-statistics">文章统计</p>
+        <!--    具体的数据发送 Ajax 请求从后端获取    -->
         <ul>
             <li>
                 <p class="decoration">文章数量</p>
-                <p class="number-statistics" id="article-numbers">62</p>
+                <p class="number-statistics" id="article-numbers"></p>
             </li>
             <li>
                 <p class="decoration">分类数量</p>
-                <p class="number-statistics" id="type-numbers">62</p>
+                <p class="number-statistics" id="type-numbers"></p>
             </li>
             <li>
                 <p class="decoration">标签数量</p>
-                <p class="number-statistics" id="tag-numbers">62</p>
+                <p class="number-statistics" id="tag-numbers"></p>
             </li>
+
 <!--            <li>-->
 <!--                <p class="decoration">访问次数</p>-->
 <!--                <p class="number-statistics" id="site-views">62</p>-->
@@ -158,9 +162,6 @@
         </ul>
     </div>
 
-    <div>
-        <p>推荐文章</p>
-    </div>
 
 </div>
 
@@ -188,6 +189,15 @@
         </li>
 
     </ul>
+</div>
+
+<div class="my-footer" th:fragment="blog-footerbar">
+    <p class="my-time">
+        本站自2020-3-21运行以来，<span id="time"></span>
+    </p>
+    <p class="my-info">
+        © 2020 | LinKaiBlog | <a href="https://github.com/LinSir12138/MyBlog" title="https://github.com/LinSir12138/MyBlog" target="_blank">本博客已开源</a> | <a href="http://www.beian.miit.gov.cn/">赣ICP备20003376号</a>
+    </p>
 </div>
 
 

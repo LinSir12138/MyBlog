@@ -2,6 +2,7 @@ package com.linkai.myblog.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.linkai.myblog.entity.Blog;
+import com.linkai.myblog.entity.Friend;
 import com.linkai.myblog.entity.Tag;
 import com.linkai.myblog.entity.Type;
 import com.linkai.myblog.service.*;
@@ -38,6 +39,8 @@ public class MainController {
     BlogtagService blogtagService;
     @Autowired
     MainService mainService;
+    @Autowired
+    FriendService friendService;
 
     // 跳转到 main  页面
     @GetMapping({"/", "/main"})
@@ -341,7 +344,10 @@ public class MainController {
     * @Date: 2020/5/3
     */
     @GetMapping("/Friend")
-    public String toFriend() {
+    public String toFriend(Model model) {
+        List<Friend> friends = friendService.queryAll();
+        model.addAttribute("friends", friends);
+
         return "friend";
     }
 
@@ -367,8 +373,18 @@ public class MainController {
     }
 
 
+/**
+     *********************************          前台  ----》  “博客统计”  功能     ******************************************************************
+     * */
 
 
+    /**
+    * @Description: 前台发送 Ajax 请求，统计博客数据
+    * @Param: []
+    * @return: java.lang.String
+    * @Author: 林凯
+    * @Date: 2020/5/14
+    */
     @GetMapping("/Statistic")
     @ResponseBody
     @ApiOperation("统计博客数据")

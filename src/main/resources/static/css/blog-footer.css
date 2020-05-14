@@ -1,0 +1,19 @@
+/*  文章底部关于备案号的 CSS 样式*/
+.my-footer {
+    width: 500px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    margin: 40px auto;
+}
+
+.my-footer .my-time {
+    width: 600px;
+    border-bottom: 3px transparent solid;
+    border-image: linear-gradient(to right,#fea15c,#a6d2ad) 1 10;
+}
+
+.my-footer .my-info {
+    width: 600px;
+    margin-bottom: 20px;
+}

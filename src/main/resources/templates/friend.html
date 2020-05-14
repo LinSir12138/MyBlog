@@ -168,10 +168,16 @@
 
     <div class="content-top">
         <p>我的友链</p>
+        <div class="friend" th:each="friend:${friends}">
+            <a th:href="${friend.getFBlogaddress()}" target="_blank">
+                <img th:src="${friend.getFImageaddress()}" alt="">
+                <div th:text="${friend.getFBlogtitle()}"></div>
+            </a>
+        </div>
         <div class="friend">
             <a href="#">
-                <img src="http://m.imeitou.com/uploads/allimg/2020041017/kdv3zp4bymc.jpeg" alt="">
-                <div>666的博客</div>
+                <img src="http://image.linkaiblog.top/kdv3zp4bymc.jpeg" alt="">
+                <div>Test</div>
             </a>
         </div>
     </div>

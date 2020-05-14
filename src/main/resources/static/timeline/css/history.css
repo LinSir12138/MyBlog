@@ -1,11 +1,13 @@
 body, p, form, input, textarea, ul, li, h1, h2, h3, h4, dl, dt, dd, table, td, th { margin:0; padding:0; }
 table, td, th { border-collapse:collapse; }
 ul, li { list-style:none; }
-h1, h2, h3, h4 { font-size:100%; }
+/*h1, h2, h3, h4 { font-size:100%; }*/
 img, input, textarea { vertical-align: middle; border:0; }
 a { text-decoration:none; color:#787878; outline:none; }
 a:hover { text-decoration:underline; }
-body { font:12px/1.5 "微软雅黑","tahoma", Verdana, Geneva, sans-serif; color:#666; position:relative;}
+
+/*body { font:12px/1.5 "微软雅黑","tahoma", Verdana, Geneva, sans-serif; color:#666; position:relative;}*/
+
 .clearfix:after{content:" "; display:block; height:0; clear:both; visibility:hidden;}
 .clearfix{zoom:1;}
 .fl { float:left;}
